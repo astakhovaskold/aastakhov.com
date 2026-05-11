@@ -1,32 +1,23 @@
 ---
 title: "Stop copy-pasting your React route protection. Here's a better way."
 publishedAt: "2026-05-11"
-summary: "Every enterprise React project needs route protection. After copy-pasting the same solution five times across projects, I built a proper library — react-protected."
+summary: "On every project you need to protect routes. The logic is always the same. The implementation is always different. react-protected standardizes this."
 tag: "Open Source"
 ---
 
-Every enterprise React project I've worked on had the same requirement: protect routes and UI elements based on user roles or permissions. And every time, I did the same thing — I copy-pasted the solution from the previous project.
+On every project you need to protect routes. Some are for authenticated users only, some for admins, some for guests only. You write a `PrivateRoute`. Then a role check hook. Then a `HasAccess` component. You move to the next project — and write it all again.
 
-It wasn't a bad solution. I had a `useAccess` hook that returned a simple boolean, and a `HasAccess` component that conditionally rendered children. Clean enough. But the problem was that it never quite fit. Some projects needed role-based checks only. Others needed permission-based checks. Some needed both — where permissions were grouped into roles and the logic got complex. Every time I had to tweak the internals, re-wire it with React Router, and re-explain it to the next developer on the team.
+The logic is always the same. The implementation is always different.
 
-After doing this on project number five, I decided to stop copy-pasting and build something proper.
+`react-protected` standardizes this. You describe what each route requires. The library checks access and redirects.
 
-## What I actually needed
+## Two packages
 
-The core requirement sounds simple: given a user object, check whether that user has access to a route or a UI element. But the devil is in the details:
+`@react-protected/core` — framework-agnostic guard logic. No dependency on React or any router.
 
-- Auth logic lives outside — your app handles login, tokens, sessions. The library should only care about *what* the user can do, not *who* they are
-- It should support roles (RBAC), permissions (ABAC), or both
-- It should integrate with React Router without boilerplate every time
-- The role/permission check logic should be yours to define — OR, AND, hierarchy, whatever your domain requires
+`@react-protected/react-router` — adapter for React Router. Two styles supported: config-based and JSX.
 
-## What I built
-
-`react-protected` is split into two packages: `@react-protected/core` — framework-agnostic guard logic with zero dependencies on React or any router — and `@react-protected/react-router`, an adapter that wires it into React Router.
-
-You define the rules once. The library handles the redirects.
-
-**Config-based routing:**
+## Config-based
 
 ```ts
 const router = createGuardedRouter(
@@ -53,7 +44,7 @@ const router = createGuardedRouter(
 )
 ```
 
-**Or JSX if you prefer:**
+## JSX
 
 ```tsx
 <GuardProvider
@@ -76,11 +67,17 @@ const router = createGuardedRouter(
 </GuardProvider>
 ```
 
-No custom RouteGuard. No boilerplate per route. You describe what each route needs — the library handles the rest, including automatic `callbackUrl` when an unauthenticated user is redirected to login.
+## Roles, permissions, or both
+
+RBAC — pass `roles` to the route. You define the check logic yourself: OR, AND, hierarchy — whatever your domain requires.
+
+ABAC — pass `permissions`. Works the same way.
+
+Both at once — the check passes only when both conditions are met.
 
 ## Not using React Router?
 
-The core package works with anything. Here's TanStack Router:
+Use `@react-protected/core` directly. Here's TanStack Router:
 
 ```ts
 const guard = createGuard({
@@ -101,12 +98,6 @@ const dashboardRoute = createRoute({
 })
 ```
 
-## What's coming next
-
-`useAccess` hook and `HasAccess` component — for cases beyond routing, like hiding a button or disabling a field based on role. TanStack Router adapter is also planned.
-
-## Why I open-sourced it
-
-Because I'm probably not the only one who's copy-pasted this five times. This is a real enterprise pain — I've seen it on project after project. If this sounds familiar — give it a try, open an issue, or just leave a star.
-
 [github.com/astakhovaskold/react-protected](https://github.com/astakhovaskold/react-protected)
+
+Issues and stars are welcome.

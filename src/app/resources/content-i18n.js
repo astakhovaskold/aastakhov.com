@@ -7,7 +7,7 @@ const createI18nContent = t => {
         },
         role: t('person.role'),
         avatar: '/images/avatar.jpg',
-        location: 'Europe/Berlin', // Expecting the IANA time zone identifier, e.g., 'Europe/Vienna'
+        location: 'Europe/Madrid', // Expecting the IANA time zone identifier, e.g., 'Europe/Vienna'
         languages: ['English', 'German', 'Spanish', 'Russian'], // optional: Leave the array empty if you don't want to display languages
     };
 
