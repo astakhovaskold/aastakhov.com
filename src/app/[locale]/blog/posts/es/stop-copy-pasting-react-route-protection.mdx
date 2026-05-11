@@ -1,0 +1,103 @@
+---
+title: "Deja de copiar y pegar la protección de rutas en React. Hay una forma mejor."
+publishedAt: "2026-05-11"
+summary: "En cada proyecto necesitas proteger rutas. La lógica siempre es la misma. La implementación siempre es diferente. react-protected estandariza esto."
+tag: "Open Source"
+---
+
+En cada proyecto necesitas proteger rutas. Algunas son solo para usuarios autenticados, otras para administradores, otras solo para invitados. Escribes un `PrivateRoute`. Luego un hook para verificar el rol. Luego un componente `HasAccess`. Pasas al siguiente proyecto — y lo escribes todo de nuevo.
+
+La lógica siempre es la misma. La implementación siempre es diferente.
+
+`react-protected` estandariza esto. Describes qué necesita cada ruta. La librería verifica el acceso y redirige.
+
+## Dos paquetes
+
+`@react-protected/core` — lógica de acceso agnóstica al framework. Sin dependencia de React ni de ningún router.
+
+`@react-protected/react-router` — adaptador para React Router. Soporta dos estilos: basado en configuración y JSX.
+
+## Basado en configuración
+
+```ts
+const router = createGuardedRouter(
+  [
+    { path: '/', element: <HomePage /> },
+    { path: '/login', element: <LoginPage />, access: 'guest-only' },
+    { path: '/dashboard', element: <DashboardPage />, access: 'authenticated' },
+    { path: '/admin', element: <AdminPage />, access: 'authenticated', roles: ['admin'] },
+    {
+      path: '/contracts',
+      element: <ContractsPage />,
+      access: 'authenticated',
+      permissions: ['contracts:read'],
+    },
+  ],
+  {
+    getUser: () => useAuthStore.getState().user,
+    hasRole: (user, roles) => roles.some((role) => user.roles.includes(role)),
+    hasPermission: (user, permissions) =>
+      permissions.every((p) => user.permissions.includes(p)),
+    loginPath: '/login',
+    forbiddenPath: '/403',
+  }
+)
+```
+
+## JSX
+
+```tsx
+<GuardProvider
+  getUser={() => useAuthStore.getState().user}
+  hasRole={(user, roles) => roles.some((role) => user.roles.includes(role))}
+  loginPath="/login"
+  forbiddenPath="/403"
+>
+  <Routes>
+    <Route path="/" element={<HomePage />} />
+    <Route
+      path="/dashboard"
+      element={
+        <GuardRoute access="authenticated">
+          <DashboardPage />
+        </GuardRoute>
+      }
+    />
+  </Routes>
+</GuardProvider>
+```
+
+## Roles, permisos o ambos
+
+RBAC — pasa `roles` a la ruta. Tú defines la lógica de verificación: OR, AND, jerarquía — lo que requiera tu dominio.
+
+ABAC — pasa `permissions`. Funciona de la misma manera.
+
+Ambos a la vez — la verificación pasa solo cuando se cumplen las dos condiciones.
+
+## ¿No usas React Router?
+
+Usa `@react-protected/core` directamente. Ejemplo con TanStack Router:
+
+```ts
+const guard = createGuard({
+  getUser: () => useAuthStore.getState().user,
+  hasRole: (user, roles) => roles.some((role) => user.roles.includes(role)),
+})
+
+const dashboardRoute = createRoute({
+  path: '/dashboard',
+  beforeLoad: ({ location }) => {
+    const result = guard.check(
+      { path: '/dashboard', access: 'authenticated' },
+      location.pathname
+    )
+    if (!result.allowed) throw redirect({ to: result.redirectTo })
+  },
+  component: DashboardPage,
+})
+```
+
+[github.com/astakhovaskold/react-protected](https://github.com/astakhovaskold/react-protected)
+
+Issues y estrellas son bienvenidos.
