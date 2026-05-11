@@ -1,0 +1,112 @@
+---
+title: "Хватит копировать защиту маршрутов в React. Есть способ лучше."
+publishedAt: "2026-05-11"
+summary: "Каждый enterprise React-проект требует защиты маршрутов. После того как я пять раз скопировал одно и то же решение — я написал нормальную библиотеку: react-protected."
+tag: "Open Source"
+---
+
+В каждом enterprise React-проекте, над которым я работал, было одно и то же требование: защищать маршруты и элементы интерфейса на основе ролей или прав пользователя. И каждый раз я делал одно и то же — копировал решение из предыдущего проекта.
+
+Само по себе оно было неплохим. Хук `useAccess`, возвращающий булево значение, и компонент `HasAccess`, условно рендерящий дочерние элементы. Выглядело чисто. Но проблема в том, что оно никогда не подходило идеально. Одним проектам нужны были только проверки по ролям. Другим — только по правам. Третьим — и то и другое, где права группировались в роли и логика усложнялась. Каждый раз приходилось переписывать внутренности, заново интегрировать с React Router и объяснять всё следующему разработчику.
+
+После пятого раза я решил перестать копировать и сделать нормальную библиотеку.
+
+## Что мне было нужно
+
+На словах требование звучит просто: по объекту пользователя определить, есть ли у него доступ к маршруту или элементу интерфейса. Но дьявол в деталях:
+
+- Логика аутентификации живёт снаружи — логин, токены, сессии — это задача приложения. Библиотека должна знать только *что* пользователь может делать, а не *кто* он
+- Нужна поддержка ролей (RBAC), прав (ABAC) или обоих подходов
+- Интеграция с React Router без шаблонного кода при каждом использовании
+- Логика проверки ролей и прав — полностью на стороне разработчика: OR, AND, иерархия — что угодно
+
+## Что я построил
+
+`react-protected` разбит на два пакета: `@react-protected/core` — фреймворк-независимая логика проверки доступа без каких-либо зависимостей от React или роутера — и `@react-protected/react-router`, адаптер для интеграции с React Router.
+
+Вы описываете правила один раз. Редиректами занимается библиотека.
+
+**Конфигурационный подход:**
+
+```ts
+const router = createGuardedRouter(
+  [
+    { path: '/', element: <HomePage /> },
+    { path: '/login', element: <LoginPage />, access: 'guest-only' },
+    { path: '/dashboard', element: <DashboardPage />, access: 'authenticated' },
+    { path: '/admin', element: <AdminPage />, access: 'authenticated', roles: ['admin'] },
+    {
+      path: '/contracts',
+      element: <ContractsPage />,
+      access: 'authenticated',
+      permissions: ['contracts:read'],
+    },
+  ],
+  {
+    getUser: () => useAuthStore.getState().user,
+    hasRole: (user, roles) => roles.some((role) => user.roles.includes(role)),
+    hasPermission: (user, permissions) =>
+      permissions.every((p) => user.permissions.includes(p)),
+    loginPath: '/login',
+    forbiddenPath: '/403',
+  }
+)
+```
+
+**Или через JSX, если предпочитаете:**
+
+```tsx
+<GuardProvider
+  getUser={() => useAuthStore.getState().user}
+  hasRole={(user, roles) => roles.some((role) => user.roles.includes(role))}
+  loginPath="/login"
+  forbiddenPath="/403"
+>
+  <Routes>
+    <Route path="/" element={<HomePage />} />
+    <Route
+      path="/dashboard"
+      element={
+        <GuardRoute access="authenticated">
+          <DashboardPage />
+        </GuardRoute>
+      }
+    />
+  </Routes>
+</GuardProvider>
+```
+
+Никаких кастомных RouteGuard. Никакого шаблонного кода на каждый маршрут. Вы описываете требования к маршруту — библиотека делает всё остальное, включая автоматический `callbackUrl` при редиректе неаутентифицированного пользователя на страницу входа.
+
+## Не используете React Router?
+
+Корневой пакет работает с чем угодно. Вот пример с TanStack Router:
+
+```ts
+const guard = createGuard({
+  getUser: () => useAuthStore.getState().user,
+  hasRole: (user, roles) => roles.some((role) => user.roles.includes(role)),
+})
+
+const dashboardRoute = createRoute({
+  path: '/dashboard',
+  beforeLoad: ({ location }) => {
+    const result = guard.check(
+      { path: '/dashboard', access: 'authenticated' },
+      location.pathname
+    )
+    if (!result.allowed) throw redirect({ to: result.redirectTo })
+  },
+  component: DashboardPage,
+})
+```
+
+## Что будет дальше
+
+Хук `useAccess` и компонент `HasAccess` — для случаев за пределами роутинга, например скрытие кнопки или блокировка поля по роли. Адаптер для TanStack Router также в планах.
+
+## Почему я это опубликовал в открытый доступ
+
+Потому что, скорее всего, я не единственный, кто копировал это решение пять раз. Это реальная боль enterprise-разработки — я видел это в проекте за проектом. Если вам это знакомо — попробуйте, создайте issue или просто поставьте звезду.
+
+[github.com/astakhovaskold/react-protected](https://github.com/astakhovaskold/react-protected)
