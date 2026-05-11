@@ -1,0 +1,112 @@
+---
+title: "Stop copy-pasting your React route protection. Here's a better way."
+publishedAt: "2026-05-11"
+summary: "Every enterprise React project needs route protection. After copy-pasting the same solution five times across projects, I built a proper library — react-protected."
+tag: "Open Source"
+---
+
+Every enterprise React project I've worked on had the same requirement: protect routes and UI elements based on user roles or permissions. And every time, I did the same thing — I copy-pasted the solution from the previous project.
+
+It wasn't a bad solution. I had a `useAccess` hook that returned a simple boolean, and a `HasAccess` component that conditionally rendered children. Clean enough. But the problem was that it never quite fit. Some projects needed role-based checks only. Others needed permission-based checks. Some needed both — where permissions were grouped into roles and the logic got complex. Every time I had to tweak the internals, re-wire it with React Router, and re-explain it to the next developer on the team.
+
+After doing this on project number five, I decided to stop copy-pasting and build something proper.
+
+## What I actually needed
+
+The core requirement sounds simple: given a user object, check whether that user has access to a route or a UI element. But the devil is in the details:
+
+- Auth logic lives outside — your app handles login, tokens, sessions. The library should only care about *what* the user can do, not *who* they are
+- It should support roles (RBAC), permissions (ABAC), or both
+- It should integrate with React Router without boilerplate every time
+- The role/permission check logic should be yours to define — OR, AND, hierarchy, whatever your domain requires
+
+## What I built
+
+`react-protected` is split into two packages: `@react-protected/core` — framework-agnostic guard logic with zero dependencies on React or any router — and `@react-protected/react-router`, an adapter that wires it into React Router.
+
+You define the rules once. The library handles the redirects.
+
+**Config-based routing:**
+
+```ts
+const router = createGuardedRouter(
+  [
+    { path: '/', element: <HomePage /> },
+    { path: '/login', element: <LoginPage />, access: 'guest-only' },
+    { path: '/dashboard', element: <DashboardPage />, access: 'authenticated' },
+    { path: '/admin', element: <AdminPage />, access: 'authenticated', roles: ['admin'] },
+    {
+      path: '/contracts',
+      element: <ContractsPage />,
+      access: 'authenticated',
+      permissions: ['contracts:read'],
+    },
+  ],
+  {
+    getUser: () => useAuthStore.getState().user,
+    hasRole: (user, roles) => roles.some((role) => user.roles.includes(role)),
+    hasPermission: (user, permissions) =>
+      permissions.every((p) => user.permissions.includes(p)),
+    loginPath: '/login',
+    forbiddenPath: '/403',
+  }
+)
+```
+
+**Or JSX if you prefer:**
+
+```tsx
+<GuardProvider
+  getUser={() => useAuthStore.getState().user}
+  hasRole={(user, roles) => roles.some((role) => user.roles.includes(role))}
+  loginPath="/login"
+  forbiddenPath="/403"
+>
+  <Routes>
+    <Route path="/" element={<HomePage />} />
+    <Route
+      path="/dashboard"
+      element={
+        <GuardRoute access="authenticated">
+          <DashboardPage />
+        </GuardRoute>
+      }
+    />
+  </Routes>
+</GuardProvider>
+```
+
+No custom RouteGuard. No boilerplate per route. You describe what each route needs — the library handles the rest, including automatic `callbackUrl` when an unauthenticated user is redirected to login.
+
+## Not using React Router?
+
+The core package works with anything. Here's TanStack Router:
+
+```ts
+const guard = createGuard({
+  getUser: () => useAuthStore.getState().user,
+  hasRole: (user, roles) => roles.some((role) => user.roles.includes(role)),
+})
+
+const dashboardRoute = createRoute({
+  path: '/dashboard',
+  beforeLoad: ({ location }) => {
+    const result = guard.check(
+      { path: '/dashboard', access: 'authenticated' },
+      location.pathname
+    )
+    if (!result.allowed) throw redirect({ to: result.redirectTo })
+  },
+  component: DashboardPage,
+})
+```
+
+## What's coming next
+
+`useAccess` hook and `HasAccess` component — for cases beyond routing, like hiding a button or disabling a field based on role. TanStack Router adapter is also planned.
+
+## Why I open-sourced it
+
+Because I'm probably not the only one who's copy-pasted this five times. This is a real enterprise pain — I've seen it on project after project. If this sounds familiar — give it a try, open an issue, or just leave a star.
+
+[github.com/astakhovaskold/react-protected](https://github.com/astakhovaskold/react-protected)
