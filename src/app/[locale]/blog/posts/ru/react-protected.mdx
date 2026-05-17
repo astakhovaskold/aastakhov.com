@@ -1,0 +1,195 @@
+---
+title: "Защита роутов в React без копипасты. Как я это решил."
+published: true
+tags: react, javascript, typescript, webdev
+canonical_url: https://aastakhov.com/blog/react-protected
+---
+
+На каждом проекте нужно защищать роуты. Одни — только для авторизованных пользователей, другие — для администраторов, третьи — только для гостей. Пишете `PrivateRoute`. Потом хук с проверкой роли. Потом компонент `HasAccess`. Переходите на следующий проект — и пишете всё заново.
+
+Логика всегда одна. Реализация всегда разная.
+
+`react-protected` стандартизирует это. Описываете что нужно каждому роуту — библиотека проверяет доступ и делает редирект.
+
+## Три пакета
+
+`@react-protected/core` — фреймворк-агностик логика контроля доступа. Без зависимостей от React и роутера.
+
+`@react-protected/react` — React-контекст (`AccessProvider`), хуки (`useHasAccess`) и компонент `HasAccess`.
+
+`@react-protected/react-router` — адаптер для React Router. Включает всё из `@react-protected/react` — устанавливать оба пакета не нужно.
+
+## Установка
+
+Для проектов с React Router:
+
+```bash
+npm install @react-protected/react-router
+```
+
+Для React-проектов без React Router:
+
+```bash
+npm install @react-protected/core @react-protected/react
+```
+
+## Конфигурационный стиль (рекомендуется)
+
+```ts
+// router.ts
+import { createAccessRouter } from '@react-protected/react-router'
+import { useAuthStore } from './entities/auth'
+
+export const router = createAccessRouter(
+  [
+    { path: '/', element: <HomePage /> },
+    { path: '/login', element: <LoginPage />, access: 'guest-only' },
+    { path: '/dashboard', element: <DashboardPage />, access: 'authenticated' },
+    { path: '/admin', element: <AdminPage />, access: 'authenticated', roles: ['admin'] },
+    {
+      path: '/contracts',
+      element: <ContractsPage />,
+      access: 'authenticated',
+      permissions: ['contracts:read'],
+    },
+    { path: '/403', element: <Page403 /> },
+  ],
+  {
+    getUser: () => useAuthStore.getState().user,
+    hasRole: (user, roles) => roles.some((role) => user.roles.includes(role)),
+    hasPermission: (user, permissions) =>
+      permissions.every((p) => user.permissions.includes(p)),
+    loginPath: '/login',
+    forbiddenPath: '/403',
+    defaultPath: '/dashboard',
+    callbackUrlParam: 'next',
+  }
+)
+
+// App.tsx
+import { RouterProvider } from 'react-router-dom'
+export const App = () => <RouterProvider router={router} />
+```
+
+## JSX стиль
+
+```tsx
+import { Route, Routes } from 'react-router-dom'
+import { AccessProvider, AccessRoute } from '@react-protected/react-router'
+
+const App = () => (
+  <AccessProvider
+    getUser={() => useAuthStore.getState().user}
+    hasRole={(user, roles) => roles.some((role) => user.roles.includes(role))}
+    loginPath="/login"
+    forbiddenPath="/403"
+    defaultPath="/dashboard"
+    callbackUrlParam="next"
+  >
+    <Routes>
+      <Route path="/" element={<HomePage />} />
+      <Route
+        path="/login"
+        element={
+          <AccessRoute access="guest-only">
+            <LoginPage />
+          </AccessRoute>
+        }
+      />
+      <Route
+        path="/dashboard"
+        element={
+          <AccessRoute access="authenticated">
+            <DashboardPage />
+          </AccessRoute>
+        }
+      />
+    </Routes>
+  </AccessProvider>
+)
+```
+
+## Роли, привилегии или оба варианта
+
+RBAC — передаёте `roles` в конфигурацию роута. Логику проверки определяете сами: OR, AND, иерархия — как требует ваш домен.
+
+ABAC — передаёте `permissions`. Работает по тому же принципу.
+
+Оба сразу — проверка проходит только когда выполнены оба условия.
+
+## Защита UI-элементов
+
+Защиты роутов недостаточно. `HasAccess` и `useHasAccess` позволяют скрывать кнопки, поля и любые UI-элементы на основе роли или привилегии — без смены маршрута.
+
+```tsx
+import { HasAccess, useHasAccess } from '@react-protected/react-router'
+
+// Компонентная форма
+const Toolbar = () => (
+  <nav>
+    <HasAccess roles={['admin']}>
+      <button>Удалить пользователя</button>
+    </HasAccess>
+  </nav>
+)
+
+// Хуковая форма
+const ExportButton = () => {
+  const canExport = useHasAccess({ permissions: ['reports:export'] })
+  return canExport ? <button>Экспорт</button> : null
+}
+```
+
+## Callback URL
+
+Если указан `callbackUrlParam`, незалогиненный пользователь редиректится с сохранением текущего пути:
+
+```
+/dashboard?tab=overview → /login?next=%2Fdashboard%3Ftab%3Doverview
+```
+
+После логина обработайте возврат:
+
+```ts
+const [params] = useSearchParams()
+navigate(params.get('next') ?? '/dashboard', { replace: true })
+```
+
+Если нужно отключить callback URL после явного выхода из системы:
+
+```tsx
+<AccessProvider
+  callbackUrlParam="next"
+  shouldAddCallbackUrl={() => !authStore.getState().loggedOut}
+  ...
+>
+```
+
+## Не используете React Router?
+
+Используйте `@react-protected/core` напрямую с любым роутером. Пример с TanStack Router:
+
+```ts
+import { createGuard } from '@react-protected/core'
+
+const guard = createGuard({
+  getUser: () => useAuthStore.getState().user,
+  hasRole: (user, roles) => roles.some((role) => user.roles.includes(role)),
+})
+
+const dashboardRoute = createRoute({
+  path: '/dashboard',
+  beforeLoad: ({ location }) => {
+    const result = guard.check({ access: 'authenticated' })
+    if (!result.allowed) {
+      throw redirect({
+        to: result.reason === 'unauthenticated' ? '/login' : '/403',
+        search: { next: location.pathname },
+      })
+    }
+  },
+  component: DashboardPage,
+})
+```
+
+👉 [github.com/astakhovaskold/react-protected](https://github.com/astakhovaskold/react-protected)
