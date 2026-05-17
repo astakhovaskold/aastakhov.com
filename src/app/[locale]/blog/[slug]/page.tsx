@@ -82,6 +82,7 @@ export default function Blog({params}: BlogParams) {
 
     const t = useTranslations();
     const {person} = renderContent(t);
+    const publishedAt = formatDate(post.metadata.publishedAt);
 
     return (
         <Flex as="section" fillWidth maxWidth="xs" direction="column" gap="m">
@@ -113,9 +114,11 @@ export default function Blog({params}: BlogParams) {
             <Heading variant="display-strong-s">{post.metadata.title}</Heading>
             <Flex gap="12" alignItems="center">
                 {person.avatar && <Avatar size="s" src={person.avatar} />}
-                <Text variant="body-default-s" onBackground="neutral-weak">
-                    {formatDate(post.metadata.publishedAt)}
-                </Text>
+                {publishedAt && (
+                    <Text variant="body-default-s" onBackground="neutral-weak">
+                        {publishedAt}
+                    </Text>
+                )}
             </Flex>
             <Flex as="article" direction="column" fillWidth>
                 <CustomMDX source={post.content} />

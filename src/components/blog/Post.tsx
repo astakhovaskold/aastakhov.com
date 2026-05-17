@@ -10,6 +10,8 @@ interface PostProps {
 }
 
 export default function Post({post, thumbnail}: PostProps) {
+    const publishedAt = formatDate(post.metadata.publishedAt, false);
+
     return (
         <SmartLink
             className={styles.hover}
@@ -42,10 +44,14 @@ export default function Post({post, thumbnail}: PostProps) {
                     <Heading as="h2" variant="heading-strong-l" wrap="balance">
                         {post.metadata.title}
                     </Heading>
-                    <Text variant="label-default-s" onBackground="neutral-weak">
-                        {formatDate(post.metadata.publishedAt, false)}
-                    </Text>
-                    {post.metadata.tag && <Tag className="mt-8" label={post.metadata.tag} variant="neutral" />}
+                    {publishedAt && (
+                        <Text variant="label-default-s" onBackground="neutral-weak">
+                            {publishedAt}
+                        </Text>
+                    )}
+                    {typeof post.metadata.tag === 'string' && post.metadata.tag.length > 0 && (
+                        <Tag className="mt-8" label={post.metadata.tag} variant="neutral" />
+                    )}
                 </Flex>
             </Flex>
         </SmartLink>

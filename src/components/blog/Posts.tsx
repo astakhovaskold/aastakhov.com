@@ -13,7 +13,10 @@ export function Posts({range, columns = '1', locale = 'en', thumbnail = false}: 
     let allBlogs = getPosts(['src', 'app', '[locale]', 'blog', 'posts', locale]);
 
     const sortedBlogs = allBlogs.sort((a, b) => {
-        return new Date(b.metadata.publishedAt).getTime() - new Date(a.metadata.publishedAt).getTime();
+        const publishedAtA = a.metadata.publishedAt ? new Date(a.metadata.publishedAt).getTime() : 0;
+        const publishedAtB = b.metadata.publishedAt ? new Date(b.metadata.publishedAt).getTime() : 0;
+
+        return publishedAtB - publishedAtA;
     });
 
     const displayedBlogs = range

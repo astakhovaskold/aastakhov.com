@@ -19,6 +19,30 @@ type Metadata = {
     team: Team[];
 };
 
+function toStringArray(value: unknown): string[] {
+    if (Array.isArray(value)) {
+        return value.filter((item): item is string => typeof item === 'string' && item.length > 0);
+    }
+
+    if (typeof value === 'string' && value.length > 0) {
+        return value
+            .split(',')
+            .map(item => item.trim())
+            .filter(item => item.length > 0);
+    }
+
+    return [];
+}
+
+function extractSummary(content: string) {
+    const firstParagraph = content
+        .split('\n')
+        .map(line => line.trim())
+        .find(line => line.length > 0 && !line.startsWith('#') && !line.startsWith('```'));
+
+    return firstParagraph || '';
+}
+
 function getMDXFiles(dir: string) {
     if (!fs.existsSync(dir)) {
         throw new Error(`Directory not found: ${dir}`);
@@ -34,14 +58,17 @@ function readMDXFile(filePath: string) {
 
     const rawContent = fs.readFileSync(filePath, 'utf-8');
     const {data, content} = matter(rawContent);
+    const images = toStringArray(data.images);
+    const tags = toStringArray(data.tag ?? data.tags);
+    const summary = data.summary || data.description || extractSummary(content);
 
     const metadata: Metadata = {
         title: data.title || '',
-        publishedAt: data.publishedAt,
-        summary: data.summary || '',
-        image: data.image || '',
-        images: data.images || [],
-        tag: data.tag || [],
+        publishedAt: data.publishedAt || '',
+        summary,
+        image: data.image || images[0] || '',
+        images,
+        tag: tags[0] || '',
         team: data.team || [],
     };
 
