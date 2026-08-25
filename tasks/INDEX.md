@@ -106,7 +106,7 @@
 
 # Phase 2 — Payload content model
 
-* [ ] **04 — Payload Projects collection**
+* [x] **04 — Payload Projects collection**
   Path: `04-payload-projects/task.md`
   Goal: коллекция для `/projects` и `/projects/:slug`.
 
@@ -241,6 +241,7 @@
 - 2026-08-25 — Completed 01-init-blank-payload: verified blank Payload + Next.js App Router setup, removed starter frontend content, aligned env example with Postgres, fixed pnpm/ESLint/build/test scripts; checks: generate:types, lint, build, test:int.
 - 2026-08-25 — Completed 02-base-layout-zero-design: added shared public site container, header, footer, high-contrast zero-design typography, link styles, spacing, and responsive rules; checks: generate:types, lint, build.
 - 2026-08-25 — Completed 03-payload-site-settings: added Payload SiteSettings global, public fallback helper, runtime header/footer settings usage, home contacts from settings, and SEO defaults; checks: generate:types, lint, build, test:int, local API smoke.
+- 2026-08-25 — Completed 04-payload-projects: added Projects collection with slug generation, project metadata, images, featured/order controls, rich content, temporary related post slugs, and SEO fields; reset clean DB public schema and verified Payload API; checks: generate:types, lint, build, test:int, local API smoke.
 
 Пиши сюда выполненные шаги.
 
