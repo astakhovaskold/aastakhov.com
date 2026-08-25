@@ -71,6 +71,7 @@ export interface Config {
     media: Media;
     projects: Project;
     posts: Post;
+    'open-source': OpenSource;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -82,6 +83,7 @@ export interface Config {
     media: MediaSelect<false> | MediaSelect<true>;
     projects: ProjectsSelect<false> | ProjectsSelect<true>;
     posts: PostsSelect<false> | PostsSelect<true>;
+    'open-source': OpenSourceSelect<false> | OpenSourceSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -286,6 +288,30 @@ export interface Post {
   createdAt: string;
 }
 /**
+ * Open-source work used as a credibility block on the home page, not a standalone public section.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "open-source".
+ */
+export interface OpenSource {
+  id: number;
+  name: string;
+  description: string;
+  /**
+   * GitHub repository URL.
+   */
+  githubUrl: string;
+  /**
+   * Optional external article URL or internal /posts/:slug path.
+   */
+  articleUrl?: string | null;
+  stars?: number | null;
+  featured?: boolean | null;
+  order?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
@@ -324,6 +350,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'posts';
         value: number | Post;
+      } | null)
+    | ({
+        relationTo: 'open-source';
+        value: number | OpenSource;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -475,6 +505,21 @@ export interface PostsSelect<T extends boolean = true> {
         description?: T;
         image?: T;
       };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "open-source_select".
+ */
+export interface OpenSourceSelect<T extends boolean = true> {
+  name?: T;
+  description?: T;
+  githubUrl?: T;
+  articleUrl?: T;
+  stars?: T;
+  featured?: T;
+  order?: T;
   updatedAt?: T;
   createdAt?: T;
 }

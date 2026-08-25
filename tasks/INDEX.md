@@ -114,7 +114,7 @@
   Path: `05-payload-posts/task.md`
   Goal: статьи, notes, guides, essays, case notes через `category`.
 
-* [ ] **06 — Payload OpenSource collection**
+* [x] **06 — Payload OpenSource collection**
   Path: `06-payload-open-source/task.md`
   Goal: open-source элементы для главной без отдельного публичного раздела.
 
@@ -243,6 +243,7 @@
 - 2026-08-25 — Completed 03-payload-site-settings: added Payload SiteSettings global, public fallback helper, runtime header/footer settings usage, home contacts from settings, and SEO defaults; checks: generate:types, lint, build, test:int, local API smoke.
 - 2026-08-25 — Completed 04-payload-projects: added Projects collection with slug generation, project metadata, images, featured/order controls, rich content, temporary related post slugs, and SEO fields; reset clean DB public schema and verified Payload API; checks: generate:types, lint, build, test:int, local API smoke.
 - 2026-08-25 — Completed 05-payload-posts: added Posts collection for articles, notes, guides, essays, and case notes with category/language enums, publish metadata, home flags, related projects, media, tags, rich content, and SEO fields; checks: generate:types, lint, build, test:int, local API smoke.
+- 2026-08-25 — Completed 06-payload-open-source: added OpenSource collection for homepage credibility items with GitHub/article links, stars, featured/order controls, and no public route; checks: generate:types, lint, build, test:int, local API smoke.
 
 Пиши сюда выполненные шаги.
 
