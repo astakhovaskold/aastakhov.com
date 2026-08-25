@@ -118,7 +118,7 @@
   Path: `06-payload-open-source/task.md`
   Goal: open-source элементы для главной без отдельного публичного раздела.
 
-* [ ] **07 — Payload CV global**
+* [x] **07 — Payload CV global**
   Path: `07-payload-cv/task.md`
   Goal: данные онлайн-CV и ссылка на PDF.
 
@@ -244,6 +244,7 @@
 - 2026-08-25 — Completed 04-payload-projects: added Projects collection with slug generation, project metadata, images, featured/order controls, rich content, temporary related post slugs, and SEO fields; reset clean DB public schema and verified Payload API; checks: generate:types, lint, build, test:int, local API smoke.
 - 2026-08-25 — Completed 05-payload-posts: added Posts collection for articles, notes, guides, essays, and case notes with category/language enums, publish metadata, home flags, related projects, media, tags, rich content, and SEO fields; checks: generate:types, lint, build, test:int, local API smoke.
 - 2026-08-25 — Completed 06-payload-open-source: added OpenSource collection for homepage credibility items with GitHub/article links, stars, featured/order controls, and no public route; checks: generate:types, lint, build, test:int, local API smoke.
+- 2026-08-25 — Completed 07-payload-cv: added CV global with formal profile fields, optional contacts/experience/skills/education/languages sections, optional PDF upload, and public read access; checks: generate:types, lint, build, test:int, local API smoke.
 
 Пиши сюда выполненные шаги.
 

@@ -11,6 +11,7 @@ import { Projects } from './collections/Projects'
 import { Posts } from './collections/Posts'
 import { OpenSource } from './collections/OpenSource'
 import { SiteSettings } from './globals/SiteSettings'
+import { CV } from './globals/CV'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -23,7 +24,7 @@ export default buildConfig({
     },
   },
   collections: [Users, Media, Projects, Posts, OpenSource],
-  globals: [SiteSettings],
+  globals: [SiteSettings, CV],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {

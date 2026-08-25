@@ -95,9 +95,11 @@ export interface Config {
   fallbackLocale: null;
   globals: {
     'site-settings': SiteSetting;
+    cv: Cv;
   };
   globalsSelect: {
     'site-settings': SiteSettingsSelect<false> | SiteSettingsSelect<true>;
+    cv: CvSelect<false> | CvSelect<true>;
   };
   locale: null;
   widgets: {
@@ -586,6 +588,105 @@ export interface SiteSetting {
   createdAt?: string | null;
 }
 /**
+ * Formal professional profile data for the /cv page.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "cv".
+ */
+export interface Cv {
+  id: number;
+  /**
+   * Name displayed on the formal CV page.
+   */
+  name?: string | null;
+  /**
+   * Current professional title or positioning.
+   */
+  role?: string | null;
+  /**
+   * Short formal profile summary.
+   */
+  summary?: string | null;
+  /**
+   * Optional contact details for the CV page.
+   */
+  contacts?: {
+    email?: string | null;
+    phone?: string | null;
+    location?: string | null;
+    website?: string | null;
+    linkedin?: string | null;
+    github?: string | null;
+    telegram?: string | null;
+  };
+  /**
+   * Optional professional experience entries.
+   */
+  experience?:
+    | {
+        company?: string | null;
+        role?: string | null;
+        location?: string | null;
+        startDate?: string | null;
+        endDate?: string | null;
+        current?: boolean | null;
+        summary?: string | null;
+        highlights?:
+          | {
+              text?: string | null;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Optional skill groups for the formal CV.
+   */
+  skills?:
+    | {
+        category?: string | null;
+        items?:
+          | {
+              name?: string | null;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Optional education entries.
+   */
+  education?:
+    | {
+        institution?: string | null;
+        degree?: string | null;
+        field?: string | null;
+        startYear?: number | null;
+        endYear?: number | null;
+        description?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Optional language proficiency entries.
+   */
+  languages?:
+    | {
+        language?: string | null;
+        level?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Optional PDF version of the CV.
+   */
+  pdf?: (number | null) | Media;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "site-settings_select".
  */
@@ -605,6 +706,78 @@ export interface SiteSettingsSelect<T extends boolean = true> {
         defaultDescription?: T;
         defaultImage?: T;
       };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "cv_select".
+ */
+export interface CvSelect<T extends boolean = true> {
+  name?: T;
+  role?: T;
+  summary?: T;
+  contacts?:
+    | T
+    | {
+        email?: T;
+        phone?: T;
+        location?: T;
+        website?: T;
+        linkedin?: T;
+        github?: T;
+        telegram?: T;
+      };
+  experience?:
+    | T
+    | {
+        company?: T;
+        role?: T;
+        location?: T;
+        startDate?: T;
+        endDate?: T;
+        current?: T;
+        summary?: T;
+        highlights?:
+          | T
+          | {
+              text?: T;
+              id?: T;
+            };
+        id?: T;
+      };
+  skills?:
+    | T
+    | {
+        category?: T;
+        items?:
+          | T
+          | {
+              name?: T;
+              id?: T;
+            };
+        id?: T;
+      };
+  education?:
+    | T
+    | {
+        institution?: T;
+        degree?: T;
+        field?: T;
+        startYear?: T;
+        endYear?: T;
+        description?: T;
+        id?: T;
+      };
+  languages?:
+    | T
+    | {
+        language?: T;
+        level?: T;
+        id?: T;
+      };
+  pdf?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
