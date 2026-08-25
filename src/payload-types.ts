@@ -70,6 +70,7 @@ export interface Config {
     users: User;
     media: Media;
     projects: Project;
+    posts: Post;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -80,6 +81,7 @@ export interface Config {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     projects: ProjectsSelect<false> | ProjectsSelect<true>;
+    posts: PostsSelect<false> | PostsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -228,6 +230,62 @@ export interface Project {
   createdAt: string;
 }
 /**
+ * Articles, notes, case notes, guides, and essays.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "posts".
+ */
+export interface Post {
+  id: number;
+  title: string;
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  slug: string;
+  description: string;
+  content?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  publishedAt?: string | null;
+  language: 'en' | 'ru' | 'es';
+  /**
+   * Estimated reading time in minutes.
+   */
+  readingTime?: number | null;
+  category: 'article' | 'case' | 'note' | 'guide' | 'essay';
+  tags?:
+    | {
+        tag: string;
+        id?: string | null;
+      }[]
+    | null;
+  previewImage?: (number | null) | Media;
+  coverImage?: (number | null) | Media;
+  featured?: boolean | null;
+  showOnHome?: boolean | null;
+  relatedProjects?: (number | Project)[] | null;
+  seo?: {
+    title?: string | null;
+    description?: string | null;
+    image?: (number | null) | Media;
+  };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
@@ -262,6 +320,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'projects';
         value: number | Project;
+      } | null)
+    | ({
+        relationTo: 'posts';
+        value: number | Post;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -371,6 +433,41 @@ export interface ProjectsSelect<T extends boolean = true> {
         slug?: T;
         id?: T;
       };
+  seo?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "posts_select".
+ */
+export interface PostsSelect<T extends boolean = true> {
+  title?: T;
+  generateSlug?: T;
+  slug?: T;
+  description?: T;
+  content?: T;
+  publishedAt?: T;
+  language?: T;
+  readingTime?: T;
+  category?: T;
+  tags?:
+    | T
+    | {
+        tag?: T;
+        id?: T;
+      };
+  previewImage?: T;
+  coverImage?: T;
+  featured?: T;
+  showOnHome?: T;
+  relatedProjects?: T;
   seo?:
     | T
     | {
