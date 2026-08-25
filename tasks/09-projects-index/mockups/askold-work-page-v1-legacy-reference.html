@@ -1,0 +1,544 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Work - Askold Astakhov</title>
+  <meta name="description" content="Projects, cases and open source by Askold Astakhov">
+  <style>
+    :root {
+      --text: #111111;
+      --container: 790px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: #ffffff;
+      color: var(--text);
+      font-family:
+        Inter,
+        ui-sans-serif,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+      font-size: 16px;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    a {
+      color: inherit;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 3px;
+    }
+
+    a:hover { opacity: 0.62; }
+
+    img {
+      display: block;
+      max-width: 100%;
+    }
+
+    .site {
+      width: min(calc(100% - 40px), var(--container));
+      margin: 0 auto;
+      padding: 0 0 64px;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      padding: 32px 0 44px;
+      margin-bottom: 72px;
+    }
+
+    .nav-name {
+      color: var(--text);
+      font-size: 15px;
+      font-weight: 600;
+      text-decoration: none;
+      letter-spacing: -0.01em;
+      white-space: nowrap;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .nav-link,
+    .nav-cta {
+      font-size: 14px;
+      color: var(--text);
+      text-decoration: none;
+    }
+
+    .nav-cta {
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    .hero {
+      margin-bottom: 88px;
+    }
+
+    .hero-label,
+    .section-title {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text);
+    }
+
+    .hero-label {
+      margin-bottom: 18px;
+    }
+
+    .hero-title {
+      max-width: 650px;
+      margin-bottom: 22px;
+      font-size: clamp(44px, 6vw, 62px);
+      line-height: 0.98;
+      font-weight: 600;
+      letter-spacing: -0.045em;
+    }
+
+    .hero-sub {
+      max-width: 630px;
+      color: var(--text);
+      font-size: 21px;
+      line-height: 1.48;
+      letter-spacing: -0.018em;
+    }
+
+    .hero-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 28px;
+      margin-top: 34px;
+    }
+
+    .hero-tag {
+      color: var(--text);
+      font-size: 14px;
+    }
+
+    .section {
+      margin-bottom: 80px;
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 24px;
+      margin-bottom: 30px;
+    }
+
+    .section-link {
+      font-size: 14px;
+      color: var(--text);
+      white-space: nowrap;
+    }
+
+    .work-list,
+    .oss-list {
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+    }
+
+    .work-item {
+      display: grid;
+      grid-template-columns: 128px minmax(0, 1fr) 112px;
+      gap: 24px;
+      align-items: start;
+      text-decoration: none;
+    }
+
+    .work-item--plain {
+      grid-template-columns: minmax(0, 1fr) 112px;
+    }
+
+    .work-thumb {
+      width: 128px;
+      height: 86px;
+      object-fit: cover;
+      background: #f2f2f2;
+    }
+
+    .work-title {
+      margin-bottom: 6px;
+      font-size: 19px;
+      line-height: 1.25;
+      font-weight: 600;
+      letter-spacing: -0.018em;
+    }
+
+    .work-desc {
+      max-width: 470px;
+      color: var(--text);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .work-meta {
+      justify-self: end;
+      text-align: right;
+      color: var(--text);
+      font-size: 13px;
+      line-height: 1.45;
+      white-space: nowrap;
+    }
+
+    .oss-item {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 120px;
+      align-items: baseline;
+      gap: 24px;
+      text-decoration: none;
+    }
+
+    .oss-title {
+      margin-bottom: 4px;
+      font-size: 17px;
+      line-height: 1.35;
+      font-weight: 600;
+      letter-spacing: -0.012em;
+      font-family:
+        ui-monospace,
+        SFMono-Regular,
+        Menlo,
+        Monaco,
+        Consolas,
+        "Liberation Mono",
+        monospace;
+    }
+
+    .oss-desc {
+      max-width: 520px;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .oss-meta {
+      justify-self: end;
+      text-align: right;
+      font-size: 13px;
+      line-height: 1.45;
+      white-space: nowrap;
+    }
+
+    .simple-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 26px;
+      font-size: 14px;
+    }
+
+    .footer {
+      display: flex;
+      justify-content: space-between;
+      gap: 24px;
+      padding-top: 20px;
+      color: var(--text);
+      font-size: 12px;
+    }
+
+    @media (max-width: 720px) {
+      .site {
+        width: min(calc(100% - 28px), var(--container));
+      }
+
+      .nav {
+        display: block;
+        margin-bottom: 54px;
+        padding-top: 24px;
+      }
+
+      .nav-links {
+        justify-content: flex-start;
+        gap: 16px 20px;
+        margin-top: 18px;
+      }
+
+      .hero {
+        margin-bottom: 68px;
+      }
+
+      .hero-title {
+        font-size: clamp(42px, 13vw, 58px);
+      }
+
+      .hero-sub {
+        font-size: 18px;
+      }
+
+      .hero-tags {
+        gap: 12px 20px;
+      }
+
+      .section {
+        margin-bottom: 64px;
+      }
+
+      .work-item,
+      .work-item--plain {
+        grid-template-columns: 96px minmax(0, 1fr);
+        gap: 16px;
+      }
+
+      .work-item--plain {
+        grid-template-columns: 1fr;
+      }
+
+      .work-thumb {
+        width: 96px;
+        height: 72px;
+      }
+
+      .work-meta {
+        grid-column: 2;
+        justify-self: start;
+        text-align: left;
+      }
+
+      .work-item--plain .work-meta {
+        grid-column: 1;
+      }
+
+      .work-title {
+        font-size: 17px;
+      }
+
+      .oss-item {
+        grid-template-columns: 1fr;
+        gap: 4px;
+      }
+
+      .oss-meta {
+        justify-self: start;
+        text-align: left;
+      }
+
+      .footer {
+        display: block;
+      }
+
+      .footer span {
+        display: block;
+      }
+
+      .footer span + span {
+        margin-top: 5px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="site">
+    <nav class="nav" aria-label="Main navigation">
+      <a class="nav-name" href="/">Askold Astakhov</a>
+
+      <div class="nav-links">
+        <a class="nav-link" href="/work">Work</a>
+        <a class="nav-link" href="/posts">Blog</a>
+        <a class="nav-link" href="/">Services</a>
+        <a class="nav-link" href="/">About</a>
+        <a class="nav-cta" href="#">Book a call →</a>
+      </div>
+    </nav>
+
+    <main>
+      <section class="hero">
+        <p class="hero-label">Projects · Cases · Open Source</p>
+
+        <h1 class="hero-title">
+          Work across products,<br>
+          systems and ideas
+        </h1>
+
+        <p class="hero-sub">
+          A collection of companies, products, business cases, open-source projects,
+          public notes and technical materials.
+        </p>
+
+        <div class="hero-tags" aria-label="Work sections">
+          <span class="hero-tag">Projects</span>
+          <span class="hero-tag">Cases</span>
+          <span class="hero-tag">Open Source</span>
+          <span class="hero-tag">External publications</span>
+        </div>
+      </section>
+
+      <section class="section" id="projects">
+        <div class="section-header">
+          <h2 class="section-title">Projects</h2>
+          <a class="section-link" href="#">All projects →</a>
+        </div>
+
+        <div class="work-list">
+          <a class="work-item" href="#">
+            <img
+              class="work-thumb"
+              src="https://images.unsplash.com/photo-1557804506-669a67965ba0?auto=format&fit=crop&w=400&q=80"
+              alt=""
+              width="128"
+              height="86"
+            >
+            <div>
+              <h3 class="work-title">Automatica</h3>
+              <p class="work-desc">
+                Placeholder for the company page: technical partnership, product development,
+                integrations and support.
+              </p>
+            </div>
+            <div class="work-meta">Company<br>In progress</div>
+          </a>
+
+          <a class="work-item" href="#">
+            <img
+              class="work-thumb"
+              src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=400&q=80"
+              alt=""
+              width="128"
+              height="86"
+            >
+            <div>
+              <h3 class="work-title">Independent product</h3>
+              <p class="work-desc">
+                Placeholder for a future micro-SaaS, indie app or infrastructure product.
+              </p>
+            </div>
+            <div class="work-meta">Product<br>Concept</div>
+          </a>
+
+          <a class="work-item" href="#">
+            <img
+              class="work-thumb"
+              src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=400&q=80"
+              alt=""
+              width="128"
+              height="86"
+            >
+            <div>
+              <h3 class="work-title">Offline brand</h3>
+              <p class="work-desc">
+                Placeholder for a physical brand, retail concept or non-software project.
+              </p>
+            </div>
+            <div class="work-meta">Brand<br>Future</div>
+          </a>
+        </div>
+      </section>
+
+      <section class="section" id="cases">
+        <div class="section-header">
+          <h2 class="section-title">Cases</h2>
+          <a class="section-link" href="#">All cases →</a>
+        </div>
+
+        <div class="work-list">
+          <a class="work-item work-item--plain" href="#">
+            <div>
+              <h3 class="work-title">Workflow automation for internal business processes</h3>
+              <p class="work-desc">
+                Placeholder case: business context, problem, solution, implementation path and result.
+              </p>
+            </div>
+            <div class="work-meta">Case<br>Workflow</div>
+          </a>
+
+          <a class="work-item work-item--plain" href="#">
+            <div>
+              <h3 class="work-title">Logistics platform and operational interfaces</h3>
+              <p class="work-desc">
+                Placeholder case: internal systems, data-heavy interfaces, integrations and roles.
+              </p>
+            </div>
+            <div class="work-meta">Case<br>Logistics</div>
+          </a>
+
+          <a class="work-item work-item--plain" href="#">
+            <div>
+              <h3 class="work-title">Public website with SEO and performance constraints</h3>
+              <p class="work-desc">
+                Placeholder case: content delivery, Core Web Vitals, technical SEO and reliability.
+              </p>
+            </div>
+            <div class="work-meta">Case<br>Web</div>
+          </a>
+        </div>
+      </section>
+
+      <section class="section" id="open-source">
+        <div class="section-header">
+          <h2 class="section-title">Open Source</h2>
+          <a class="section-link" href="#">GitHub →</a>
+        </div>
+
+        <div class="oss-list">
+          <a class="oss-item" href="#">
+            <div>
+              <h3 class="oss-title">repository-name</h3>
+              <p class="oss-desc">Library, tool, template or public technical project.</p>
+            </div>
+            <div class="oss-meta">GitHub ↗</div>
+          </a>
+
+          <a class="oss-item" href="#">
+            <div>
+              <h3 class="oss-title">engineering-manifesto</h3>
+              <p class="oss-desc">Agreement, manifesto, convention or public technical note.</p>
+            </div>
+            <div class="oss-meta">Article ↗</div>
+          </a>
+
+          <a class="oss-item" href="#">
+            <div>
+              <h3 class="oss-title">external-publication</h3>
+              <p class="oss-desc">Article, essay or technical material hosted on an external platform.</p>
+            </div>
+            <div class="oss-meta">External ↗</div>
+          </a>
+        </div>
+      </section>
+
+      <section class="section" id="contact">
+        <div class="section-header">
+          <h2 class="section-title">Contacts</h2>
+        </div>
+
+        <div class="simple-links">
+          <a href="https://t.me/askold_astakhov">Telegram →</a>
+          <a href="mailto:astakhovaskold@gmail.com">Email →</a>
+          <a href="https://www.linkedin.com/in/askold-astakhov/">LinkedIn →</a>
+          <a href="#">GitHub →</a>
+          <a href="/cv">CV →</a>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <span>© 2026 Askold Astakhov</span>
+      <span>Personal website</span>
+    </footer>
+  </div>
+</body>
+</html>

@@ -1,0 +1,542 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Posts - Askold Astakhov</title>
+  <meta name="description" content="Posts and notes by Askold Astakhov">
+  <style>
+    :root {
+      --text: #111111;
+      --muted: #111111;
+      --soft: #111111;
+      --container: 790px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: #ffffff;
+      color: var(--text);
+      font-family:
+        Inter,
+        ui-sans-serif,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+      font-size: 16px;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    a {
+      color: inherit;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 3px;
+    }
+
+    a:hover { opacity: 0.62; }
+
+    img {
+      display: block;
+      max-width: 100%;
+    }
+
+    .site {
+      width: min(calc(100% - 40px), var(--container));
+      margin: 0 auto;
+      padding: 0 0 64px;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      padding: 32px 0 44px;
+      margin-bottom: 72px;
+    }
+
+    .nav-name {
+      color: var(--text);
+      font-size: 15px;
+      font-weight: 600;
+      text-decoration: none;
+      letter-spacing: -0.01em;
+      white-space: nowrap;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .nav-link,
+    .nav-cta {
+      font-size: 14px;
+      color: var(--text);
+      text-decoration: none;
+    }
+
+    .nav-cta {
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    .hero {
+      margin-bottom: 88px;
+    }
+
+    .hero-label,
+    .section-title {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text);
+    }
+
+    .hero-label {
+      margin-bottom: 18px;
+    }
+
+    .hero-title {
+      max-width: 650px;
+      margin-bottom: 22px;
+      font-size: clamp(44px, 6vw, 62px);
+      line-height: 0.98;
+      font-weight: 600;
+      letter-spacing: -0.045em;
+    }
+
+    .hero-sub {
+      max-width: 630px;
+      color: var(--text);
+      font-size: 21px;
+      line-height: 1.48;
+      letter-spacing: -0.018em;
+    }
+
+    .hero-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 28px;
+      margin-top: 34px;
+    }
+
+    .hero-tag {
+      color: var(--text);
+      font-size: 14px;
+    }
+
+    .section {
+      margin-bottom: 80px;
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 24px;
+      margin-bottom: 30px;
+    }
+
+    .section-link {
+      font-size: 14px;
+      color: var(--text);
+      white-space: nowrap;
+    }
+
+    .post-list {
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+    }
+
+    .post-item {
+      display: grid;
+      grid-template-columns: 128px minmax(0, 1fr) 96px;
+      gap: 24px;
+      align-items: start;
+      text-decoration: none;
+    }
+
+    .post-preview {
+      width: 128px;
+      height: 86px;
+      object-fit: cover;
+      background: #f2f2f2;
+    }
+
+    .post-title {
+      margin-bottom: 6px;
+      font-size: 19px;
+      line-height: 1.25;
+      font-weight: 600;
+      letter-spacing: -0.018em;
+    }
+
+    .post-desc {
+      max-width: 470px;
+      color: var(--text);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .post-meta {
+      justify-self: end;
+      text-align: right;
+      color: var(--text);
+      font-size: 13px;
+      line-height: 1.45;
+      white-space: nowrap;
+    }
+
+    .featured {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 260px;
+      gap: 36px;
+      align-items: start;
+      text-decoration: none;
+    }
+
+    .featured-title {
+      max-width: 470px;
+      margin-bottom: 10px;
+      font-size: 32px;
+      line-height: 1.05;
+      font-weight: 600;
+      letter-spacing: -0.035em;
+    }
+
+    .featured-desc {
+      max-width: 430px;
+      font-size: 15px;
+      line-height: 1.5;
+      color: var(--text);
+    }
+
+    .featured-meta {
+      margin-top: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 22px;
+      font-size: 13px;
+      color: var(--text);
+    }
+
+    .featured-image {
+      width: 260px;
+      height: 180px;
+      object-fit: cover;
+      background: #f2f2f2;
+    }
+
+    .category-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 26px;
+      font-size: 14px;
+    }
+
+    .contact-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 26px;
+      font-size: 14px;
+    }
+
+    .footer {
+      display: flex;
+      justify-content: space-between;
+      gap: 24px;
+      padding-top: 20px;
+      color: var(--text);
+      font-size: 12px;
+    }
+
+    @media (max-width: 720px) {
+      .site {
+        width: min(calc(100% - 28px), var(--container));
+      }
+
+      .nav {
+        display: block;
+        margin-bottom: 54px;
+        padding-top: 24px;
+      }
+
+      .nav-links {
+        justify-content: flex-start;
+        gap: 16px 20px;
+        margin-top: 18px;
+      }
+
+      .hero {
+        margin-bottom: 68px;
+      }
+
+      .hero-title {
+        font-size: clamp(42px, 13vw, 58px);
+      }
+
+      .hero-sub {
+        font-size: 18px;
+      }
+
+      .hero-tags {
+        gap: 12px 20px;
+      }
+
+      .section {
+        margin-bottom: 64px;
+      }
+
+      .featured {
+        grid-template-columns: 1fr;
+        gap: 18px;
+      }
+
+      .featured-image {
+        width: min(100%, 360px);
+        height: auto;
+        aspect-ratio: 16 / 10;
+      }
+
+      .post-item {
+        grid-template-columns: 96px minmax(0, 1fr);
+        gap: 16px;
+      }
+
+      .post-preview {
+        width: 96px;
+        height: 72px;
+      }
+
+      .post-meta {
+        grid-column: 2;
+        justify-self: start;
+        text-align: left;
+      }
+
+      .post-title {
+        font-size: 17px;
+      }
+
+      .footer {
+        display: block;
+      }
+
+      .footer span {
+        display: block;
+      }
+
+      .footer span + span {
+        margin-top: 5px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="site">
+    <nav class="nav" aria-label="Main navigation">
+      <a class="nav-name" href="/">Askold Astakhov</a>
+
+      <div class="nav-links">
+        <a class="nav-link" href="/">Work</a>
+        <a class="nav-link" href="/posts">Blog</a>
+        <a class="nav-link" href="/">Services</a>
+        <a class="nav-link" href="/">About</a>
+        <a class="nav-cta" href="#">Book a call →</a>
+      </div>
+    </nav>
+
+    <main>
+      <section class="hero">
+        <p class="hero-label">Notes · Articles · Engineering practice</p>
+
+        <h1 class="hero-title">
+          Posts about building<br>
+          digital products
+        </h1>
+
+        <p class="hero-sub">
+          Notes on frontend architecture, delivery, web quality, technical leadership
+          and practical product engineering.
+        </p>
+
+        <div class="hero-tags" aria-label="Topics">
+          <span class="hero-tag">Architecture</span>
+          <span class="hero-tag">Delivery</span>
+          <span class="hero-tag">Web quality</span>
+          <span class="hero-tag">Leadership</span>
+          <span class="hero-tag">Product engineering</span>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-header">
+          <h2 class="section-title">Featured post</h2>
+          <a class="section-link" href="#">RSS →</a>
+        </div>
+
+        <a class="featured" href="/posts/frontend-architecture">
+          <div>
+            <h3 class="featured-title">
+              How to design frontend that does not collapse as product grows
+            </h3>
+
+            <p class="featured-desc">
+              Layers, boundaries, contracts and repeatable patterns that make frontend
+              systems easier to develop, test and operate.
+            </p>
+
+            <div class="featured-meta">
+              <span>Architecture</span>
+              <span>Aug 2026</span>
+              <span>8 min read</span>
+            </div>
+          </div>
+
+          <img
+            class="featured-image"
+            src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=800&q=80"
+            alt="Server racks in a data center"
+            width="260"
+            height="180"
+          >
+        </a>
+      </section>
+
+      <section class="section">
+        <div class="section-header">
+          <h2 class="section-title">All posts</h2>
+          <a class="section-link" href="#">Archive →</a>
+        </div>
+
+        <div class="post-list">
+          <a class="post-item" href="/posts/frontend-architecture">
+            <img
+              class="post-preview"
+              src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=400&q=80"
+              alt=""
+              width="128"
+              height="86"
+            >
+            <div>
+              <h3 class="post-title">How to design frontend that does not collapse as product grows</h3>
+              <p class="post-desc">About layers, boundaries, data contracts and repeatable implementation patterns.</p>
+            </div>
+            <div class="post-meta">Architecture<br>Aug 2026</div>
+          </a>
+
+          <a class="post-item" href="/posts/delivery-without-heroism">
+            <img
+              class="post-preview"
+              src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=400&q=80"
+              alt=""
+              width="128"
+              height="86"
+            >
+            <div>
+              <h3 class="post-title">Delivery without heroism</h3>
+              <p class="post-desc">Dependencies, release readiness, QA loops and technical ownership before production.</p>
+            </div>
+            <div class="post-meta">Leadership<br>Jul 2026</div>
+          </a>
+
+          <a class="post-item" href="/posts/web-quality">
+            <img
+              class="post-preview"
+              src="https://images.unsplash.com/photo-1518005020951-eccb494ad742?auto=format&fit=crop&w=400&q=80"
+              alt=""
+              width="128"
+              height="86"
+            >
+            <div>
+              <h3 class="post-title">Web quality as engineering discipline</h3>
+              <p class="post-desc">Performance, accessibility, SEO and predictable UI behavior as one system.</p>
+            </div>
+            <div class="post-meta">Web<br>Jun 2026</div>
+          </a>
+
+          <a class="post-item" href="/posts/api-contracts">
+            <img
+              class="post-preview"
+              src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=400&q=80"
+              alt=""
+              width="128"
+              height="86"
+            >
+            <div>
+              <h3 class="post-title">API contracts are product boundaries</h3>
+              <p class="post-desc">Why frontend and backend stability often depends on language, ownership and DTO shape.</p>
+            </div>
+            <div class="post-meta">Integration<br>May 2026</div>
+          </a>
+
+          <a class="post-item" href="/posts/technical-audit">
+            <img
+              class="post-preview"
+              src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=400&q=80"
+              alt=""
+              width="128"
+              height="86"
+            >
+            <div>
+              <h3 class="post-title">Technical audit checklist</h3>
+              <p class="post-desc">What to check first when the product has delivery problems, unstable releases or quality drift.</p>
+            </div>
+            <div class="post-meta">Audit<br>Apr 2026</div>
+          </a>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-header">
+          <h2 class="section-title">Topics</h2>
+        </div>
+
+        <div class="category-list">
+          <a href="#">Architecture →</a>
+          <a href="#">Delivery →</a>
+          <a href="#">Frontend →</a>
+          <a href="#">Product →</a>
+          <a href="#">Leadership →</a>
+        </div>
+      </section>
+
+      <section class="section" id="contact">
+        <div class="section-header">
+          <h2 class="section-title">Contacts</h2>
+        </div>
+
+        <div class="contact-links">
+          <a href="https://t.me/askold_astakhov">Telegram →</a>
+          <a href="mailto:astakhovaskold@gmail.com">Email →</a>
+          <a href="https://www.linkedin.com/in/askold-astakhov/">LinkedIn →</a>
+          <a href="#">GitHub →</a>
+          <a href="/cv">CV →</a>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <span>© 2026 Askold Astakhov</span>
+      <span>Personal website</span>
+    </footer>
+  </div>
+</body>
+</html>

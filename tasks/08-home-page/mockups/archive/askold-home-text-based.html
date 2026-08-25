@@ -1,0 +1,702 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Аскольд Астахов — технический партнёр и IT-эксперт</title>
+  <meta name="description" content="Аскольд Астахов — технический партнёр, Frontend Tech Lead и специалист по разработке IT-решений. Архитектура, delivery, веб-продукты, интеграции, SEO и поддержка IT-контуров." />
+  <meta name="theme-color" content="#f4f1e8" />
+  <style>
+    :root {
+      --bg: #f4f1e8;
+      --surface: #fbf9f3;
+      --text: #141414;
+      --muted: #6a675f;
+      --line: #cfc9bc;
+      --accent: #5f6df6;
+      --accent-soft: #e5e8ff;
+      --max: 1180px;
+      --copy: 760px;
+      --radius: 0px;
+    }
+
+    * { box-sizing: border-box; }
+
+    html {
+      scroll-behavior: smooth;
+      background: var(--bg);
+    }
+
+    body {
+      margin: 0;
+      color: var(--text);
+      background:
+        linear-gradient(to right, rgba(20,20,20,.035) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(20,20,20,.035) 1px, transparent 1px),
+        var(--bg);
+      background-size: 24px 24px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 16px;
+      line-height: 1.6;
+      text-rendering: optimizeLegibility;
+    }
+
+    a {
+      color: inherit;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 3px;
+    }
+
+    a:hover {
+      color: var(--accent);
+    }
+
+    .shell {
+      width: min(calc(100% - 32px), var(--max));
+      margin: 0 auto;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      border-bottom: 1px solid var(--line);
+      background: rgba(244, 241, 232, .93);
+      backdrop-filter: blur(12px);
+    }
+
+    .topbar__inner {
+      min-height: 68px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: baseline;
+      gap: 10px;
+      text-decoration: none;
+      font-weight: 700;
+      letter-spacing: -.03em;
+    }
+
+    .brand small {
+      font-weight: 400;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    nav {
+      display: flex;
+      gap: 18px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    nav a:hover { color: var(--text); }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 42px;
+      padding: 0 14px;
+      border: 1px solid var(--text);
+      text-decoration: none;
+      font-weight: 700;
+      background: var(--text);
+      color: var(--surface);
+      transition: transform .15s ease, background .15s ease;
+    }
+
+    .button:hover {
+      color: var(--surface);
+      transform: translateY(-1px);
+    }
+
+    .button--ghost {
+      background: transparent;
+      color: var(--text);
+    }
+
+    .button--ghost:hover {
+      background: var(--surface);
+      color: var(--text);
+    }
+
+    main {
+      border-left: 1px solid var(--line);
+      border-right: 1px solid var(--line);
+      background: rgba(251,249,243,.72);
+    }
+
+    .section {
+      padding: 88px 64px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .section--hero {
+      padding-top: 104px;
+      padding-bottom: 104px;
+    }
+
+    .eyebrow {
+      margin: 0 0 24px;
+      color: var(--muted);
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+    }
+
+    h1, h2, h3, p { margin-top: 0; }
+
+    h1 {
+      max-width: 980px;
+      margin-bottom: 28px;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(48px, 8vw, 104px);
+      line-height: .95;
+      letter-spacing: -.055em;
+      font-weight: 500;
+    }
+
+    h2 {
+      margin-bottom: 32px;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(34px, 5vw, 62px);
+      line-height: 1;
+      letter-spacing: -.045em;
+      font-weight: 500;
+    }
+
+    h3 {
+      margin-bottom: 10px;
+      font-size: 16px;
+      letter-spacing: -.02em;
+    }
+
+    .lead {
+      max-width: 820px;
+      margin-bottom: 32px;
+      font-size: clamp(19px, 2vw, 26px);
+      line-height: 1.45;
+    }
+
+    .muted { color: var(--muted); }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 34px;
+    }
+
+    .meta-row {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-top: 48px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .meta-row span::before {
+      content: "↳ ";
+      color: var(--accent);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 24px;
+    }
+
+    .copy {
+      grid-column: span 7;
+      max-width: var(--copy);
+    }
+
+    .aside {
+      grid-column: 9 / -1;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .list {
+      display: grid;
+      gap: 0;
+      border-top: 1px solid var(--line);
+    }
+
+    .list__item {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: 36px;
+      padding: 24px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .list__item strong {
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+    }
+
+    .list__item p {
+      margin: 0;
+      max-width: 760px;
+    }
+
+    .statline {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      border-top: 1px solid var(--line);
+      border-left: 1px solid var(--line);
+      margin-top: 40px;
+    }
+
+    .stat {
+      padding: 24px;
+      border-right: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .stat b {
+      display: block;
+      margin-bottom: 5px;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 36px;
+      font-weight: 500;
+    }
+
+    .stat span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .timeline {
+      display: grid;
+      gap: 0;
+      border-top: 1px solid var(--line);
+    }
+
+    .timeline__item {
+      display: grid;
+      grid-template-columns: 180px 1fr;
+      gap: 40px;
+      padding: 28px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .timeline__time {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .timeline__body p {
+      max-width: 820px;
+      margin-bottom: 10px;
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin-top: 16px;
+    }
+
+    .tag {
+      display: inline-block;
+      padding: 5px 8px;
+      background: var(--accent-soft);
+      color: #2631a4;
+      font-size: 12px;
+      line-height: 1.2;
+    }
+
+    .articles {
+      display: grid;
+      gap: 0;
+      border-top: 1px solid var(--line);
+    }
+
+    .article-link {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 30px;
+      padding: 26px 0;
+      border-bottom: 1px solid var(--line);
+      text-decoration: none;
+    }
+
+    .article-link:hover h3 { color: var(--accent); }
+
+    .article-link p {
+      margin: 4px 0 0;
+      color: var(--muted);
+      max-width: 700px;
+    }
+
+    .article-link__meta {
+      color: var(--muted);
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .contact-box {
+      padding: 44px;
+      border: 1px solid var(--text);
+      background: var(--text);
+      color: var(--surface);
+    }
+
+    .contact-box h2 {
+      max-width: 860px;
+      margin-bottom: 22px;
+    }
+
+    .contact-box p {
+      max-width: 700px;
+      color: #d6d2c7;
+    }
+
+    .contact-box .button {
+      border-color: var(--surface);
+      background: var(--surface);
+      color: var(--text);
+    }
+
+    .contact-box .button--ghost {
+      background: transparent;
+      color: var(--surface);
+    }
+
+    footer {
+      padding: 24px 0 48px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .footer__inner {
+      display: flex;
+      justify-content: space-between;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    @media (max-width: 880px) {
+      .topbar__inner {
+        min-height: auto;
+        padding: 18px 0;
+        align-items: flex-start;
+      }
+
+      nav { justify-content: flex-end; }
+
+      .section {
+        padding: 64px 24px;
+      }
+
+      .section--hero {
+        padding-top: 72px;
+        padding-bottom: 72px;
+      }
+
+      .grid {
+        display: block;
+      }
+
+      .aside {
+        margin-top: 34px;
+      }
+
+      .list__item,
+      .timeline__item {
+        grid-template-columns: 1fr;
+        gap: 8px;
+      }
+
+      .statline {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .article-link {
+        grid-template-columns: 1fr;
+        gap: 8px;
+      }
+    }
+
+    @media (max-width: 640px) {
+      body { font-size: 15px; }
+      .shell { width: min(calc(100% - 20px), var(--max)); }
+      .topbar__inner { display: block; }
+      nav { margin-top: 10px; gap: 12px; }
+      nav .button { display: none; }
+      .section { padding: 52px 18px; }
+      h1 { font-size: clamp(50px, 16vw, 76px); }
+      .statline { grid-template-columns: 1fr 1fr; }
+      .contact-box { padding: 28px; }
+      .meta-row { display: grid; gap: 5px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="shell topbar__inner">
+      <a class="brand" href="#top">
+        Аскольд Астахов
+        <small>technical partner / frontend lead</small>
+      </a>
+
+      <nav aria-label="Основная навигация">
+        <a href="#about">Обо мне</a>
+        <a href="#expertise">Экспертиза</a>
+        <a href="#experience">Опыт</a>
+        <a href="#notes">Блог</a>
+        <a href="/cv">CV</a>
+        <a class="button" href="https://t.me/askold_astakhov">Обсудить проект</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="shell">
+    <main id="top">
+      <section class="section section--hero">
+        <p class="eyebrow">Personal website / 2026</p>
+        <h1>Технический партнёр для сложных цифровых продуктов.</h1>
+        <p class="lead">
+          Помогаю бизнесу проектировать, развивать и стабилизировать IT-системы.
+          Беру ответственность за архитектуру, delivery, интеграции и качество продукта.
+        </p>
+
+        <div class="actions">
+          <a class="button" href="https://t.me/askold_astakhov">Обсудить проект ↗</a>
+          <a class="button button--ghost" href="#contact">Назначить созвон</a>
+        </div>
+
+        <div class="meta-row">
+          <span>7 лет в web-разработке</span>
+          <span>React / Next.js / TypeScript</span>
+          <span>Frontend leadership</span>
+          <span>Backend и инфраструктурный бэкграунд</span>
+        </div>
+      </section>
+
+      <section class="section" id="about">
+        <div class="grid">
+          <div class="copy">
+            <p class="eyebrow">01 / Кто я</p>
+            <h2>Из инженерной работы вырос в роль, где отвечаю за систему целиком.</h2>
+            <p>
+              Мой основной профиль - frontend architecture и delivery. При этом я регулярно
+              работаю на стыке backend, инфраструктуры, процессов и продукта: проектирую
+              интеграции, выстраиваю релизный цикл, участвую в найме и пресейле, разбираю
+              сложные технические проблемы и помогаю командам доводить решения до продакшна.
+            </p>
+            <p class="muted">
+              Работал с внутренними enterprise-системами, workflow-сценариями, логистикой,
+              e-commerce, публичными SEO-чувствительными продуктами и проектами для крупного
+              немецкого автоконцерна.
+            </p>
+          </div>
+
+          <aside class="aside">
+            <p>Работаю там, где уже недостаточно просто написать экран или API.</p>
+            <p>Нужны понятные границы системы, предсказуемые релизы и инженерные решения, которые выдерживают развитие продукта.</p>
+          </aside>
+        </div>
+
+        <div class="statline" aria-label="Кратко об опыте">
+          <div class="stat"><b>7</b><span>лет в разработке</span></div>
+          <div class="stat"><b>20+</b><span>проектов и продуктовых контекстов</span></div>
+          <div class="stat"><b>8</b><span>человек в прямом управлении командой</span></div>
+          <div class="stat"><b>Full</b><span>цикл: architecture → delivery → production</span></div>
+        </div>
+      </section>
+
+      <section class="section" id="expertise">
+        <p class="eyebrow">02 / Чем занимаюсь</p>
+        <h2>Не набор технологий, а рабочие зоны ответственности.</h2>
+
+        <div class="list">
+          <div class="list__item">
+            <strong>Архитектура</strong>
+            <p>Frontend architecture, модульная структура, state/data layer, контракты, роли и права, повторяемые UI-паттерны, поддерживаемость.</p>
+          </div>
+          <div class="list__item">
+            <strong>Delivery</strong>
+            <p>Декомпозиция, оценка, зависимости, релизный цикл, readiness, CI/CD, взаимодействие с QA/BA/backend и снятие блокеров.</p>
+          </div>
+          <div class="list__item">
+            <strong>Web quality</strong>
+            <p>Производительность, Core Web Vitals, INP/CLS, accessibility, техническое SEO, стабильность SSR/SSG/ISR.</p>
+          </div>
+          <div class="list__item">
+            <strong>Интеграции</strong>
+            <p>API-контракты, BFF, Node.js/NestJS, PostgreSQL, Redis, Strapi, интеграционные сценарии и устойчивое взаимодействие между слоями.</p>
+          </div>
+          <div class="list__item">
+            <strong>Команда</strong>
+            <p>Техническое лидерство, 1:1, performance review, hiring, onboarding, стандарты разработки и выравнивание подходов между командами.</p>
+          </div>
+          <div class="list__item">
+            <strong>Партнёрство</strong>
+            <p>Подключение к бизнес-задаче как технический партнёр: аудит текущего состояния, план работ, архитектурные решения, развитие и сопровождение.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="grid">
+          <div class="copy">
+            <p class="eyebrow">03 / Как работаю</p>
+            <h2>Сначала уменьшаю неопределённость. Потом ускоряю delivery.</h2>
+          </div>
+          <aside class="aside">
+            Мне ближе спокойная инженерная работа без технологического театра и лишних слоёв абстракций.
+          </aside>
+        </div>
+
+        <div class="list">
+          <div class="list__item">
+            <strong>01 / Контекст</strong>
+            <p>Разбираю продукт, ограничения, архитектуру, процессы и реальные точки риска.</p>
+          </div>
+          <div class="list__item">
+            <strong>02 / Решение</strong>
+            <p>Формирую целевую схему и границы изменений. Отдельно фиксирую, что можно не трогать.</p>
+          </div>
+          <div class="list__item">
+            <strong>03 / Delivery</strong>
+            <p>Декомпозирую работу, связываю зависимости, помогаю команде двигаться без постоянного ручного управления.</p>
+          </div>
+          <div class="list__item">
+            <strong>04 / Production</strong>
+            <p>Довожу изменения до релиза и проверяю, что решение работает в эксплуатации, а не только в pull request.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="experience">
+        <p class="eyebrow">04 / Опыт</p>
+        <h2>От fullstack-разработки до управления frontend-направлением.</h2>
+
+        <div class="timeline">
+          <article class="timeline__item">
+            <div class="timeline__time">2024 - сейчас</div>
+            <div class="timeline__body">
+              <h3>Философия.ИТ - Frontend Tech Lead / Team Lead</h3>
+              <p>Руководство frontend-командой, архитектура портфеля проектов, delivery, релизы, найм, качество UI и системные технические решения.</p>
+              <div class="tags">
+                <span class="tag">React</span><span class="tag">Next.js</span><span class="tag">TypeScript</span><span class="tag">Zustand</span><span class="tag">Docker</span>
+              </div>
+            </div>
+          </article>
+
+          <article class="timeline__item">
+            <div class="timeline__time">2023 - 2024</div>
+            <div class="timeline__body">
+              <h3>Тектус.ИТ - Senior Frontend Engineer / Frontend Lead</h3>
+              <p>Миграция на TypeScript, стандартизация data layer, стабилизация производительности, Redis-кэширование для нескольких Next.js-инстансов, релизный цикл и пресейл.</p>
+              <div class="tags">
+                <span class="tag">Redux Toolkit</span><span class="tag">TanStack Query</span><span class="tag">Redis</span><span class="tag">CI/CD</span>
+              </div>
+            </div>
+          </article>
+
+          <article class="timeline__item">
+            <div class="timeline__time">2021 - 2023</div>
+            <div class="timeline__body">
+              <h3>Элемент - Frontend Engineer → ведущая роль</h3>
+              <p>Next.js SSR/SSG, Core Web Vitals, Playwright, архитектурные решения, 2D/3D-визуализации, NestJS + PostgreSQL для отдельной платформы.</p>
+              <div class="tags">
+                <span class="tag">SSR / SSG</span><span class="tag">Playwright</span><span class="tag">NestJS</span><span class="tag">PostgreSQL</span>
+              </div>
+            </div>
+          </article>
+
+          <article class="timeline__item">
+            <div class="timeline__time">2019 - 2021</div>
+            <div class="timeline__body">
+              <h3>Webit / ИКС Мониторинг - Fullstack Software Engineer</h3>
+              <p>Коммерческие веб-проекты, PHP/MySQL, React/Vue, CMS, техническое SEO и базовый web craft.</p>
+            </div>
+          </article>
+        </div>
+
+        <div class="actions">
+          <a class="button button--ghost" href="/cv">Открыть полное CV →</a>
+          <a class="button button--ghost" href="/cv.pdf">Скачать PDF</a>
+        </div>
+      </section>
+
+      <section class="section" id="notes">
+        <p class="eyebrow">05 / Блог</p>
+        <h2>Заметки о разработке, архитектуре и работе технического лидера.</h2>
+
+        <div class="articles">
+          <a class="article-link" href="/blog/frontend-architecture">
+            <div>
+              <h3>Как проектировать frontend, который не разваливается по мере роста продукта</h3>
+              <p>Границы слоёв, повторяемые решения и моменты, где архитектура действительно начинает окупаться.</p>
+            </div>
+            <span class="article-link__meta">architecture · 8 min</span>
+          </a>
+
+          <a class="article-link" href="/blog/delivery">
+            <div>
+              <h3>Delivery без героизма: что делает релиз предсказуемым</h3>
+              <p>Зависимости, readiness, автоматизация проверок и где проходит граница ответственности техлида.</p>
+            </div>
+            <span class="article-link__meta">leadership · 6 min</span>
+          </a>
+
+          <a class="article-link" href="/blog/web-quality">
+            <div>
+              <h3>Web quality как инженерная дисциплина</h3>
+              <p>Производительность, accessibility, SEO и стабильность интерфейса как одна система требований.</p>
+            </div>
+            <span class="article-link__meta">web · 7 min</span>
+          </a>
+        </div>
+
+        <div class="actions">
+          <a class="button button--ghost" href="/blog">Все записи →</a>
+        </div>
+      </section>
+
+      <section class="section" id="contact">
+        <div class="contact-box">
+          <p class="eyebrow">06 / Контакт</p>
+          <h2>Если нужен человек, который разберёт техническую часть и доведёт её до результата.</h2>
+          <p>
+            Можно написать напрямую или назначить короткий созвон. Для первого контакта достаточно описать продукт,
+            текущую проблему и контекст команды.
+          </p>
+
+          <div class="actions">
+            <a class="button" href="https://t.me/askold_astakhov">Telegram ↗</a>
+            <a class="button button--ghost" href="mailto:astakhovaskold@gmail.com">Email</a>
+            <a class="button button--ghost" href="https://www.linkedin.com/in/askold-astakhov/">LinkedIn</a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="footer__inner">
+        <span>© 2026 Askold Astakhov</span>
+        <span>Built as a lightweight, text-first website.</span>
+      </div>
+    </footer>
+  </div>
+</body>
+</html>

@@ -1,0 +1,340 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Askold Astakhov</title>
+<meta name="description" content="Personal website">
+<style>
+:root{
+  --text:#111;
+  --muted:#707070;
+  --container:790px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  background:#fff;
+  color:var(--text);
+  font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  font-size:16px;
+  line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+}
+a{
+  color:inherit;
+  text-decoration-thickness:1px;
+  text-underline-offset:3px;
+}
+a:hover{opacity:.6}
+.site{
+  width:min(calc(100% - 40px),var(--container));
+  margin:0 auto;
+  padding-bottom:64px;
+}
+
+/* NAV */
+.nav{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:24px;
+  padding:32px 0 44px;
+  margin-bottom:72px;
+}
+.nav-name{
+  font-size:15px;
+  font-weight:600;
+  text-decoration:none;
+  white-space:nowrap;
+}
+.nav-links{
+  display:flex;
+  align-items:center;
+  gap:28px;
+  flex-wrap:wrap;
+  justify-content:flex-end;
+}
+.nav-link,.nav-cta{
+  font-size:14px;
+  text-decoration:none;
+}
+.nav-cta{text-decoration:underline}
+
+/* HERO */
+.hero{margin-bottom:88px}
+.hero-label,.section-title{
+  font-size:12px;
+  font-weight:600;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+.hero-label{margin-bottom:18px}
+.hero-title{
+  max-width:560px;
+  margin-bottom:22px;
+  font-size:clamp(44px,6vw,62px);
+  line-height:.98;
+  font-weight:600;
+  letter-spacing:-.045em;
+}
+.hero-sub{
+  max-width:650px;
+  font-size:21px;
+  line-height:1.48;
+  letter-spacing:-.018em;
+}
+.hero-tags{
+  display:flex;
+  flex-wrap:wrap;
+  gap:28px;
+  margin-top:34px;
+}
+.hero-tag{font-size:14px}
+
+/* COMMON */
+.section{margin-bottom:80px}
+.section-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:baseline;
+  gap:24px;
+  margin-bottom:30px;
+}
+.section-link{
+  font-size:14px;
+  white-space:nowrap;
+}
+
+/* AREAS */
+.areas{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:44px 58px;
+}
+.area h3{
+  margin-bottom:5px;
+  font-size:16px;
+  line-height:1.35;
+  font-weight:600;
+}
+.area p{
+  font-size:14px;
+  line-height:1.52;
+}
+
+/* BLOG */
+.blog-list{
+  display:flex;
+  flex-direction:column;
+  gap:22px;
+}
+.blog-item{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  align-items:baseline;
+  gap:24px;
+  text-decoration:none;
+}
+.blog-title{
+  font-size:17px;
+  line-height:1.45;
+  letter-spacing:-.012em;
+}
+.blog-meta{
+  font-size:13px;
+  white-space:nowrap;
+}
+
+/* CV */
+.cv-row{
+  display:flex;
+  justify-content:space-between;
+  align-items:baseline;
+  gap:28px;
+}
+.cv-copy{
+  max-width:560px;
+  font-size:17px;
+  line-height:1.5;
+}
+.cv-links{
+  display:flex;
+  gap:22px;
+  font-size:14px;
+  white-space:nowrap;
+}
+
+/* CONTACT */
+.contact-copy{
+  max-width:560px;
+  margin-bottom:24px;
+  font-size:20px;
+  line-height:1.5;
+  letter-spacing:-.018em;
+}
+.contact-links{
+  display:flex;
+  flex-wrap:wrap;
+  gap:26px;
+  font-size:14px;
+}
+
+/* FOOTER */
+.footer{
+  display:flex;
+  justify-content:space-between;
+  gap:24px;
+  padding-top:20px;
+  color:var(--muted);
+  font-size:12px;
+}
+
+@media(max-width:720px){
+  .site{width:min(calc(100% - 28px),var(--container))}
+  .nav{display:block;margin-bottom:54px;padding-top:24px}
+  .nav-links{justify-content:flex-start;gap:16px 20px;margin-top:18px}
+  .hero{margin-bottom:68px}
+  .hero-title{font-size:clamp(42px,13vw,58px)}
+  .hero-sub{font-size:18px}
+  .hero-tags{gap:12px 20px}
+  .section{margin-bottom:64px}
+  .areas{grid-template-columns:1fr;gap:30px}
+  .blog-item{grid-template-columns:1fr;gap:4px}
+  .blog-meta{color:var(--muted)}
+  .cv-row{display:block}
+  .cv-links{margin-top:14px;flex-wrap:wrap}
+  .footer{display:block}
+  .footer span{display:block}
+  .footer span+span{margin-top:5px}
+}
+</style>
+</head>
+
+<body>
+<div class="site">
+
+<nav class="nav">
+  <a class="nav-name" href="/">Askold Astakhov</a>
+  <div class="nav-links">
+    <a class="nav-link" href="#areas">Areas</a>
+    <a class="nav-link" href="/blog">Blog</a>
+    <a class="nav-link" href="/cv">CV</a>
+    <a class="nav-link" href="#contact">Contact</a>
+    <a class="nav-cta" href="#">Book a call →</a>
+  </div>
+</nav>
+
+<main>
+
+<section class="hero">
+  <p class="hero-label">Location · Availability</p>
+  <h1 class="hero-title">Primary positioning<br>goes here</h1>
+  <p class="hero-sub">
+    Short introduction text. Two or three lines that explain who this site belongs to
+    and what kind of work or topics are associated with it.
+  </p>
+  <div class="hero-tags">
+    <span class="hero-tag">Area one</span>
+    <span class="hero-tag">Area two</span>
+    <span class="hero-tag">Area three</span>
+    <span class="hero-tag">Area four</span>
+  </div>
+</section>
+
+<section class="section" id="areas">
+  <div class="section-header">
+    <h2 class="section-title">Areas</h2>
+    <a class="section-link" href="#">Details →</a>
+  </div>
+
+  <div class="areas">
+    <article class="area">
+      <h3>Area one</h3>
+      <p>Short description of this area, topic or type of work.</p>
+    </article>
+
+    <article class="area">
+      <h3>Area two</h3>
+      <p>Short description of this area, topic or type of work.</p>
+    </article>
+
+    <article class="area">
+      <h3>Area three</h3>
+      <p>Short description of this area, topic or type of work.</p>
+    </article>
+
+    <article class="area">
+      <h3>Area four</h3>
+      <p>Short description of this area, topic or type of work.</p>
+    </article>
+  </div>
+</section>
+
+<section class="section">
+  <div class="section-header">
+    <h2 class="section-title">From the blog</h2>
+    <a class="section-link" href="/blog">All posts →</a>
+  </div>
+
+  <div class="blog-list">
+    <a class="blog-item" href="#">
+      <span class="blog-title">Example article title goes here</span>
+      <span class="blog-meta">Month 2026</span>
+    </a>
+
+    <a class="blog-item" href="#">
+      <span class="blog-title">Another article title goes here</span>
+      <span class="blog-meta">Month 2026</span>
+    </a>
+
+    <a class="blog-item" href="#">
+      <span class="blog-title">Third article title goes here</span>
+      <span class="blog-meta">Month 2026</span>
+    </a>
+  </div>
+</section>
+
+<section class="section">
+  <div class="section-header">
+    <h2 class="section-title">CV</h2>
+  </div>
+
+  <div class="cv-row">
+    <p class="cv-copy">
+      Short neutral description of the CV or professional background.
+    </p>
+
+    <div class="cv-links">
+      <a href="/cv">Open CV →</a>
+      <a href="/cv.pdf">PDF →</a>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="contact">
+  <div class="section-header">
+    <h2 class="section-title">Contact</h2>
+  </div>
+
+  <p class="contact-copy">
+    Short neutral contact text goes here.
+  </p>
+
+  <div class="contact-links">
+    <a href="https://t.me/askold_astakhov">Telegram →</a>
+    <a href="mailto:astakhovaskold@gmail.com">Email →</a>
+    <a href="https://www.linkedin.com/in/askold-astakhov/">LinkedIn →</a>
+    <a href="#">Book a call →</a>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer">
+  <span>© 2026 Askold Astakhov</span>
+  <span>Personal website</span>
+</footer>
+
+</div>
+</body>
+</html>

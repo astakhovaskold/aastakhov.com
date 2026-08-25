@@ -1,0 +1,664 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>How to design frontend that does not collapse - Askold Astakhov</title>
+  <meta name="description" content="Article page template for Askold Astakhov personal website">
+  <style>
+    :root {
+      --text: #111111;
+      --muted: #111111;
+      --soft: #111111;
+      --container: 790px;
+      --article: 650px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: #ffffff;
+      color: var(--text);
+      font-family:
+        Inter,
+        ui-sans-serif,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+      font-size: 16px;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    a {
+      color: inherit;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 3px;
+    }
+
+    a:hover { opacity: 0.62; }
+
+    img {
+      display: block;
+      max-width: 100%;
+    }
+
+    .site {
+      width: min(calc(100% - 40px), var(--container));
+      margin: 0 auto;
+      padding: 0 0 64px;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      padding: 32px 0 44px;
+      margin-bottom: 72px;
+    }
+
+    .nav-name {
+      color: var(--text);
+      font-size: 15px;
+      font-weight: 600;
+      text-decoration: none;
+      letter-spacing: -0.01em;
+      white-space: nowrap;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .nav-link,
+    .nav-cta {
+      font-size: 14px;
+      color: var(--text);
+      text-decoration: none;
+    }
+
+    .nav-cta {
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    .post-hero {
+      margin-bottom: 48px;
+    }
+
+    .post-label,
+    .section-title {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text);
+    }
+
+    .post-label {
+      margin-bottom: 18px;
+    }
+
+    .post-title {
+      max-width: 690px;
+      margin-bottom: 24px;
+      font-size: clamp(42px, 6vw, 62px);
+      line-height: 0.98;
+      font-weight: 600;
+      letter-spacing: -0.045em;
+    }
+
+    .post-sub {
+      max-width: 650px;
+      color: var(--text);
+      font-size: 21px;
+      line-height: 1.48;
+      letter-spacing: -0.018em;
+    }
+
+    .post-meta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 28px;
+      margin-top: 34px;
+      color: var(--text);
+      font-size: 14px;
+    }
+
+    .cover {
+      margin-bottom: 72px;
+    }
+
+    .cover img {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+      background: #f2f2f2;
+    }
+
+    .cover-caption {
+      margin-top: 10px;
+      font-size: 12px;
+      color: var(--text);
+    }
+
+    .article-layout {
+      display: grid;
+      grid-template-columns: minmax(0, var(--article)) 120px;
+      gap: 20px;
+      align-items: start;
+      margin-bottom: 80px;
+    }
+
+    .article {
+      max-width: var(--article);
+    }
+
+    .article p,
+    .article li {
+      font-size: 18px;
+      line-height: 1.68;
+      letter-spacing: -0.01em;
+    }
+
+    .article p {
+      margin-bottom: 26px;
+    }
+
+    .article h2 {
+      margin: 56px 0 18px;
+      font-size: 28px;
+      line-height: 1.1;
+      font-weight: 600;
+      letter-spacing: -0.03em;
+    }
+
+    .article h3 {
+      margin: 36px 0 12px;
+      font-size: 20px;
+      line-height: 1.25;
+      font-weight: 600;
+      letter-spacing: -0.018em;
+    }
+
+    .article ul,
+    .article ol {
+      margin: 0 0 28px 22px;
+    }
+
+    .article li + li {
+      margin-top: 8px;
+    }
+
+    .article blockquote {
+      margin: 42px 0;
+      padding-left: 24px;
+      font-size: 24px;
+      line-height: 1.35;
+      font-weight: 600;
+      letter-spacing: -0.03em;
+    }
+
+    .article blockquote p {
+      font-size: inherit;
+      line-height: inherit;
+      margin: 0;
+    }
+
+    .article pre {
+      margin: 36px 0;
+      padding: 20px;
+      overflow-x: auto;
+      background: #f5f5f5;
+      font-family:
+        ui-monospace,
+        SFMono-Regular,
+        Menlo,
+        Monaco,
+        Consolas,
+        "Liberation Mono",
+        monospace;
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .article code {
+      font-family:
+        ui-monospace,
+        SFMono-Regular,
+        Menlo,
+        Monaco,
+        Consolas,
+        "Liberation Mono",
+        monospace;
+      font-size: 0.92em;
+    }
+
+    .article .inline-media {
+      margin: 42px 0;
+    }
+
+    .article .inline-media img {
+      width: 100%;
+      aspect-ratio: 16 / 10;
+      object-fit: cover;
+      background: #f2f2f2;
+    }
+
+    .article .inline-media figcaption {
+      margin-top: 10px;
+      font-size: 12px;
+      line-height: 1.5;
+      color: var(--text);
+    }
+
+    .toc {
+      position: sticky;
+      top: 32px;
+      padding-top: 4px;
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .toc-title {
+      margin-bottom: 10px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .toc a {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--text);
+      text-decoration: none;
+    }
+
+    .section {
+      margin-bottom: 80px;
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 24px;
+      margin-bottom: 30px;
+    }
+
+    .section-link {
+      font-size: 14px;
+      color: var(--text);
+      white-space: nowrap;
+    }
+
+    .related-list {
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+    }
+
+    .related-item {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: baseline;
+      gap: 24px;
+      text-decoration: none;
+    }
+
+    .related-title {
+      font-size: 17px;
+      line-height: 1.45;
+      letter-spacing: -0.012em;
+    }
+
+    .related-meta {
+      color: var(--text);
+      font-size: 13px;
+      white-space: nowrap;
+    }
+
+    .post-nav {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+    }
+
+    .post-nav a {
+      text-decoration: none;
+    }
+
+    .post-nav-label {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .post-nav-title {
+      display: block;
+      font-size: 17px;
+      line-height: 1.45;
+      letter-spacing: -0.012em;
+    }
+
+    .post-nav-next {
+      text-align: right;
+    }
+
+    .contact-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 26px;
+      font-size: 14px;
+    }
+
+    .footer {
+      display: flex;
+      justify-content: space-between;
+      gap: 24px;
+      padding-top: 20px;
+      color: var(--text);
+      font-size: 12px;
+    }
+
+    @media (max-width: 720px) {
+      .site {
+        width: min(calc(100% - 28px), var(--container));
+      }
+
+      .nav {
+        display: block;
+        margin-bottom: 54px;
+        padding-top: 24px;
+      }
+
+      .nav-links {
+        justify-content: flex-start;
+        gap: 16px 20px;
+        margin-top: 18px;
+      }
+
+      .post-title {
+        font-size: clamp(42px, 13vw, 58px);
+      }
+
+      .post-sub {
+        font-size: 18px;
+      }
+
+      .post-meta-row {
+        gap: 12px 20px;
+      }
+
+      .cover {
+        margin-bottom: 56px;
+      }
+
+      .article-layout {
+        grid-template-columns: 1fr;
+        margin-bottom: 64px;
+      }
+
+      .toc {
+        display: none;
+      }
+
+      .article p,
+      .article li {
+        font-size: 17px;
+      }
+
+      .article h2 {
+        font-size: 26px;
+      }
+
+      .related-item {
+        grid-template-columns: 1fr;
+        gap: 4px;
+      }
+
+      .post-nav {
+        grid-template-columns: 1fr;
+      }
+
+      .post-nav-next {
+        text-align: left;
+      }
+
+      .section {
+        margin-bottom: 64px;
+      }
+
+      .footer {
+        display: block;
+      }
+
+      .footer span {
+        display: block;
+      }
+
+      .footer span + span {
+        margin-top: 5px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="site">
+    <nav class="nav" aria-label="Main navigation">
+      <a class="nav-name" href="/">Askold Astakhov</a>
+
+      <div class="nav-links">
+        <a class="nav-link" href="/">Work</a>
+        <a class="nav-link" href="/posts">Blog</a>
+        <a class="nav-link" href="/">Services</a>
+        <a class="nav-link" href="/">About</a>
+        <a class="nav-cta" href="#">Book a call →</a>
+      </div>
+    </nav>
+
+    <main>
+      <article>
+        <header class="post-hero">
+          <p class="post-label">Architecture · Aug 2026 · 8 min read</p>
+
+          <h1 class="post-title">
+            How to design frontend that does not collapse as product grows
+          </h1>
+
+          <p class="post-sub">
+            Layers, boundaries, contracts and repeatable patterns that make frontend
+            systems easier to develop, test and operate.
+          </p>
+
+          <div class="post-meta-row" aria-label="Post metadata">
+            <span>Frontend</span>
+            <span>Architecture</span>
+            <span>Product engineering</span>
+          </div>
+        </header>
+
+        <figure class="cover">
+          <img
+            src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1200&q=80"
+            alt="Server racks in a data center"
+            width="790"
+            height="444"
+          >
+          <figcaption class="cover-caption">Preview image placeholder. In production this comes from the post frontmatter.</figcaption>
+        </figure>
+
+        <div class="article-layout">
+          <div class="article">
+            <p>
+              Frontend architecture usually starts to matter when a product stops being a set
+              of independent screens and becomes a dense system of states, permissions,
+              integrations and release constraints.
+            </p>
+
+            <p>
+              At that point, the problem is no longer the framework. The problem is the lack
+              of shared rules: where data lives, how errors are handled, how permissions are
+              checked and how teams add new functionality without changing everything around it.
+            </p>
+
+            <h2 id="boundaries">Boundaries before abstractions</h2>
+
+            <p>
+              A maintainable frontend needs boundaries before it needs abstractions. The
+              simplest version is a clear separation between UI, data access, domain rules
+              and integration contracts.
+            </p>
+
+            <ul>
+              <li>UI components should not know transport details.</li>
+              <li>API DTOs should not leak across the whole application.</li>
+              <li>Permissions should be explicit and reusable.</li>
+              <li>Loading and error states should follow common patterns.</li>
+            </ul>
+
+            <blockquote>
+              <p>Good architecture reduces the number of decisions a team has to remake every week.</p>
+            </blockquote>
+
+            <h2 id="contracts">Contracts are part of product quality</h2>
+
+            <p>
+              Many frontend problems are actually contract problems. The interface becomes
+              fragile when every screen interprets backend responses differently or invents its
+              own status model.
+            </p>
+
+            <figure class="inline-media">
+              <img
+                src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1000&q=80"
+                alt="Analytics dashboard on a screen"
+                width="650"
+                height="406"
+              >
+              <figcaption>Inline image placeholder. This can be used for diagrams, screenshots, charts or editorial images.</figcaption>
+            </figure>
+
+            <p>
+              A stable product needs shared language between frontend, backend, QA and product.
+              DTOs, error codes, empty states and role-based access rules are not implementation
+              details. They define how the product behaves.
+            </p>
+
+            <h2 id="patterns">Repeatable patterns beat local cleverness</h2>
+
+            <p>
+              Most enterprise interfaces repeat the same building blocks: tables, filters,
+              cards, forms, approval flows, status transitions and administrative screens.
+              The goal is not to make every screen unique. The goal is to make new screens
+              predictable.
+            </p>
+
+            <pre><code>type ResourceState&lt;T&gt; =
+  | { status: "idle" }
+  | { status: "loading" }
+  | { status: "success"; data: T }
+  | { status: "error"; error: AppError };</code></pre>
+
+            <p>
+              When teams agree on repeatable patterns, development gets faster without turning
+              the codebase into a collection of disconnected shortcuts.
+            </p>
+
+            <h2 id="operations">Design for operations</h2>
+
+            <p>
+              A frontend does not end at merge. It needs to be debuggable, observable and
+              understandable in production. This includes release discipline, smoke checks,
+              meaningful logs around critical flows and clear ownership of degradation.
+            </p>
+          </div>
+
+          <aside class="toc" aria-label="Table of contents">
+            <p class="toc-title">On this page</p>
+            <a href="#boundaries">Boundaries</a>
+            <a href="#contracts">Contracts</a>
+            <a href="#patterns">Patterns</a>
+            <a href="#operations">Operations</a>
+          </aside>
+        </div>
+      </article>
+
+      <section class="section">
+        <div class="post-nav">
+          <a href="/posts/delivery-without-heroism">
+            <span class="post-nav-label">Previous</span>
+            <span class="post-nav-title">Delivery without heroism</span>
+          </a>
+
+          <a class="post-nav-next" href="/posts/web-quality">
+            <span class="post-nav-label">Next</span>
+            <span class="post-nav-title">Web quality as engineering discipline</span>
+          </a>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-header">
+          <h2 class="section-title">Related posts</h2>
+          <a class="section-link" href="/posts">All posts →</a>
+        </div>
+
+        <div class="related-list">
+          <a class="related-item" href="/posts/delivery-without-heroism">
+            <span class="related-title">Delivery without heroism</span>
+            <span class="related-meta">Leadership</span>
+          </a>
+
+          <a class="related-item" href="/posts/api-contracts">
+            <span class="related-title">API contracts are product boundaries</span>
+            <span class="related-meta">Integration</span>
+          </a>
+
+          <a class="related-item" href="/posts/web-quality">
+            <span class="related-title">Web quality as engineering discipline</span>
+            <span class="related-meta">Web</span>
+          </a>
+        </div>
+      </section>
+
+      <section class="section" id="contact">
+        <div class="section-header">
+          <h2 class="section-title">Contacts</h2>
+        </div>
+
+        <div class="contact-links">
+          <a href="https://t.me/askold_astakhov">Telegram →</a>
+          <a href="mailto:astakhovaskold@gmail.com">Email →</a>
+          <a href="https://www.linkedin.com/in/askold-astakhov/">LinkedIn →</a>
+          <a href="#">GitHub →</a>
+          <a href="/cv">CV →</a>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <span>© 2026 Askold Astakhov</span>
+      <span>Personal website</span>
+    </footer>
+  </div>
+</body>
+</html>

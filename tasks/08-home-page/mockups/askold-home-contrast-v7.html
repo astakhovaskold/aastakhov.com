@@ -1,0 +1,535 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Askold Astakhov</title>
+  <meta name="description" content="Personal website of Askold Astakhov">
+  <style>
+    :root {
+      --text: #111111;
+      --muted: #111111;
+      --soft: #111111;
+      --container: 790px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: #ffffff;
+      color: var(--text);
+      font-family:
+        Inter,
+        ui-sans-serif,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+      font-size: 16px;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    a {
+      color: inherit;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 3px;
+    }
+
+    a:hover { opacity: 0.62; }
+
+    .site {
+      width: min(calc(100% - 40px), var(--container));
+      margin: 0 auto;
+      padding: 0 0 64px;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      padding: 32px 0 44px;
+      margin-bottom: 72px;
+    }
+
+    .nav-name {
+      color: var(--text);
+      font-size: 15px;
+      font-weight: 600;
+      text-decoration: none;
+      letter-spacing: -0.01em;
+      white-space: nowrap;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .nav-link,
+    .nav-cta {
+      font-size: 14px;
+      color: var(--text);
+      text-decoration: none;
+    }
+
+    .nav-cta {
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    .hero {
+      margin-bottom: 88px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 160px;
+      gap: 64px;
+      align-items: start;
+    }
+
+    .hero-label,
+    .section-title {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text);
+    }
+
+    .hero-label {
+      margin-bottom: 18px;
+    }
+
+    .hero-title {
+      max-width: 540px;
+      margin-bottom: 22px;
+      font-size: clamp(44px, 6vw, 62px);
+      line-height: 0.98;
+      font-weight: 600;
+      letter-spacing: -0.045em;
+    }
+
+    .hero-sub {
+      max-width: 630px;
+      color: var(--text);
+      font-size: 21px;
+      line-height: 1.48;
+      letter-spacing: -0.018em;
+    }
+
+    .hero-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 28px;
+      margin-top: 34px;
+    }
+
+    .hero-tag {
+      color: var(--text);
+      font-size: 14px;
+    }
+
+    .hero-avatar {
+      display: block;
+      width: 160px;
+      height: 210px;
+      object-fit: cover;
+      margin-top: 0;
+    }
+
+    .section {
+      margin-bottom: 80px;
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 24px;
+      margin-bottom: 30px;
+    }
+
+    .section-link {
+      font-size: 14px;
+      color: var(--text);
+      white-space: nowrap;
+    }
+
+    .rows {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 150px;
+      gap: 32px;
+      padding: 16px 0;
+    }
+
+    .row + .row {
+      margin-top: 10px;
+    }
+
+    .row-title {
+      margin-bottom: 3px;
+      font-size: 17px;
+      line-height: 1.35;
+      font-weight: 600;
+      letter-spacing: -0.012em;
+    }
+
+    .row-desc {
+      max-width: 610px;
+      color: var(--text);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .row-meta {
+      justify-self: end;
+      text-align: right;
+      color: var(--text);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .expertise-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 44px 58px;
+      padding-top: 4px;
+    }
+
+    .expertise-item h3 {
+      margin-bottom: 5px;
+      font-size: 16px;
+      line-height: 1.35;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+    }
+
+    .expertise-item p {
+      color: var(--text);
+      font-size: 14px;
+      line-height: 1.52;
+    }
+
+    .blog-list,
+    .oss-list {
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+    }
+
+    .blog-item,
+    .oss-item {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: baseline;
+      gap: 24px;
+      text-decoration: none;
+    }
+
+    .blog-title,
+    .oss-title {
+      font-size: 17px;
+      line-height: 1.45;
+      letter-spacing: -0.012em;
+    }
+
+    .blog-meta,
+    .oss-meta {
+      color: var(--text);
+      font-size: 13px;
+      white-space: nowrap;
+    }
+
+    .contact-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 26px;
+      font-size: 14px;
+    }
+
+    .footer {
+      display: flex;
+      justify-content: space-between;
+      gap: 24px;
+      padding-top: 20px;
+      color: var(--text);
+      font-size: 12px;
+    }
+
+    @media (max-width: 720px) {
+      .site {
+        width: min(calc(100% - 28px), var(--container));
+      }
+
+      .nav {
+        display: block;
+        margin-bottom: 54px;
+        padding-top: 24px;
+      }
+
+      .nav-links {
+        justify-content: flex-start;
+        gap: 16px 20px;
+        margin-top: 18px;
+      }
+
+      .hero {
+        margin-bottom: 68px;
+      }
+
+      .hero-grid {
+        grid-template-columns: 1fr;
+        gap: 24px;
+      }
+
+      .hero-title {
+        font-size: clamp(42px, 13vw, 58px);
+      }
+
+      .hero-sub {
+        font-size: 18px;
+      }
+
+      .hero-tags {
+        gap: 12px 20px;
+      }
+
+      .hero-avatar {
+        width: 160px;
+        height: 210px;
+      }
+
+      .section {
+        margin-bottom: 64px;
+      }
+
+      .row {
+        grid-template-columns: 1fr;
+        gap: 6px;
+      }
+
+      .row-meta {
+        justify-self: start;
+        text-align: left;
+      }
+
+      .expertise-grid {
+        grid-template-columns: 1fr;
+        gap: 30px;
+      }
+
+      .blog-item,
+      .oss-item {
+        grid-template-columns: 1fr;
+        gap: 4px;
+      }
+
+      .footer {
+        display: block;
+      }
+
+      .footer span {
+        display: block;
+      }
+
+      .footer span + span {
+        margin-top: 5px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="site">
+    <nav class="nav" aria-label="Main navigation">
+      <a class="nav-name" href="/">Askold Astakhov</a>
+
+      <div class="nav-links">
+        <a class="nav-link" href="#work">Work</a>
+        <a class="nav-link" href="#blog">Blog</a>
+        <a class="nav-link" href="#services">Services</a>
+        <a class="nav-link" href="#contact">About</a>
+        <a class="nav-cta" href="#">Book a call →</a>
+      </div>
+    </nav>
+
+    <main>
+      <section class="hero">
+        <div class="hero-grid">
+          <div>
+            <p class="hero-label">Madrid · Available for projects</p>
+
+            <h1 class="hero-title">
+              Independent<br>
+              IT expert
+            </h1>
+
+            <p class="hero-sub">
+              Technical partner for complex projects — architecture, audits,
+              consulting and development. Enterprise background, pragmatic approach.
+            </p>
+
+            <div class="hero-tags" aria-label="Topics">
+              <span class="hero-tag">Architecture</span>
+              <span class="hero-tag">Audits</span>
+              <span class="hero-tag">Technical consulting</span>
+              <span class="hero-tag">Full-stack dev</span>
+              <span class="hero-tag">Team lead</span>
+            </div>
+          </div>
+
+          <img
+            class="hero-avatar"
+            src="askold-avatar.jpeg"
+            alt="Askold Astakhov"
+            width="160"
+            height="210"
+          >
+        </div>
+      </section>
+
+      <section class="section" id="work">
+        <div class="section-header">
+          <h2 class="section-title">Selected work</h2>
+          <a class="section-link" href="#">All cases →</a>
+        </div>
+
+        <div class="rows">
+          <div class="row">
+            <div>
+              <p class="row-title">Retail Management System for national retailer</p>
+              <p class="row-desc">Order & inventory management platform. Reduced operational losses by 30%.</p>
+            </div>
+            <div class="row-meta">Architecture</div>
+          </div>
+
+          <div class="row">
+            <div>
+              <p class="row-title">ERP migration for industrial enterprise</p>
+              <p class="row-desc">Architecture audit, migration strategy, team supervision over 8 months.</p>
+            </div>
+            <div class="row-meta">NDA<br>Consulting</div>
+          </div>
+
+          <div class="row">
+            <div>
+              <p class="row-title">BaliHelper — car & bike rental platform</p>
+              <p class="row-desc">Mobile-first redesign and integrations. Full-stack development.</p>
+            </div>
+            <div class="row-meta">Dev</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="services">
+        <div class="section-header">
+          <h2 class="section-title">Services</h2>
+          <a class="section-link" href="#">Details →</a>
+        </div>
+
+        <div class="expertise-grid">
+          <article class="expertise-item">
+            <h3>Audit</h3>
+            <p>Architecture, code quality, CI/CD, security, performance</p>
+          </article>
+
+          <article class="expertise-item">
+            <h3>Consulting</h3>
+            <p>Tech strategy, roadmap, technology selection</p>
+          </article>
+
+          <article class="expertise-item">
+            <h3>Development</h3>
+            <p>Custom modules, integrations, migrations, automation</p>
+          </article>
+
+          <article class="expertise-item">
+            <h3>Support & retainer</h3>
+            <p>Ongoing product support, incidents, improvements</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" id="blog">
+        <div class="section-header">
+          <h2 class="section-title">From the blog</h2>
+          <a class="section-link" href="#">All posts →</a>
+        </div>
+
+        <div class="blog-list">
+          <a class="blog-item" href="#">
+            <span class="blog-title">Stop copy-pasting your React route protection. Here's a better way.</span>
+            <span class="blog-meta">May 2026</span>
+          </a>
+
+          <a class="blog-item" href="#">
+            <span class="blog-title">Why I moved from Webpack to Vite on a legacy enterprise project</span>
+            <span class="blog-meta">Mar 2026</span>
+          </a>
+
+          <a class="blog-item" href="#">
+            <span class="blog-title">Architecture audit checklist: what I look for in every project</span>
+            <span class="blog-meta">Jan 2026</span>
+          </a>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-header">
+          <h2 class="section-title">Open source</h2>
+          <a class="section-link" href="#">GitHub →</a>
+        </div>
+
+        <div class="oss-list">
+          <a class="oss-item" href="#">
+            <span class="oss-title">react-router-guard</span>
+            <span class="oss-meta">240</span>
+          </a>
+
+          <a class="oss-item" href="#">
+            <span class="oss-title">nestjs-audit-log</span>
+            <span class="oss-meta">87</span>
+          </a>
+        </div>
+      </section>
+
+      <section class="section" id="contact">
+        <div class="section-header">
+          <h2 class="section-title">Contacts</h2>
+        </div>
+
+        <div class="contact-links">
+          <a href="https://t.me/askold_astakhov">Telegram →</a>
+          <a href="mailto:astakhovaskold@gmail.com">Email →</a>
+          <a href="https://www.linkedin.com/in/askold-astakhov/">LinkedIn →</a>
+          <a href="#">GitHub →</a>
+          <a href="/cv">CV →</a>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <span>© 2026 Askold Astakhov</span>
+      <span>Personal website</span>
+    </footer>
+  </div>
+</body>
+</html>

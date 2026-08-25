@@ -1,0 +1,501 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Askold Astakhov</title>
+  <meta name="description" content="Personal website of Askold Astakhov">
+  <style>
+    :root {
+      --font-sans: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+
+      --color-background-primary: #ffffff;
+      --color-background-secondary: #fafafa;
+
+      --color-text-primary: #111111;
+      --color-text-secondary: #5f5f5f;
+      --color-text-tertiary: #8a8a8a;
+
+      --color-border-primary: #d9d9d9;
+      --color-border-tertiary: #e8e8e8;
+
+      --border-radius-lg: 16px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--color-background-primary);
+      color: var(--color-text-primary);
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    a {
+      color: inherit;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 3px;
+    }
+
+    .site { max-width: 680px; margin: 0 auto; padding: 0 0 3rem; }
+
+    /* NAV */
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.5rem 0 2.5rem;
+      border-bottom: 0.5px solid var(--color-border-tertiary);
+      margin-bottom: 3rem;
+      gap: 1rem;
+    }
+
+    .nav-name {
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--color-text-primary);
+      white-space: nowrap;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1.5rem;
+      align-items: center;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .nav-link {
+      font-size: 14px;
+      color: var(--color-text-secondary);
+      text-decoration: none;
+    }
+
+    .nav-cta {
+      font-size: 13px;
+      color: var(--color-text-primary);
+      border: 0.5px solid var(--color-border-primary);
+      padding: 5px 14px;
+      border-radius: 20px;
+      text-decoration: none;
+    }
+
+    /* HERO */
+    .hero { margin-bottom: 4rem; }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 160px;
+      gap: 1.5rem;
+      align-items: start;
+    }
+    .hero-label {
+      font-size: 12px;
+      color: var(--color-text-tertiary);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+    .hero-name {
+      font-size: 42px;
+      font-weight: 500;
+      color: var(--color-text-primary);
+      line-height: 1.1;
+      margin-bottom: 1rem;
+    }
+    .hero-sub {
+      font-size: 18px;
+      color: var(--color-text-secondary);
+      line-height: 1.6;
+      max-width: 520px;
+    }
+    .hero-tags {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 1.5rem;
+    }
+    .tag {
+      font-size: 12px;
+      color: var(--color-text-secondary);
+      border: 0.5px solid var(--color-border-tertiary);
+      padding: 4px 10px;
+      border-radius: 20px;
+    }
+    .hero-portrait {
+      width: 100%;
+      aspect-ratio: 4 / 5;
+      object-fit: cover;
+      border-radius: 14px;
+      display: block;
+    }
+
+    /* SECTION */
+    .section { margin-bottom: 3.5rem; }
+    .section-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 1.5rem;
+      gap: 1rem;
+    }
+    .section-title {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--color-text-tertiary);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+    .section-link {
+      font-size: 13px;
+      color: var(--color-text-secondary);
+      white-space: nowrap;
+    }
+
+    /* CASE CARDS */
+    .cases { display: flex; flex-direction: column; gap: 0; }
+    .case-item {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      padding: 1.1rem 0;
+      border-top: 0.5px solid var(--color-border-tertiary);
+      gap: 2rem;
+    }
+    .case-item:last-child { border-bottom: 0.5px solid var(--color-border-tertiary); }
+    .case-title {
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--color-text-primary);
+      margin-bottom: 3px;
+    }
+    .case-desc {
+      font-size: 13px;
+      color: var(--color-text-secondary);
+      line-height: 1.5;
+    }
+    .case-badges {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 4px;
+      flex-shrink: 0;
+    }
+    .badge {
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 12px;
+      white-space: nowrap;
+    }
+    .badge-nda {
+      background: var(--color-background-secondary);
+      color: var(--color-text-tertiary);
+      border: 0.5px solid var(--color-border-tertiary);
+    }
+    .badge-type {
+      background: var(--color-background-secondary);
+      color: var(--color-text-secondary);
+      border: 0.5px solid var(--color-border-tertiary);
+    }
+
+    /* BLOG */
+    .blog-list { display: flex; flex-direction: column; }
+    .blog-item {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      padding: 0.9rem 0;
+      border-top: 0.5px solid var(--color-border-tertiary);
+      gap: 1rem;
+      text-decoration: none;
+    }
+    .blog-item:last-child { border-bottom: 0.5px solid var(--color-border-tertiary); }
+    .blog-title { font-size: 15px; color: var(--color-text-primary); }
+    .blog-meta {
+      font-size: 12px;
+      color: var(--color-text-tertiary);
+      flex-shrink: 0;
+      white-space: nowrap;
+    }
+
+    /* SERVICES */
+    .services {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+    .service-card {
+      padding: 1rem 1.25rem;
+      border: 0.5px solid var(--color-border-tertiary);
+      border-radius: var(--border-radius-lg);
+    }
+    .service-name {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--color-text-primary);
+      margin-bottom: 4px;
+    }
+    .service-desc {
+      font-size: 12px;
+      color: var(--color-text-secondary);
+      line-height: 1.5;
+    }
+
+    /* OSS */
+    .oss-list { display: flex; flex-direction: column; }
+    .oss-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 0.8rem 0;
+      border-top: 0.5px solid var(--color-border-tertiary);
+      text-decoration: none;
+    }
+    .oss-item:last-child { border-bottom: 0.5px solid var(--color-border-tertiary); }
+    .oss-name {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--color-text-primary);
+      font-family: var(--font-mono);
+    }
+    .oss-desc {
+      font-size: 13px;
+      color: var(--color-text-secondary);
+      flex: 1;
+    }
+    .oss-stars {
+      font-size: 12px;
+      color: var(--color-text-tertiary);
+      white-space: nowrap;
+    }
+
+    /* CONTACTS */
+    .contact-list { display: flex; flex-direction: column; }
+    .contact-item {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 0.9rem 0;
+      border-top: 0.5px solid var(--color-border-tertiary);
+      text-decoration: none;
+    }
+    .contact-item:last-child { border-bottom: 0.5px solid var(--color-border-tertiary); }
+    .contact-label {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--color-text-primary);
+    }
+    .contact-value {
+      font-size: 13px;
+      color: var(--color-text-secondary);
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    @media (max-width: 720px) {
+      .site { padding: 0 1rem 2.5rem; }
+      .nav {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 0.75rem;
+      }
+      .nav-links { justify-content: flex-start; gap: 0.9rem 1rem; }
+      .hero-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+      .hero-name { font-size: 34px; }
+      .hero-sub { font-size: 17px; }
+      .hero-portrait { width: 180px; }
+      .services { grid-template-columns: 1fr; }
+      .case-item,
+      .blog-item,
+      .contact-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.35rem;
+      }
+      .case-badges {
+        align-items: flex-start;
+        flex-direction: row;
+        flex-wrap: wrap;
+      }
+      .oss-item {
+        display: grid;
+        grid-template-columns: 1fr;
+      }
+      .contact-value {
+        text-align: left;
+        white-space: normal;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="site">
+    <nav class="nav">
+      <span class="nav-name">Askold Astakhov</span>
+      <div class="nav-links">
+        <a class="nav-link" href="#work">Work</a>
+        <a class="nav-link" href="#blog">Blog</a>
+        <a class="nav-link" href="#services">Services</a>
+        <a class="nav-link" href="#contacts">About</a>
+        <a class="nav-cta" href="#">Book a call →</a>
+      </div>
+    </nav>
+
+    <section class="hero" id="top">
+      <div class="hero-grid">
+        <div>
+          <p class="hero-label">Madrid · Available for projects</p>
+          <h1 class="hero-name">Independent<br>IT expert</h1>
+          <p class="hero-sub">Technical partner for complex projects — architecture, audits, consulting and development. Enterprise background, pragmatic approach.</p>
+          <div class="hero-tags">
+            <span class="tag">Architecture</span>
+            <span class="tag">Audits</span>
+            <span class="tag">Technical consulting</span>
+            <span class="tag">Full-stack dev</span>
+            <span class="tag">Team lead</span>
+          </div>
+        </div>
+
+        <div>
+          <img class="hero-portrait" src="askold-avatar.jpeg" alt="Portrait of Askold Astakhov" width="160" height="200">
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="work">
+      <div class="section-header">
+        <span class="section-title">Selected work</span>
+        <a class="section-link" href="#">All cases →</a>
+      </div>
+      <div class="cases">
+        <div class="case-item">
+          <div>
+            <p class="case-title">Retail Management System for national retailer</p>
+            <p class="case-desc">Order & inventory management platform. Reduced operational losses by 30%.</p>
+          </div>
+          <div class="case-badges">
+            <span class="badge badge-type">Architecture</span>
+          </div>
+        </div>
+
+        <div class="case-item">
+          <div>
+            <p class="case-title">ERP migration for industrial enterprise</p>
+            <p class="case-desc">Architecture audit, migration strategy, team supervision over 8 months.</p>
+          </div>
+          <div class="case-badges">
+            <span class="badge badge-nda">NDA</span>
+            <span class="badge badge-type">Consulting</span>
+          </div>
+        </div>
+
+        <div class="case-item">
+          <div>
+            <p class="case-title">BaliHelper — car & bike rental platform</p>
+            <p class="case-desc">Mobile-first redesign and integrations. Full-stack development.</p>
+          </div>
+          <div class="case-badges">
+            <span class="badge badge-type">Dev</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="services">
+      <div class="section-header">
+        <span class="section-title">Services</span>
+        <a class="section-link" href="#">Details →</a>
+      </div>
+      <div class="services">
+        <div class="service-card">
+          <p class="service-name">Audit</p>
+          <p class="service-desc">Architecture, code quality, CI/CD, security, performance</p>
+        </div>
+        <div class="service-card">
+          <p class="service-name">Consulting</p>
+          <p class="service-desc">Tech strategy, roadmap, technology selection</p>
+        </div>
+        <div class="service-card">
+          <p class="service-name">Development</p>
+          <p class="service-desc">Custom modules, integrations, migrations, automation</p>
+        </div>
+        <div class="service-card">
+          <p class="service-name">Support & retainer</p>
+          <p class="service-desc">Ongoing product support, incidents, improvements</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="blog">
+      <div class="section-header">
+        <span class="section-title">From the blog</span>
+        <a class="section-link" href="#">All posts →</a>
+      </div>
+      <div class="blog-list">
+        <a class="blog-item" href="#">
+          <span class="blog-title">Stop copy-pasting your React route protection. Here's a better way.</span>
+          <span class="blog-meta">May 2026</span>
+        </a>
+        <a class="blog-item" href="#">
+          <span class="blog-title">Why I moved from Webpack to Vite on a legacy enterprise project</span>
+          <span class="blog-meta">Mar 2026</span>
+        </a>
+        <a class="blog-item" href="#">
+          <span class="blog-title">Architecture audit checklist: what I look for in every project</span>
+          <span class="blog-meta">Jan 2026</span>
+        </a>
+      </div>
+    </section>
+
+    <section class="section" id="open-source">
+      <div class="section-header">
+        <span class="section-title">Open source</span>
+        <a class="section-link" href="#">GitHub →</a>
+      </div>
+      <div class="oss-list">
+        <a class="oss-item" href="#">
+          <span class="oss-name">react-router-guard</span>
+          <span class="oss-desc">Route protection utilities for React Router v6</span>
+          <span class="oss-stars">240</span>
+        </a>
+        <a class="oss-item" href="#">
+          <span class="oss-name">nestjs-audit-log</span>
+          <span class="oss-desc">Declarative audit logging module for NestJS</span>
+          <span class="oss-stars">87</span>
+        </a>
+      </div>
+    </section>
+
+    <section class="section" id="contacts">
+      <div class="section-header">
+        <span class="section-title">Contacts</span>
+      </div>
+      <div class="contact-list">
+        <a class="contact-item" href="mailto:astakhovaskold@gmail.com">
+          <span class="contact-label">Email</span>
+          <span class="contact-value">astakhovaskold@gmail.com</span>
+        </a>
+        <a class="contact-item" href="https://t.me/askold_astakhov">
+          <span class="contact-label">Telegram</span>
+          <span class="contact-value">@askold_astakhov</span>
+        </a>
+        <a class="contact-item" href="https://www.linkedin.com/in/askold-astakhov/">
+          <span class="contact-label">LinkedIn</span>
+          <span class="contact-value">linkedin.com/in/askold-astakhov</span>
+        </a>
+        <a class="contact-item" href="#">
+          <span class="contact-label">GitHub</span>
+          <span class="contact-value">github.com/username</span>
+        </a>
+      </div>
+    </section>
+  </div>
+</body>
+</html>
