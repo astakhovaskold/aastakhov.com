@@ -4,10 +4,13 @@ import './styles.css'
 
 export default async function HomePage() {
   return (
-    <div className="home">
-      <p className="eyebrow">Personal site v2</p>
-      <h1>Askold Astakhov</h1>
-      <p className="lede">Builder and technical partner.</p>
-    </div>
+    <section className="home">
+      <p className="eyebrow">Madrid / Available for selected projects</p>
+      <h1>Builder and technical partner.</h1>
+      <p className="lede">
+        I help turn complex product and engineering problems into pragmatic software:
+        architecture, audits, implementation, and technical leadership.
+      </p>
+    </section>
   )
 }

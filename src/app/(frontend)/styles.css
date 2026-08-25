@@ -1,112 +1,199 @@
 :root {
-  --font-mono: 'Roboto Mono', monospace;
-  --color-bg: #000;
-  --color-text: #fff;
+  --text: #111111;
+  --muted: #111111;
+  --background: #ffffff;
+  --container: 790px;
+  --space-section: 80px;
 }
 
 * {
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 html {
-  font-size: 18px;
-  line-height: 32px;
-
-  background: var(--color-bg);
+  background: var(--background);
+  scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
-}
-
-html,
-body,
-#app {
-  height: 100%;
+  text-rendering: optimizeLegibility;
 }
 
 body {
-  font-family: system-ui;
-  font-size: 18px;
-  line-height: 32px;
-
+  background: var(--background);
+  color: var(--text);
+  font-family:
+    Inter,
+    ui-sans-serif,
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
   margin: 0;
-  color: var(--color-text);
-
-  @media (max-width: 1024px) {
-    font-size: 15px;
-    line-height: 24px;
-  }
 }
 
 img {
-  max-width: 100%;
-  height: auto;
   display: block;
-}
-
-h1 {
-  margin: 0;
-  font-size: 64px;
-  line-height: 70px;
-  font-weight: bold;
-
-  @media (max-width: 1024px) {
-    margin: 24px 0;
-    font-size: 42px;
-    line-height: 42px;
-  }
-
-  @media (max-width: 768px) {
-    font-size: 38px;
-    line-height: 38px;
-  }
-
-  @media (max-width: 400px) {
-    font-size: 32px;
-    line-height: 32px;
-  }
-}
-
-p {
-  margin: 24px 0;
-
-  @media (max-width: 1024px) {
-    margin: calc(var(--base) * 0.75) 0;
-  }
+  height: auto;
+  max-width: 100%;
 }
 
 a {
-  color: currentColor;
-
-  &:focus {
-    opacity: 0.8;
-    outline: none;
-  }
-
-  &:active {
-    opacity: 0.7;
-    outline: none;
-  }
+  color: inherit;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
 }
 
-svg {
-  vertical-align: middle;
+a:hover {
+  opacity: 0.62;
+}
+
+a:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 4px;
+}
+
+h1,
+h2,
+h3 {
+  font-weight: 600;
+  letter-spacing: -0.04em;
+}
+
+h1 {
+  max-width: 680px;
+  font-size: clamp(44px, 6vw, 62px);
+  line-height: 0.98;
+}
+
+p {
+  max-width: 650px;
+}
+
+.site {
+  width: min(calc(100% - 40px), var(--container));
+  margin: 0 auto;
+  padding: 0 0 64px;
+}
+
+.site-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 32px 0 44px;
+}
+
+.site-name {
+  color: var(--text);
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.site-nav {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 16px 28px;
+}
+
+.site-nav a {
+  color: var(--text);
+  font-size: 14px;
+  text-decoration: none;
+}
+
+.site-main {
+  min-height: 62vh;
 }
 
 .home {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: flex-start;
-  min-height: 100vh;
-  padding: 45px;
-  max-width: 1024px;
-  margin: 0 auto;
-
-  @media (max-width: 400px) {
-    padding: 24px;
-  }
+  padding: 72px 0 var(--space-section);
 }
 
-.eyebrow,
+.eyebrow {
+  margin-bottom: 18px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
 .lede {
-  margin: 0;
+  margin-top: 22px;
+  color: var(--text);
+  font-size: 21px;
+  letter-spacing: -0.018em;
+  line-height: 1.48;
+}
+
+.site-footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  padding-top: 20px;
+  color: var(--text);
+  font-size: 12px;
+}
+
+.section {
+  margin-bottom: var(--space-section);
+}
+
+.section-title {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+@media (max-width: 720px) {
+  :root {
+    --space-section: 64px;
+  }
+
+  .site {
+    width: min(calc(100% - 28px), var(--container));
+    padding-bottom: 44px;
+  }
+
+  .site-header {
+    display: block;
+    padding: 24px 0 54px;
+  }
+
+  .site-nav {
+    justify-content: flex-start;
+    margin-top: 18px;
+  }
+
+  .home {
+    padding-top: 0;
+  }
+
+  h1 {
+    font-size: clamp(42px, 13vw, 58px);
+  }
+
+  .lede {
+    font-size: 18px;
+  }
+
+  .site-footer {
+    display: block;
+  }
+
+  .site-footer span {
+    display: block;
+  }
+
+  .site-footer span + span {
+    margin-top: 5px;
+  }
 }

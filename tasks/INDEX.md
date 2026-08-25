@@ -93,7 +93,7 @@
   Path: `01-init-blank-payload/task.md`
   Goal: поднять чистый Payload + Next.js проект на blank template.
 
-* [ ] **02 — Base layout and zero design**
+* [x] **02 — Base layout and zero design**
   Path: `02-base-layout-zero-design/task.md`
   Mockups: `02-base-layout-zero-design/mockups/`
   Goal: общий layout, header, footer, CSS-переменные, базовая типографика.
@@ -239,6 +239,7 @@
 # Implementation log
 
 - 2026-08-25 — Completed 01-init-blank-payload: verified blank Payload + Next.js App Router setup, removed starter frontend content, aligned env example with Postgres, fixed pnpm/ESLint/build/test scripts; checks: generate:types, lint, build, test:int.
+- 2026-08-25 — Completed 02-base-layout-zero-design: added shared public site container, header, footer, high-contrast zero-design typography, link styles, spacing, and responsive rules; checks: generate:types, lint, build.
 
 Пиши сюда выполненные шаги.
 
