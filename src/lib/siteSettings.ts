@@ -1,0 +1,67 @@
+import config from '@payload-config'
+import { getPayload } from 'payload'
+
+export type PublicSiteSettings = {
+  name: string
+  email: string
+  telegram?: string
+  linkedin?: string
+  github?: string
+  location: string
+  availability: string
+  bookingUrl?: string
+  seo: {
+    defaultTitle: string
+    defaultDescription: string
+    defaultImage?: unknown
+  }
+}
+
+export const fallbackSiteSettings: PublicSiteSettings = {
+  name: 'Askold Astakhov',
+  email: 'astakhovaskold@gmail.com',
+  telegram: 'https://t.me/askold_astakhov',
+  linkedin: 'https://www.linkedin.com/in/askold-astakhov/',
+  location: 'Madrid',
+  availability: 'Available for selected projects',
+  seo: {
+    defaultTitle: 'Askold Astakhov',
+    defaultDescription: 'Personal site for Askold Astakhov.',
+  },
+}
+
+function optionalString(value: null | string | undefined): string | undefined {
+  return value || undefined
+}
+
+export async function getSiteSettings(): Promise<PublicSiteSettings> {
+  if (process.env.NEXT_PHASE === 'phase-production-build') {
+    return fallbackSiteSettings
+  }
+
+  try {
+    const payload = await getPayload({ config })
+    const settings = await payload.findGlobal({
+      slug: 'site-settings',
+      depth: 1,
+    })
+
+    return {
+      ...fallbackSiteSettings,
+      name: settings.name || fallbackSiteSettings.name,
+      email: settings.email || fallbackSiteSettings.email,
+      telegram: optionalString(settings.telegram) || fallbackSiteSettings.telegram,
+      linkedin: optionalString(settings.linkedin) || fallbackSiteSettings.linkedin,
+      github: optionalString(settings.github),
+      location: settings.location || fallbackSiteSettings.location,
+      availability: settings.availability || fallbackSiteSettings.availability,
+      bookingUrl: optionalString(settings.bookingUrl),
+      seo: {
+        ...fallbackSiteSettings.seo,
+        ...settings.seo,
+      },
+    }
+  } catch {
+    return fallbackSiteSettings
+  }
+}

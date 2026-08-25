@@ -87,8 +87,12 @@ export interface Config {
     defaultIDType: number;
   };
   fallbackLocale: null;
-  globals: {};
-  globalsSelect: {};
+  globals: {
+    'site-settings': SiteSetting;
+  };
+  globalsSelect: {
+    'site-settings': SiteSettingsSelect<false> | SiteSettingsSelect<true>;
+  };
   locale: null;
   widgets: {
     collections: CollectionsWidget;
@@ -314,6 +318,52 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   batch?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "site-settings".
+ */
+export interface SiteSetting {
+  id: number;
+  name: string;
+  email: string;
+  telegram?: string | null;
+  linkedin?: string | null;
+  github?: string | null;
+  location?: string | null;
+  availability?: string | null;
+  bookingUrl?: string | null;
+  seo: {
+    defaultTitle: string;
+    defaultDescription: string;
+    defaultImage?: (number | null) | Media;
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "site-settings_select".
+ */
+export interface SiteSettingsSelect<T extends boolean = true> {
+  name?: T;
+  email?: T;
+  telegram?: T;
+  linkedin?: T;
+  github?: T;
+  location?: T;
+  availability?: T;
+  bookingUrl?: T;
+  seo?:
+    | T
+    | {
+        defaultTitle?: T;
+        defaultDescription?: T;
+        defaultImage?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

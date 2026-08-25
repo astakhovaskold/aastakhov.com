@@ -98,7 +98,7 @@
   Mockups: `02-base-layout-zero-design/mockups/`
   Goal: общий layout, header, footer, CSS-переменные, базовая типографика.
 
-* [ ] **03 — Payload SiteSettings global**
+* [x] **03 — Payload SiteSettings global**
   Path: `03-payload-site-settings/task.md`
   Goal: глобальные контакты, ссылки, availability, SEO defaults.
 
@@ -240,6 +240,7 @@
 
 - 2026-08-25 — Completed 01-init-blank-payload: verified blank Payload + Next.js App Router setup, removed starter frontend content, aligned env example with Postgres, fixed pnpm/ESLint/build/test scripts; checks: generate:types, lint, build, test:int.
 - 2026-08-25 — Completed 02-base-layout-zero-design: added shared public site container, header, footer, high-contrast zero-design typography, link styles, spacing, and responsive rules; checks: generate:types, lint, build.
+- 2026-08-25 — Completed 03-payload-site-settings: added Payload SiteSettings global, public fallback helper, runtime header/footer settings usage, home contacts from settings, and SEO defaults; checks: generate:types, lint, build, test:int, local API smoke.
 
 Пиши сюда выполненные шаги.
 
