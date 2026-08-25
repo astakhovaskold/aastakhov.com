@@ -45,7 +45,6 @@ export const SiteSettings: GlobalConfig = {
     {
       name: 'location',
       type: 'text',
-      defaultValue: 'Madrid',
     },
     {
       name: 'availability',
