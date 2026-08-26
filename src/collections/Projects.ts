@@ -59,6 +59,16 @@ export const Projects: CollectionConfig = {
       required: true,
     },
     {
+      name: 'published',
+      type: 'checkbox',
+      defaultValue: true,
+      index: true,
+      admin: {
+        description: 'Controls whether this project is visible on the public site.',
+        position: 'sidebar',
+      },
+    },
+    {
       name: 'type',
       type: 'select',
       defaultValue: 'product',

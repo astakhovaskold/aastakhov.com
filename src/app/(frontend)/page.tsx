@@ -9,6 +9,7 @@ import { OpenSourceList } from '@/components/site/open-source-list'
 import { PostList } from '@/components/site/post-list'
 import { ProjectList } from '@/components/site/project-list'
 import { SectionHeader } from '@/components/site/section-header'
+import { getPublishedProjects } from '@/lib/projects'
 import { getSiteSettings, type PublicSiteSettings } from '@/lib/siteSettings'
 import type { OpenSource, Post, Project } from '@/payload-types'
 import './styles.css'
@@ -43,17 +44,11 @@ async function getHomeContent(settings: PublicSiteSettings): Promise<HomeContent
         ? settings.featuredPostsCategory.id
         : null
     const [projects, featuredPosts, openSource, blogPosts] = await Promise.all([
-      payload.find({
-        collection: 'projects',
+      getPublishedProjects({
         depth: 0,
-        limit: 3,
+        limit: 100,
         sort: ['order', '-year', '-updatedAt'],
-        where: {
-          featured: {
-            equals: true,
-          },
-        },
-      }),
+      }).then((projects) => projects.filter((project) => project.featured).slice(0, 3)),
       payload.find({
         collection: 'posts',
         depth: 1,
@@ -141,7 +136,7 @@ async function getHomeContent(settings: PublicSiteSettings): Promise<HomeContent
         ? `/posts/category/${settings.featuredPostsCategory.slug}`
         : null,
       featuredPostsHeading: settings.featuredPostsCategory?.title || null,
-      projects: projects.docs,
+      projects,
       openSource: openSource.docs,
       blogPosts: blogPosts.docs,
     }

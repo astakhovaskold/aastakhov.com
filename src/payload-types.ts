@@ -195,6 +195,10 @@ export interface Project {
    */
   eyebrow?: string | null;
   status: 'active' | 'in-progress' | 'concept' | 'paused' | 'archived' | 'future';
+  /**
+   * Controls whether this project is visible on the public site.
+   */
+  published?: boolean | null;
   type: 'company' | 'product' | 'website' | 'brand' | 'concept' | 'experiment';
   /**
    * Short role label, e.g. Founder, Technical partner, Architect.
@@ -511,6 +515,7 @@ export interface ProjectsSelect<T extends boolean = true> {
   description?: T;
   eyebrow?: T;
   status?: T;
+  published?: T;
   type?: T;
   role?: T;
   focus?: T;

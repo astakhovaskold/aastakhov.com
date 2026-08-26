@@ -1,8 +1,7 @@
-import config from '@payload-config'
-import { getPayload } from 'payload'
 
 import { ProjectList } from '@/components/site/project-list'
 import { SectionHeader } from '@/components/site/section-header'
+import { getPublishedProjects } from '@/lib/projects'
 import { getSiteSettings } from '@/lib/siteSettings'
 import type { Media, Project } from '@/payload-types'
 
@@ -65,20 +64,12 @@ function formatProjectTitle(project: ProjectSummary): string {
 }
 
 async function getProjects(): Promise<ProjectSummary[]> {
-  if (process.env.NEXT_PHASE === 'phase-production-build') {
-    return []
-  }
+  const projects = await getPublishedProjects({
+    depth: 1,
+    sort: ['order', '-year', '-startedAt', '-updatedAt'],
+  })
 
-  try {
-    const payload = await getPayload({ config })
-    const projects = await payload.find({
-      collection: 'projects',
-      depth: 1,
-      limit: 100,
-      sort: ['order', '-year', '-startedAt', '-updatedAt'],
-    })
-
-    return projects.docs.map((project) => ({
+  return projects.map((project) => ({
       id: project.id,
       title: project.title,
       slug: project.slug,
@@ -89,10 +80,7 @@ async function getProjects(): Promise<ProjectSummary[]> {
       startedAt: project.startedAt,
       updatedAt: project.updatedAt,
       previewImage: isMedia(project.previewImage) ? project.previewImage : null,
-    }))
-  } catch {
-    return []
-  }
+  }))
 }
 
 export default async function ProjectsPage() {
