@@ -3,6 +3,7 @@ import type { Metadata } from 'next'
 import { AnalyticsLink } from '@/components/site/analytics-link'
 import { analyticsEventNames, getContactLinkEvent } from '@/lib/analytics'
 import { getCV } from '@/lib/cv'
+import { createSeoMetadata } from '@/lib/seo'
 import { getSiteSettings } from '@/lib/siteSettings'
 
 type ContactItem = {
@@ -160,13 +161,15 @@ function splitName(value: null | string | undefined): string[] {
 }
 
 export async function generateMetadata(): Promise<Metadata> {
-  const cv = await getCV()
+  const [cv, settings] = await Promise.all([getCV(), getSiteSettings()])
   const titleParts = [cv?.name || 'CV', cv?.role || null].filter(Boolean)
 
-  return {
+  return createSeoMetadata({
+    canonicalPath: '/cv',
     description: cv?.summary || 'Professional profile and CV.',
+    settings,
     title: titleParts.join(' - '),
-  }
+  })
 }
 
 export default async function CVPage() {
