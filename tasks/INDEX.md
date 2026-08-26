@@ -164,7 +164,7 @@
 
 # Phase 4 — Shared implementation
 
-* [ ] **15 — Shared components**
+* [x] **15 — Shared components**
   Path: `15-shared-components/task.md`
   Goal: ProjectList, PostList, OpenSourceList, ContactLinks и переиспользуемые item-компоненты.
 
@@ -251,6 +251,7 @@
 - 2026-08-26 — Completed 12-post-category-page: added `/posts/category/:slug` with slug-to-category mapping, 404 handling for invalid categories, shared category nav/list reuse, and category-specific headers; checks: eslint, tsc --noEmit, build.
 - 2026-08-26 — Completed 13-post-detail: added `/posts/:slug` with published-only slug lookup, zero-design detail header, optional cover image, rich content renderer, and adjacent navigation/back link; checks: eslint, tsc --noEmit, build.
 - 2026-08-26 — Completed 14-cv-page: rebuilt `/cv` to match the mockup structure, moved public CV contacts to `SiteSettings`, added CV-specific profile/expertise fields, and kept empty sections hidden; checks: generate:types, eslint, tsc --noEmit, build.
+- 2026-08-26 — Completed 15-shared-components: extracted reusable `SectionHeader`, `ContactLinks`, `ProjectList`, `PostList`, and `OpenSourceList` item/list components, then reused them on `/`, `/projects`, `/posts`, and `/posts/category/:slug`; checks: eslint, build. `tsc --noEmit` still fails on existing `.next/types` include mismatch in `tsconfig.json`.
 
 Пиши сюда выполненные шаги.
 

@@ -1,8 +1,8 @@
 import config from '@payload-config'
-import Image from 'next/image'
-import Link from 'next/link'
 import { getPayload } from 'payload'
 
+import { ProjectList } from '@/components/site/project-list'
+import { SectionHeader } from '@/components/site/section-header'
 import type { Media, Project } from '@/payload-types'
 
 type ProjectSummary = Pick<
@@ -94,48 +94,6 @@ async function getProjects(): Promise<ProjectSummary[]> {
   }
 }
 
-function ProjectList(props: { items: ProjectSummary[] }) {
-  const { items } = props
-
-  return (
-    <div className="rows">
-      {items.map((project) => {
-        const image = project.previewImage?.url
-          ? {
-              alt: project.previewImage.alt || project.title,
-              height: project.previewImage.height || 720,
-              src: project.previewImage.url,
-              width: project.previewImage.width || 1280,
-            }
-          : null
-
-        return (
-          <Link className="row row-link" href={`/projects/${project.slug}`} key={project.id}>
-            <span className="project-row-main">
-              {image ? (
-                <Image
-                  alt={image.alt}
-                  className="project-row-image"
-                  height={image.height}
-                  src={image.src}
-                  width={image.width}
-                />
-              ) : null}
-
-              <span>
-                <span className="row-title">{formatProjectTitle(project)}</span>
-                <span className="row-desc">{project.description}</span>
-              </span>
-            </span>
-
-            <span className="row-meta">{formatProjectMeta(project)}</span>
-          </Link>
-        )
-      })}
-    </div>
-  )
-}
-
 export default async function ProjectsPage() {
   const projects = await getProjects()
 
@@ -151,13 +109,14 @@ export default async function ProjectsPage() {
       </section>
 
       <section className="section" id="projects-list">
-        <div className="section-header">
-          <h2 className="section-title">All projects</h2>
-          <span className="section-link">Archived and future items stay in the list.</span>
-        </div>
+        <SectionHeader action={<span className="section-link">Archived and future items stay in the list.</span>} title="All projects" />
 
         {projects.length > 0 ? (
-          <ProjectList items={projects} />
+          <ProjectList
+            getMeta={formatProjectMeta}
+            getTitle={formatProjectTitle}
+            items={projects}
+          />
         ) : (
           <p>No projects published yet.</p>
         )}

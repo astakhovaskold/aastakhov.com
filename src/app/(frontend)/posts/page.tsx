@@ -1,4 +1,6 @@
-import { PostCategoryNav, PostIndexList } from '@/components/site/post-index-list'
+import { PostList } from '@/components/site/post-list'
+import { PostCategoryNav } from '@/components/site/post-index-list'
+import { SectionHeader } from '@/components/site/section-header'
 import { getPostsIndexPageData } from '@/lib/posts-index'
 
 export default async function PostsPage() {
@@ -15,19 +17,15 @@ export default async function PostsPage() {
       </section>
 
       <section className="section" id="post-categories">
-        <div className="section-header">
-          <h2 className="section-title">Categories</h2>
-        </div>
+        <SectionHeader title="Categories" />
 
         <PostCategoryNav categoryLinks={categoryLinks} currentSlug={null} />
       </section>
 
       <section className="section" id="posts-list">
-        <div className="section-header">
-          <h2 className="section-title">All posts</h2>
-        </div>
+        <SectionHeader title="All posts" />
 
-        {posts.length > 0 ? <PostIndexList items={posts} /> : <p>No posts published yet.</p>}
+        {posts.length > 0 ? <PostList items={posts} /> : <p>No posts published yet.</p>}
       </section>
     </>
   )

@@ -1,11 +1,7 @@
-import Image from 'next/image'
 import Link from 'next/link'
 
-import {
-  formatPostMeta,
-  type PostCategoryLink,
-  type PostListItem,
-} from '@/lib/posts-index'
+import type { PostCategoryLink, PostListItem as PostListEntry } from '@/lib/posts-index'
+import { PostList } from '@/components/site/post-list'
 
 function isActiveCategory(currentSlug: null | string, linkSlug: string): boolean {
   return currentSlug === linkSlug
@@ -41,44 +37,6 @@ export function PostCategoryNav(props: {
   )
 }
 
-export function PostIndexList(props: { items: PostListItem[] }) {
-  const { items } = props
-
-  return (
-    <div className="post-list">
-      {items.map((post) => {
-        const image = post.previewImage?.url
-          ? {
-              alt: post.previewImage.alt || post.title,
-              height: post.previewImage.height || 86,
-              src: post.previewImage.url,
-              width: post.previewImage.width || 128,
-            }
-          : null
-
-        return (
-          <Link className="post-item" href={`/posts/${post.slug}`} key={post.id}>
-            {image ? (
-              <Image
-                alt={image.alt}
-                className="post-preview"
-                height={image.height}
-                src={image.src}
-                width={image.width}
-              />
-            ) : (
-              <span aria-hidden="true" className="post-preview post-preview-placeholder" />
-            )}
-
-            <span>
-              <span className="post-title">{post.title}</span>
-              <span className="post-desc">{post.description}</span>
-            </span>
-
-            <span className="post-meta">{formatPostMeta(post)}</span>
-          </Link>
-        )
-      })}
-    </div>
-  )
+export function PostIndexList(props: { items: PostListEntry[] }) {
+  return <PostList items={props.items} />
 }

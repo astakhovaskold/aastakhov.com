@@ -1,6 +1,8 @@
 import { notFound } from 'next/navigation'
 
-import { PostCategoryNav, PostIndexList } from '@/components/site/post-index-list'
+import { PostList } from '@/components/site/post-list'
+import { PostCategoryNav } from '@/components/site/post-index-list'
+import { SectionHeader } from '@/components/site/section-header'
 import {
   getPostCategoryBySlug,
   getPostCategoryLinks,
@@ -36,19 +38,15 @@ export default async function PostCategoryPage({ params }: PostCategoryPageProps
       </section>
 
       <section className="section" id="post-categories">
-        <div className="section-header">
-          <h2 className="section-title">Categories</h2>
-        </div>
+        <SectionHeader title="Categories" />
 
         <PostCategoryNav categoryLinks={categoryLinks} currentSlug={category.slug} />
       </section>
 
       <section className="section" id="posts-list">
-        <div className="section-header">
-          <h2 className="section-title">{category.label}</h2>
-        </div>
+        <SectionHeader title={category.label} />
 
-        {posts.length > 0 ? <PostIndexList items={posts} /> : <p>No posts published yet.</p>}
+        {posts.length > 0 ? <PostList items={posts} /> : <p>No posts published yet.</p>}
       </section>
     </>
   )

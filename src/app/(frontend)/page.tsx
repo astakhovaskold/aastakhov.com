@@ -4,7 +4,11 @@ import Link from 'next/link'
 import React from 'react'
 import { getPayload } from 'payload'
 
-import { getPostCategoryLabel } from '@/lib/posts-index'
+import { ContactLinks } from '@/components/site/contact-links'
+import { OpenSourceList } from '@/components/site/open-source-list'
+import { PostList } from '@/components/site/post-list'
+import { ProjectList } from '@/components/site/project-list'
+import { SectionHeader } from '@/components/site/section-header'
 import { getSiteSettings, type PublicSiteSettings } from '@/lib/siteSettings'
 import type { OpenSource, Post, Project } from '@/payload-types'
 import './styles.css'
@@ -146,84 +150,6 @@ async function getHomeContent(settings: PublicSiteSettings): Promise<HomeContent
   }
 }
 
-function formatPostMeta(post: Post): string {
-  const parts: string[] = [getPostCategoryLabel(post.postCategory)].filter(Boolean)
-
-  if (post.publishedAt) {
-    const date = new Date(post.publishedAt)
-
-    if (!Number.isNaN(date.valueOf())) {
-      parts.push(
-        new Intl.DateTimeFormat('en', {
-          month: 'short',
-          year: 'numeric',
-        }).format(date),
-      )
-    }
-  }
-
-  if (post.readingTime) {
-    parts.push(`${post.readingTime} min`)
-  }
-
-  return parts.join(' / ')
-}
-
-function RowList(props: {
-  items: Project[]
-  getHref: (item: Project) => string
-  getMeta: (item: Project) => string
-}) {
-  const { items, getHref, getMeta } = props
-
-  return (
-    <div className="rows">
-      {items.map((item) => (
-        <Link className="row row-link" href={getHref(item)} key={item.id}>
-          <span>
-            <span className="row-title">{item.title}</span>
-            <span className="row-desc">{item.description}</span>
-          </span>
-          <span className="row-meta">{getMeta(item)}</span>
-        </Link>
-      ))}
-    </div>
-  )
-}
-
-function PostList(props: { items: Post[] }) {
-  const { items } = props
-
-  return (
-    <div className="blog-list">
-      {items.map((post) => (
-        <Link className="blog-item" href={`/posts/${post.slug}`} key={post.id}>
-          <span className="blog-title">{post.title}</span>
-          <span className="blog-meta">{formatPostMeta(post)}</span>
-        </Link>
-      ))}
-    </div>
-  )
-}
-
-function OpenSourceList(props: { items: OpenSource[] }) {
-  const { items } = props
-
-  return (
-    <div className="oss-list">
-      {items.map((item) => (
-        <a className="oss-item" href={item.articleUrl || item.githubUrl} key={item.id}>
-          <span>
-            <span className="oss-title">{item.name}</span>
-            <span className="oss-desc">{item.description}</span>
-          </span>
-          <span className="oss-meta">{item.stars ? `${item.stars} stars` : 'GitHub'}</span>
-        </a>
-      ))}
-    </div>
-  )
-}
-
 export default async function HomePage() {
   const settings = await getSiteSettings()
   const content = await getHomeContent(settings)
@@ -283,50 +209,36 @@ export default async function HomePage() {
 
       {content.projects.length > 0 ? (
         <section className="section" id="projects">
-          <div className="section-header">
-            <h2 className="section-title">Selected projects</h2>
-            <Link className="section-link" href="/projects">
-              All projects
-            </Link>
-          </div>
+          <SectionHeader action={{ href: '/projects', label: 'All projects' }} title="Selected projects" />
 
-          <RowList
-            getHref={(project) => `/projects/${project.slug}`}
+          <ProjectList
             getMeta={(project) => [project.role, project.year].filter(Boolean).join(' / ')}
             items={content.projects}
+            showImages={false}
           />
         </section>
       ) : null}
 
       {content.featuredPosts.length > 0 ? (
         <section className="section" id="featured-posts">
-          <div className="section-header">
-            <h2 className="section-title">{content.featuredPostsHeading || 'Selected posts'}</h2>
-            {content.featuredPostsCategoryHref ? (
-              <Link className="section-link" href={content.featuredPostsCategoryHref}>
-                All in category
-              </Link>
-            ) : (
-              <Link className="section-link" href="/posts">
-                All posts
-              </Link>
-            )}
-          </div>
+          <SectionHeader
+            action={{
+              href: content.featuredPostsCategoryHref || '/posts',
+              label: content.featuredPostsCategoryHref ? 'All in category' : 'All posts',
+            }}
+            title={content.featuredPostsHeading || 'Selected posts'}
+          />
 
-          <PostList items={content.featuredPosts} />
+          <PostList items={content.featuredPosts} showImages={false} />
         </section>
       ) : null}
 
       {content.openSource.length > 0 ? (
         <section className="section" id="open-source">
-          <div className="section-header">
-            <h2 className="section-title">Open Source</h2>
-            {settings.github ? (
-              <a className="section-link" href={settings.github}>
-                GitHub
-              </a>
-            ) : null}
-          </div>
+          <SectionHeader
+            action={settings.github ? { href: settings.github, label: 'GitHub' } : undefined}
+            title="Open Source"
+          />
 
           <OpenSourceList items={content.openSource} />
         </section>
@@ -334,28 +246,15 @@ export default async function HomePage() {
 
       {content.blogPosts.length > 0 ? (
         <section className="section" id="blog">
-          <div className="section-header">
-            <h2 className="section-title">From the blog</h2>
-            <Link className="section-link" href="/posts">
-              All posts
-            </Link>
-          </div>
+          <SectionHeader action={{ href: '/posts', label: 'All posts' }} title="From the blog" />
 
-          <PostList items={content.blogPosts} />
+          <PostList items={content.blogPosts} showImages={false} />
         </section>
       ) : null}
 
       <section className="section" id="contact">
-        <div className="section-header">
-          <h2 className="section-title">Contacts</h2>
-        </div>
-        <div className="contact-links">
-          {contactLinks.map((link) => (
-            <a href={link.href} key={link.label}>
-              {link.label} →
-            </a>
-          ))}
-        </div>
+        <SectionHeader title="Contacts" />
+        <ContactLinks links={contactLinks} />
       </section>
     </>
   )

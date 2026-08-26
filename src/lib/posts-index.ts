@@ -78,10 +78,13 @@ export function formatPostDate(value: string | null | undefined): string | null 
   }).format(date)
 }
 
-export function formatPostMeta(
-  post: Pick<PostListItem, 'postCategory' | 'publishedAt' | 'readingTime' | 'language'>,
-): string {
-  const parts = [getPostCategoryLabel(post.postCategory)]
+export function formatPostMeta(post: {
+  language: string
+  postCategory: null | Post['postCategory'] | undefined
+  publishedAt?: null | string
+  readingTime?: null | number
+}): string {
+  const parts = [getPostCategoryLabel(post.postCategory || null)]
   const date = formatPostDate(post.publishedAt)
 
   if (date) {
