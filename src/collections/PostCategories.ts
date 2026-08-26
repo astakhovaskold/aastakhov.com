@@ -43,6 +43,13 @@ export const PostCategories: CollectionConfig = {
       },
     },
     {
+      name: 'eyebrow',
+      type: 'text',
+      admin: {
+        description: 'Optional eyebrow shown on the category page.',
+      },
+    },
+    {
       name: 'order',
       type: 'number',
       defaultValue: 10,

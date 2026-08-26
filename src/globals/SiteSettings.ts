@@ -56,6 +56,27 @@ export const SiteSettings: GlobalConfig = {
       defaultValue: 'Available for selected projects',
     },
     {
+      name: 'homeEyebrow',
+      type: 'text',
+      admin: {
+        description: 'Optional eyebrow shown on the home page hero.',
+      },
+    },
+    {
+      name: 'projectsEyebrow',
+      type: 'text',
+      admin: {
+        description: 'Optional eyebrow shown on the projects index page.',
+      },
+    },
+    {
+      name: 'postsEyebrow',
+      type: 'text',
+      admin: {
+        description: 'Optional eyebrow shown on the posts index page.',
+      },
+    },
+    {
       name: 'bookingUrl',
       type: 'text',
     },

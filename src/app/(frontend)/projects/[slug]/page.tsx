@@ -1,14 +1,11 @@
-import Link from 'next/link'
 import { notFound } from 'next/navigation'
 
 import {
-  ProjectDetailBody,
   ProjectDetailContacts,
   ProjectDetailContent,
   ProjectDetailCover,
   ProjectDetailMeta,
   ProjectDetailRelatedPosts,
-  ProjectDetailStack,
 } from '@/components/site/project-detail-content'
 import { getProjectDetailBySlug } from '@/lib/project-detail'
 import { getSiteSettings } from '@/lib/siteSettings'
@@ -21,7 +18,7 @@ type ProjectDetailPageProps = {
 
 export default async function ProjectDetailPage({ params }: ProjectDetailPageProps) {
   const { slug } = await params
-  const [{ project, relatedPosts }, settings] = await Promise.all([
+  const [{ project, relatedWriting, selectedCaseNotes }, settings] = await Promise.all([
     getProjectDetailBySlug(slug),
     getSiteSettings(),
   ])
@@ -41,32 +38,24 @@ export default async function ProjectDetailPage({ params }: ProjectDetailPagePro
 
   return (
     <>
-      <section className="hero">
-        <ProjectDetailStack>
-          <p className="eyebrow">Project detail</p>
-          <ProjectDetailBody>
-            <h1>{project.title}</h1>
-            <p className="lede">{project.description}</p>
-            <ProjectDetailMeta project={project} />
-            <nav className="topic-links" aria-label="Project navigation">
-              <Link href="/projects">All projects</Link>
-              {relatedPosts.length > 0 ? <a href="#related-posts">Related posts</a> : null}
-              {contactLinks.length > 0 ? <a href="#contact">Contact</a> : null}
-            </nav>
-          </ProjectDetailBody>
-        </ProjectDetailStack>
-      </section>
+      <article className="project-detail">
+        <header className="project-detail-header">
+          {project.eyebrow ? <p className="eyebrow">{project.eyebrow}</p> : null}
+          <h1 className="project-detail-title">{project.title}</h1>
+          <p className="project-detail-subtitle">{project.description}</p>
+          <ProjectDetailMeta project={project} />
+        </header>
 
-      {hasProjectBody ? (
-        <section className="section" id="project">
-          <ProjectDetailStack>
+        {hasProjectBody ? (
+          <>
             <ProjectDetailCover project={project} />
             <ProjectDetailContent project={project} />
-          </ProjectDetailStack>
-        </section>
-      ) : null}
+          </>
+        ) : null}
+      </article>
 
-      <ProjectDetailRelatedPosts posts={relatedPosts} />
+      <ProjectDetailRelatedPosts posts={selectedCaseNotes} title="Selected case notes" />
+      <ProjectDetailRelatedPosts posts={relatedWriting} title="Related writing" />
       <ProjectDetailContacts links={contactLinks} />
     </>
   )

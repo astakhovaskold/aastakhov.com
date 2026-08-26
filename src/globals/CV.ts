@@ -25,6 +25,13 @@ export const CV: GlobalConfig = {
       },
     },
     {
+      name: 'eyebrow',
+      type: 'text',
+      admin: {
+        description: 'Optional eyebrow shown above the CV title.',
+      },
+    },
+    {
       name: 'role',
       type: 'text',
       admin: {

@@ -44,7 +44,7 @@ export default async function PostDetailPage({ params }: PostDetailPageProps) {
     <>
       <section className="hero">
         <div className="post-detail-shell">
-          <p className="eyebrow">Post detail</p>
+          {post.eyebrow ? <p className="eyebrow">{post.eyebrow}</p> : null}
           <PostDetailHeader post={post} />
         </div>
       </section>

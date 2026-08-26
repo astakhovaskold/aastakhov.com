@@ -1,11 +1,7 @@
 import Link from 'next/link'
-import React from 'react'
-
 import { ContentRenderer } from '@/components/site/content-renderer'
 import { getPostCategoryLabel } from '@/lib/posts-index'
 import type { Media, Post, Project } from '@/payload-types'
-
-const sectionStackStyle: React.CSSProperties = { display: 'flex', flexDirection: 'column', gap: '24px' }
 
 function isMedia(value: number | Media | null | undefined): value is Media {
   return typeof value === 'object' && value !== null
@@ -37,21 +33,21 @@ export function ProjectDetailMeta(props: { project: Project }) {
   const items = [
     project.status ? { label: 'Status', value: project.status } : null,
     project.role ? { label: 'Role', value: project.role } : null,
-    project.type ? { label: 'Type', value: project.type } : null,
     date ? { label: project.year ? 'Year' : 'Started', value: date } : null,
-    project.externalUrl ? { label: 'External', value: project.externalUrl } : null,
+    project.focus ? { label: 'Focus', value: project.focus } : null,
+    project.externalUrl ? { label: 'Project link', value: project.externalUrl } : null,
   ].filter((item): item is { label: string; value: string } => Boolean(item))
   if (items.length === 0) return null
 
   return (
-    <div className="project-meta-grid">
+    <dl className="project-meta-grid" aria-label="Project details">
       {items.map((item) => (
-        <div key={item.label}>
-          <p className="project-meta-label">{item.label}</p>
-          {item.label === 'External' ? <a href={item.value}>{item.value}</a> : <p>{item.value}</p>}
+        <div className="project-meta-item" key={item.label}>
+          <dt>{item.label}</dt>
+          <dd>{item.label === 'Project link' ? <a href={item.value}>{item.value}</a> : item.value}</dd>
         </div>
       ))}
-    </div>
+    </dl>
   )
 }
 
@@ -71,20 +67,25 @@ export function ProjectDetailContent(props: { project: Project }) {
   return <ContentRenderer content={props.project.content} />
 }
 
-export function ProjectDetailRelatedPosts(props: { posts: Post[] }) {
-  const { posts } = props
+export function ProjectDetailRelatedPosts(props: { posts: Post[]; title: string }) {
+  const { posts, title } = props
   if (posts.length === 0) return null
+  const headingId = title.toLowerCase().replace(/\s+/g, '-')
+
   return (
-    <section className="section" id="related-posts">
+    <section className="project-detail-section" aria-labelledby={headingId}>
       <div className="section-header">
-        <h2 className="section-title">Related posts</h2>
-        <Link className="section-link" href="/posts">All posts</Link>
+        <h2 className="section-title" id={headingId}>{title}</h2>
+        <Link className="section-link" href="/posts">All posts →</Link>
       </div>
-      <div className="project-related-list">
+      <div className="rows">
         {posts.map((post) => (
-          <Link className="blog-item" href={`/posts/${post.slug}`} key={post.id}>
-            <span><span className="blog-title">{post.title}</span><span className="row-desc">{post.description}</span></span>
-            <span className="blog-meta">{formatPostMeta(post)}</span>
+          <Link className="row row-link" href={`/posts/${post.slug}`} key={post.id}>
+            <span>
+              <span className="row-title">{post.title}</span>
+              <span className="row-desc">{post.description}</span>
+            </span>
+            <span className="row-meta">{formatPostMeta(post)}</span>
           </Link>
         ))}
       </div>
@@ -96,19 +97,14 @@ export function ProjectDetailContacts(props: { links: Array<{ href: string; labe
   const { links } = props
   if (links.length === 0) return null
   return (
-    <section className="section" id="contact">
-      <div className="section-header"><h2 className="section-title">Contact</h2></div>
+    <section className="project-next-step" id="contact">
+      <p>
+        If the project direction is relevant to your company, the simplest next step is a short
+        conversation about the system, risks, and current technical bottlenecks.
+      </p>
       <div className="contact-links">
         {links.map((link) => <a href={link.href} key={link.label}>{link.label} →</a>)}
       </div>
     </section>
   )
-}
-
-export function ProjectDetailBody(props: { children: React.ReactNode }) {
-  return <div className="project-detail-body">{props.children}</div>
-}
-
-export function ProjectDetailStack(props: { children: React.ReactNode }) {
-  return <div style={sectionStackStyle}>{props.children}</div>
 }

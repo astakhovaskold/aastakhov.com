@@ -32,7 +32,6 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
               <Link href="/projects">Projects</Link>
               <Link href="/posts">Posts</Link>
               <Link href="/cv">CV</Link>
-              <a href={`mailto:${settings.email}`}>Contact</a>
             </nav>
           </header>
 

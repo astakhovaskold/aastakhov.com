@@ -3,6 +3,7 @@ import { getPayload } from 'payload'
 
 import { ProjectList } from '@/components/site/project-list'
 import { SectionHeader } from '@/components/site/section-header'
+import { getSiteSettings } from '@/lib/siteSettings'
 import type { Media, Project } from '@/payload-types'
 
 type ProjectSummary = Pick<
@@ -95,12 +96,12 @@ async function getProjects(): Promise<ProjectSummary[]> {
 }
 
 export default async function ProjectsPage() {
-  const projects = await getProjects()
+  const [projects, settings] = await Promise.all([getProjects(), getSiteSettings()])
 
   return (
     <>
       <section className="hero">
-        <p className="eyebrow">Projects index</p>
+        {settings.projectsEyebrow ? <p className="eyebrow">{settings.projectsEyebrow}</p> : null}
         <h1>Projects</h1>
         <p className="lede">
           Products, companies, websites, concepts, experiments, and future initiatives. This is

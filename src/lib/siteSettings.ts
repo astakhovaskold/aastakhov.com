@@ -12,6 +12,9 @@ export type PublicSiteSettings = {
   github?: string
   location: string
   availability: string
+  homeEyebrow?: string
+  projectsEyebrow?: string
+  postsEyebrow?: string
   bookingUrl?: string
   featuredPostsCategory?: null | PostCategory
   seo: {
@@ -71,6 +74,9 @@ export async function getSiteSettings(): Promise<PublicSiteSettings> {
       github: optionalString(settings.github),
       location: settings.location || fallbackSiteSettings.location,
       availability: settings.availability || fallbackSiteSettings.availability,
+      homeEyebrow: optionalString(settings.homeEyebrow),
+      projectsEyebrow: optionalString(settings.projectsEyebrow),
+      postsEyebrow: optionalString(settings.postsEyebrow),
       bookingUrl: optionalString(settings.bookingUrl),
       featuredPostsCategory: optionalPostCategory(settings.featuredPostsCategory),
       seo: {

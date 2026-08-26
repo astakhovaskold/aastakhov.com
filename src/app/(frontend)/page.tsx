@@ -166,23 +166,12 @@ export default async function HomePage() {
     { href: '/cv', label: 'CV' },
   ].filter((link): link is { href: string; label: string } => Boolean(link))
 
-  const eyebrow = (() => {
-    const {location, availability} = settings;
-
-    if (!location && !availability) return '';
-    if (!location) return availability;
-
-    return `${location} · ${availability}`;
-  })();
-
   return (
     <>
       <section className="hero">
         <div className="hero-grid">
           <div>
-            <p className="eyebrow">
-              {eyebrow}
-            </p>
+            {settings.homeEyebrow ? <p className="eyebrow">{settings.homeEyebrow}</p> : null}
             <h1>Builder and technical partner.</h1>
             <p className="lede">
               I help turn complex product and engineering problems into pragmatic software:

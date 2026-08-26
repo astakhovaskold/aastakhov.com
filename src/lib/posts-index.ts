@@ -5,6 +5,7 @@ import type { Media, Post, PostCategory } from '@/payload-types'
 
 export type PostCategoryLink = {
   description?: null | string
+  eyebrow?: null | string
   href: string
   id: number
   label: string
@@ -38,6 +39,7 @@ export function isPostCategory(
 function mapCategoryLink(category: PostCategory): PostCategoryLink {
   return {
     description: category.description,
+    eyebrow: category.eyebrow,
     href: `/posts/category/${category.slug}`,
     id: category.id,
     label: category.title,

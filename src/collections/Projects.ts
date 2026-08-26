@@ -45,6 +45,13 @@ export const Projects: CollectionConfig = {
       required: true,
     },
     {
+      name: 'eyebrow',
+      type: 'text',
+      admin: {
+        description: 'Optional eyebrow shown on the project detail page.',
+      },
+    },
+    {
       name: 'status',
       type: 'select',
       defaultValue: 'active',
@@ -63,6 +70,13 @@ export const Projects: CollectionConfig = {
       type: 'text',
       admin: {
         description: 'Short role label, e.g. Founder, Technical partner, Architect.',
+      },
+    },
+    {
+      name: 'focus',
+      type: 'textarea',
+      admin: {
+        description: 'Optional focus line shown in the project detail metadata.',
       },
     },
     {
@@ -131,6 +145,24 @@ export const Projects: CollectionConfig = {
           required: true,
         },
       ],
+    },
+    {
+      name: 'selectedCaseNotes',
+      type: 'relationship',
+      relationTo: 'posts',
+      hasMany: true,
+      admin: {
+        description: 'Optional, manually selected posts for the Selected case notes section.',
+      },
+    },
+    {
+      name: 'relatedWriting',
+      type: 'relationship',
+      relationTo: 'posts',
+      hasMany: true,
+      admin: {
+        description: 'Optional, manually selected posts for the Related writing section.',
+      },
     },
     {
       name: 'seo',

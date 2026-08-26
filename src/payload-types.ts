@@ -190,12 +190,20 @@ export interface Project {
   generateSlug?: boolean | null;
   slug: string;
   description: string;
+  /**
+   * Optional eyebrow shown on the project detail page.
+   */
+  eyebrow?: string | null;
   status: 'active' | 'in-progress' | 'concept' | 'paused' | 'archived' | 'future';
   type: 'company' | 'product' | 'website' | 'brand' | 'concept' | 'experiment';
   /**
    * Short role label, e.g. Founder, Technical partner, Architect.
    */
   role?: string | null;
+  /**
+   * Optional focus line shown in the project detail metadata.
+   */
+  focus?: string | null;
   startedAt?: string | null;
   year?: number | null;
   previewImage?: (number | null) | Media;
@@ -227,41 +235,19 @@ export interface Project {
         id?: string | null;
       }[]
     | null;
+  /**
+   * Optional, manually selected posts for the Selected case notes section.
+   */
+  selectedCaseNotes?: (number | Post)[] | null;
+  /**
+   * Optional, manually selected posts for the Related writing section.
+   */
+  relatedWriting?: (number | Post)[] | null;
   seo?: {
     title?: string | null;
     description?: string | null;
     image?: (number | null) | Media;
   };
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * Configurable post categories used across the public posts pages.
- *
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "post-categories".
- */
-export interface PostCategory {
-  id: number;
-  title: string;
-  /**
-   * When enabled, the slug will auto-generate from the title field on save and autosave.
-   */
-  generateSlug?: boolean | null;
-  slug: string;
-  /**
-   * Used in post meta and detail header, for example "Case note".
-   */
-  singularLabel: string;
-  /**
-   * Optional introduction for the category page.
-   */
-  description?: string | null;
-  order?: number | null;
-  /**
-   * Controls whether this category appears in the /posts navigation.
-   */
-  showInPostsNavigation?: boolean | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -280,6 +266,10 @@ export interface Post {
   generateSlug?: boolean | null;
   slug: string;
   description: string;
+  /**
+   * Optional eyebrow shown on the post detail page.
+   */
+  eyebrow?: string | null;
   content?: {
     root: {
       type: string;
@@ -319,6 +309,40 @@ export interface Post {
     description?: string | null;
     image?: (number | null) | Media;
   };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Configurable post categories used across the public posts pages.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "post-categories".
+ */
+export interface PostCategory {
+  id: number;
+  title: string;
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  slug: string;
+  /**
+   * Used in post meta and detail header, for example "Case note".
+   */
+  singularLabel: string;
+  /**
+   * Optional introduction for the category page.
+   */
+  description?: string | null;
+  /**
+   * Optional eyebrow shown on the category page.
+   */
+  eyebrow?: string | null;
+  order?: number | null;
+  /**
+   * Controls whether this category appears in the /posts navigation.
+   */
+  showInPostsNavigation?: boolean | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -485,9 +509,11 @@ export interface ProjectsSelect<T extends boolean = true> {
   generateSlug?: T;
   slug?: T;
   description?: T;
+  eyebrow?: T;
   status?: T;
   type?: T;
   role?: T;
+  focus?: T;
   startedAt?: T;
   year?: T;
   previewImage?: T;
@@ -502,6 +528,8 @@ export interface ProjectsSelect<T extends boolean = true> {
         slug?: T;
         id?: T;
       };
+  selectedCaseNotes?: T;
+  relatedWriting?: T;
   seo?:
     | T
     | {
@@ -522,6 +550,7 @@ export interface PostCategoriesSelect<T extends boolean = true> {
   slug?: T;
   singularLabel?: T;
   description?: T;
+  eyebrow?: T;
   order?: T;
   showInPostsNavigation?: T;
   updatedAt?: T;
@@ -536,6 +565,7 @@ export interface PostsSelect<T extends boolean = true> {
   generateSlug?: T;
   slug?: T;
   description?: T;
+  eyebrow?: T;
   content?: T;
   publishedAt?: T;
   language?: T;
@@ -632,6 +662,18 @@ export interface SiteSetting {
   github?: string | null;
   location?: string | null;
   availability?: string | null;
+  /**
+   * Optional eyebrow shown on the home page hero.
+   */
+  homeEyebrow?: string | null;
+  /**
+   * Optional eyebrow shown on the projects index page.
+   */
+  projectsEyebrow?: string | null;
+  /**
+   * Optional eyebrow shown on the posts index page.
+   */
+  postsEyebrow?: string | null;
   bookingUrl?: string | null;
   /**
    * Optional category used for the dedicated featured posts section on the home page.
@@ -657,6 +699,10 @@ export interface Cv {
    * Name displayed on the formal CV page.
    */
   name?: string | null;
+  /**
+   * Optional eyebrow shown above the CV title.
+   */
+  eyebrow?: string | null;
   /**
    * Current professional title or positioning.
    */
@@ -772,6 +818,9 @@ export interface SiteSettingsSelect<T extends boolean = true> {
   github?: T;
   location?: T;
   availability?: T;
+  homeEyebrow?: T;
+  projectsEyebrow?: T;
+  postsEyebrow?: T;
   bookingUrl?: T;
   featuredPostsCategory?: T;
   seo?:
@@ -791,6 +840,7 @@ export interface SiteSettingsSelect<T extends boolean = true> {
  */
 export interface CvSelect<T extends boolean = true> {
   name?: T;
+  eyebrow?: T;
   role?: T;
   location?: T;
   summary?: T;

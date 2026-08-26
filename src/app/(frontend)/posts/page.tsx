@@ -2,14 +2,15 @@ import { PostList } from '@/components/site/post-list'
 import { PostCategoryNav } from '@/components/site/post-index-list'
 import { SectionHeader } from '@/components/site/section-header'
 import { getPostsIndexPageData } from '@/lib/posts-index'
+import { getSiteSettings } from '@/lib/siteSettings'
 
 export default async function PostsPage() {
-  const { categoryLinks, posts } = await getPostsIndexPageData()
+  const [{ categoryLinks, posts }, settings] = await Promise.all([getPostsIndexPageData(), getSiteSettings()])
 
   return (
     <>
       <section className="hero">
-        <p className="eyebrow">Writing and notes</p>
+        {settings.postsEyebrow ? <p className="eyebrow">{settings.postsEyebrow}</p> : null}
         <h1>Posts</h1>
         <p className="lede">
           Writing, notes, case studies, and practical material on building digital products.

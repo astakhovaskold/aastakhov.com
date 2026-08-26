@@ -32,7 +32,7 @@ export default async function PostCategoryPage({ params }: PostCategoryPageProps
   return (
     <>
       <section className="hero">
-        <p className="eyebrow">Posts category</p>
+        {category.eyebrow ? <p className="eyebrow">{category.eyebrow}</p> : null}
         <h1>{category.label}</h1>
         <p className="lede">{category.description || `${category.label} by Askold Astakhov.`}</p>
       </section>

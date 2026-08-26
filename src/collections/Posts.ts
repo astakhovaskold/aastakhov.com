@@ -35,6 +35,13 @@ export const Posts: CollectionConfig = {
       required: true,
     },
     {
+      name: 'eyebrow',
+      type: 'text',
+      admin: {
+        description: 'Optional eyebrow shown on the post detail page.',
+      },
+    },
+    {
       name: 'content',
       type: 'richText',
     },

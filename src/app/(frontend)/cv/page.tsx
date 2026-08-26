@@ -242,7 +242,7 @@ export default async function CVPage() {
   return (
     <>
       <header className="cv-header">
-        <p className="eyebrow">CV · Online resume</p>
+        {hasText(cv?.eyebrow) ? <p className="eyebrow">{cv.eyebrow}</p> : null}
         <h1 className="cv-title">
           {splitName(cv?.name).map((part, index) => (
             <span key={`${part}-${index}`}>

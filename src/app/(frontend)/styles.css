@@ -368,31 +368,57 @@ p {
   font-size: 14px;
 }
 
-.project-detail-body {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  max-width: 680px;
+.project-detail {
+  max-width: 650px;
+  padding-top: 72px;
+}
+
+.project-detail-header {
+  margin-bottom: 48px;
+}
+
+.project-detail-title {
+  max-width: 650px;
+  margin-bottom: 24px;
+  font-size: clamp(48px, 7vw, 72px);
+  line-height: 0.96;
+  letter-spacing: -0.055em;
+}
+
+.project-detail-subtitle {
+  max-width: 650px;
+  font-size: 21px;
+  line-height: 1.48;
+  letter-spacing: -0.018em;
 }
 
 .project-meta-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
-  gap: 10px 24px;
-  max-width: 680px;
+  grid-template-columns: 120px minmax(0, 1fr);
+  gap: 8px 28px;
+  margin-top: 36px;
+  font-size: 14px;
+  line-height: 1.48;
 }
 
-.project-meta-label {
-  margin-bottom: 4px;
+.project-meta-item {
+  display: contents;
+}
+
+.project-meta-grid dt {
   font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
+.project-meta-grid dd {
+  min-width: 0;
+}
+
 .project-cover {
-  width: min(100%, 680px);
-  margin: 0;
+  width: 100%;
+  margin: 0 0 62px;
 }
 
 .project-cover img {
@@ -409,6 +435,7 @@ p {
   font-size: 18px;
   line-height: 1.68;
   letter-spacing: -0.01em;
+  margin-bottom: 80px;
 }
 
 .content-renderer p,
@@ -515,10 +542,21 @@ p {
   opacity: 0.18;
 }
 
-.project-related-list {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
+.project-detail-section {
+  max-width: 650px;
+  margin-bottom: 76px;
+}
+
+.project-next-step {
+  max-width: 650px;
+  margin-bottom: 80px;
+}
+
+.project-next-step p {
+  margin-bottom: 22px;
+  font-size: 21px;
+  line-height: 1.48;
+  letter-spacing: -0.018em;
 }
 
 .post-detail-shell {
@@ -787,6 +825,36 @@ p {
 
   .lede {
     font-size: 18px;
+  }
+
+  .project-detail {
+    padding-top: 54px;
+  }
+
+  .project-detail-title {
+    font-size: clamp(48px, 15vw, 68px);
+  }
+
+  .project-detail-subtitle,
+  .project-next-step p {
+    font-size: 18px;
+  }
+
+  .project-meta-grid {
+    grid-template-columns: 1fr;
+    gap: 1px;
+  }
+
+  .project-meta-item {
+    display: block;
+  }
+
+  .project-meta-item + .project-meta-item {
+    margin-top: 10px;
+  }
+
+  .project-meta-grid dt {
+    margin-bottom: 1px;
   }
 
   .topic-links {
