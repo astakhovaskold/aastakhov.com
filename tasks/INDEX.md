@@ -177,15 +177,15 @@
 
 # Phase 5 — SEO, indexing, analytics
 
-* [ ] **17 — SEO metadata**
+* [x] **17 — SEO metadata**
   Path: `17-seo-metadata/task.md`
   Goal: metadata для всех публичных страниц, fallbacks, Open Graph.
 
-* [ ] **18 — Sitemap and robots**
+* [x] **18 — Sitemap and robots**
   Path: `18-sitemap-robots/task.md`
   Goal: sitemap без unpublished контента, robots.txt, production URL из env.
 
-* [ ] **19 — Analytics adapter**
+* [x] **19 — Analytics adapter**
   Path: `19-analytics-adapter/task.md`
   Goal: no-op analytics adapter и события для кликов/просмотров.
 
@@ -225,12 +225,12 @@
 * [ ] Cases не являются отдельным route, только `Posts.category = case`.
 * [ ] Header/footer используют `SiteSettings`.
 * [ ] Данные не ломают layout при отсутствии картинок.
-* [ ] TypeScript без критических ошибок.
-* [ ] Build проходит.
-* [ ] Lint проходит или задокументированы причины.
-* [ ] Sitemap/robots работают.
-* [ ] Metadata настроена.
-* [ ] Analytics adapter не ломает сайт без env.
+* [x] TypeScript без критических ошибок.
+* [x] Build проходит.
+* [x] Lint проходит или задокументированы причины.
+* [x] Sitemap/robots работают.
+* [x] Metadata настроена.
+* [x] Analytics adapter не ломает сайт без env.
 * [ ] Mobile layout читаемый.
 * [ ] Визуальный стиль соответствует zero design.
 
@@ -253,6 +253,9 @@
 - 2026-08-26 — Completed 14-cv-page: rebuilt `/cv` to match the mockup structure, moved public CV contacts to `SiteSettings`, added CV-specific profile/expertise fields, and kept empty sections hidden; checks: generate:types, eslint, tsc --noEmit, build.
 - 2026-08-26 — Completed 15-shared-components: extracted reusable `SectionHeader`, `ContactLinks`, `ProjectList`, `PostList`, and `OpenSourceList` item/list components, then reused them on `/`, `/projects`, `/posts`, and `/posts/category/:slug`; checks: eslint, build. `tsc --noEmit` still fails on existing `.next/types` include mismatch in `tsconfig.json`.
 - 2026-08-26 — Completed 16-content-renderer: added collection-agnostic Lexical `ContentRenderer` for headings, paragraphs, lists, quotes, code, links, rules, uploads, and optional captions; reused it for project and post detail content; aligned typography with the zero-design reference; checks: eslint, tsc --noEmit, build.
+- 2026-08-26 — Completed 17-seo-metadata: added shared SEO metadata fallbacks, Open Graph, canonical URLs, noindex handling for unpublished detail pages, and CV metadata; checks: tsc --noEmit, lint, build.
+- 2026-08-26 — Completed 18-sitemap-robots: added env-backed sitemap/robots routes, public-only post/project filtering, project publication visibility, and sitemap tests; checks: generate:types, lint, tsc --noEmit, sitemap tests, build.
+- 2026-08-26 — Completed 19-analytics-adapter: added no-op-safe Umami adapter with configured defaults, page view events, contact/booking/CV click tracking, and tracking env examples; checks: lint, tsc --noEmit, build, sitemap tests.
 
 Пиши сюда выполненные шаги.
 
