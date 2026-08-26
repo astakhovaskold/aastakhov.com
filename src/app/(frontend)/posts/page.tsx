@@ -1,8 +1,22 @@
+import type { Metadata } from 'next'
+
 import { PostList } from '@/components/site/post-list'
 import { PostCategoryNav } from '@/components/site/post-index-list'
 import { SectionHeader } from '@/components/site/section-header'
+import { createSeoMetadata } from '@/lib/seo'
 import { getPostsIndexPageData } from '@/lib/posts-index'
 import { getSiteSettings } from '@/lib/siteSettings'
+
+export async function generateMetadata(): Promise<Metadata> {
+  const settings = await getSiteSettings()
+
+  return createSeoMetadata({
+    canonicalPath: '/posts',
+    description: 'Writing, notes, case studies, and practical material on building digital products.',
+    settings,
+    title: 'Posts',
+  })
+}
 
 export default async function PostsPage() {
   const [{ categoryLinks, posts }, settings] = await Promise.all([getPostsIndexPageData(), getSiteSettings()])

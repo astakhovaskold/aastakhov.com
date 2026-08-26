@@ -1,3 +1,4 @@
+import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 
 import {
@@ -8,12 +9,40 @@ import {
   ProjectDetailRelatedPosts,
 } from '@/components/site/project-detail-content'
 import { getProjectDetailBySlug } from '@/lib/project-detail'
+import {
+  createNotFoundMetadata,
+  createSeoMetadata,
+  isPubliclyIndexableEntity,
+} from '@/lib/seo'
 import { getSiteSettings } from '@/lib/siteSettings'
 
 type ProjectDetailPageProps = {
   params: Promise<{
     slug: string
   }>
+}
+
+export async function generateMetadata({ params }: ProjectDetailPageProps): Promise<Metadata> {
+  const { slug } = await params
+  const [{ project }, settings] = await Promise.all([
+    getProjectDetailBySlug(slug),
+    getSiteSettings(),
+  ])
+  const canonicalPath = `/projects/${slug}`
+
+  if (!project || !isPubliclyIndexableEntity(project)) {
+    return createNotFoundMetadata({
+      canonicalPath,
+      resource: 'Project',
+      settings,
+    })
+  }
+
+  return createSeoMetadata({
+    canonicalPath,
+    entity: project,
+    settings,
+  })
 }
 
 export default async function ProjectDetailPage({ params }: ProjectDetailPageProps) {
@@ -23,7 +52,7 @@ export default async function ProjectDetailPage({ params }: ProjectDetailPagePro
     getSiteSettings(),
   ])
 
-  if (!project) {
+  if (!project || !isPubliclyIndexableEntity(project)) {
     notFound()
   }
 

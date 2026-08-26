@@ -1,3 +1,4 @@
+import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 
 import { PostList } from '@/components/site/post-list'
@@ -8,11 +9,38 @@ import {
   getPostCategoryLinks,
   getPublishedPosts,
 } from '@/lib/posts-index'
+import { createNotFoundMetadata, createSeoMetadata } from '@/lib/seo'
+import { getSiteSettings } from '@/lib/siteSettings'
 
 type PostCategoryPageProps = {
   params: Promise<{
     slug: string
   }>
+}
+
+export async function generateMetadata({ params }: PostCategoryPageProps): Promise<Metadata> {
+  const { slug } = await params
+  const [allCategoryLinks, settings] = await Promise.all([
+    getPostCategoryLinks({ includeHidden: true }),
+    getSiteSettings(),
+  ])
+  const category = getPostCategoryBySlug(allCategoryLinks, slug)
+  const canonicalPath = `/posts/category/${slug}`
+
+  if (!category) {
+    return createNotFoundMetadata({
+      canonicalPath,
+      resource: 'Category',
+      settings,
+    })
+  }
+
+  return createSeoMetadata({
+    canonicalPath,
+    description: category.description || `${category.label} by Askold Astakhov.`,
+    settings,
+    title: category.label,
+  })
 }
 
 export default async function PostCategoryPage({ params }: PostCategoryPageProps) {

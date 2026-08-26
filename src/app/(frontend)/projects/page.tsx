@@ -1,7 +1,9 @@
+import type { Metadata } from 'next'
 
 import { ProjectList } from '@/components/site/project-list'
 import { SectionHeader } from '@/components/site/section-header'
 import { getPublishedProjects } from '@/lib/projects'
+import { createSeoMetadata } from '@/lib/seo'
 import { getSiteSettings } from '@/lib/siteSettings'
 import type { Media, Project } from '@/payload-types'
 
@@ -10,6 +12,18 @@ type ProjectSummary = Pick<
   'id' | 'title' | 'slug' | 'description' | 'type' | 'status' | 'year' | 'startedAt' | 'updatedAt'
 > & {
   previewImage?: Media | null
+}
+
+export async function generateMetadata(): Promise<Metadata> {
+  const settings = await getSiteSettings()
+
+  return createSeoMetadata({
+    canonicalPath: '/projects',
+    description:
+      'Products, companies, websites, concepts, experiments, and future initiatives. This is an index of projects, not a client portfolio.',
+    settings,
+    title: 'Projects',
+  })
 }
 
 function isMedia(value: Project['previewImage']): value is Media {

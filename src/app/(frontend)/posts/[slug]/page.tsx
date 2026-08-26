@@ -9,6 +9,12 @@ import {
   PostDetailPagination,
 } from '@/components/site/post-detail-content'
 import { getPostDetailBySlug } from '@/lib/post-detail'
+import {
+  createNotFoundMetadata,
+  createSeoMetadata,
+  isPubliclyIndexableEntity,
+} from '@/lib/seo'
+import { getSiteSettings } from '@/lib/siteSettings'
 
 type PostDetailPageProps = {
   params: Promise<{
@@ -18,25 +24,34 @@ type PostDetailPageProps = {
 
 export async function generateMetadata({ params }: PostDetailPageProps): Promise<Metadata> {
   const { slug } = await params
-  const { post } = await getPostDetailBySlug(slug)
+  const [{ post }, settings] = await Promise.all([
+    getPostDetailBySlug(slug),
+    getSiteSettings(),
+  ])
+  const canonicalPath = `/posts/${slug}`
 
-  if (!post) {
-    return {
-      title: 'Post not found',
-    }
+  if (!post || !isPubliclyIndexableEntity(post)) {
+    return createNotFoundMetadata({
+      canonicalPath,
+      resource: 'Post',
+      settings,
+    })
   }
 
-  return {
-    description: post.seo?.description || post.description,
-    title: post.seo?.title || post.title,
-  }
+  return createSeoMetadata({
+    canonicalPath,
+    entity: post,
+    publishedTime: post.publishedAt,
+    settings,
+    type: 'article',
+  })
 }
 
 export default async function PostDetailPage({ params }: PostDetailPageProps) {
   const { slug } = await params
   const { nextPost, post, previousPost } = await getPostDetailBySlug(slug)
 
-  if (!post) {
+  if (!post || !isPubliclyIndexableEntity(post)) {
     notFound()
   }
 
