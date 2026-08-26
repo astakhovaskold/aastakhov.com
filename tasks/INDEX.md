@@ -141,17 +141,17 @@
   Mockups: `10-project-detail/mockups/`
   Goal: универсальная detail-страница проекта, включая Automatica.
 
-* [ ] **11 — Posts index `/posts`**
+* [x] **11 — Posts index `/posts`**
   Path: `11-posts-index/task.md`
   Mockups: `11-posts-index/mockups/`
   Goal: общий индекс материалов с category links.
 
-* [ ] **12 — Post category page `/posts/category/:slug`**
+* [x] **12 — Post category page `/posts/category/:slug`**
   Path: `12-post-category-page/task.md`
   Mockups: `12-post-category-page/mockups/`
   Goal: страницы категорий, особенно `/posts/category/cases` для case notes.
 
-* [ ] **13 — Post detail `/posts/:slug`**
+* [x] **13 — Post detail `/posts/:slug`**
   Path: `13-post-detail/task.md`
   Mockups: `13-post-detail/mockups/`
   Goal: универсальный zero-design renderer для article/case/note/guide/essay.
@@ -216,9 +216,9 @@
 * [ ] `/` работает без ошибок при пустых и заполненных данных.
 * [x] `/projects` работает.
 * [x] `/projects/:slug` отдаёт страницу или 404.
-* [ ] `/posts` работает.
-* [ ] `/posts/category/:slug` работает и отдаёт 404 для неизвестной категории.
-* [ ] `/posts/:slug` отдаёт страницу или 404.
+* [x] `/posts` работает.
+* [x] `/posts/category/:slug` работает и отдаёт 404 для неизвестной категории.
+* [x] `/posts/:slug` отдаёт страницу или 404.
 * [ ] `/cv` работает и скрывает пустые блоки.
 * [ ] Open Source выводится только как блок, без отдельного route.
 * [ ] Services не являются отдельным route.
@@ -247,6 +247,9 @@
 - 2026-08-25 — Completed 07-payload-cv: added CV global with formal profile fields, optional contacts/experience/skills/education/languages sections, optional PDF upload, and public read access; checks: generate:types, lint, build, test:int, local API smoke.
 - 2026-08-26 — Completed 09-projects-index: added `/projects` as a server-rendered zero-design index with Payload sorting, optional preview images, textual status distinction for archived/future items, and links to project detail; checks: eslint, tsc --noEmit, build.
 - 2026-08-26 — Completed 10-project-detail: added generic `/projects/:slug` page with async params, 404 handling, project meta, optional cover, rich content renderer, related posts by relationship or slug fallback, and contact/external links; checks: eslint, build.
+- 2026-08-26 — Completed 11-posts-index: added `/posts` with published-only Payload query, category navigation, shared post list items with optional preview images, and meta for category/date/reading time/language; checks: eslint, tsc --noEmit, build.
+- 2026-08-26 — Completed 12-post-category-page: added `/posts/category/:slug` with slug-to-category mapping, 404 handling for invalid categories, shared category nav/list reuse, and category-specific headers; checks: eslint, tsc --noEmit, build.
+- 2026-08-26 — Completed 13-post-detail: added `/posts/:slug` with published-only slug lookup, zero-design detail header, optional cover image, rich content renderer, and adjacent navigation/back link; checks: eslint, tsc --noEmit, build.
 
 Пиши сюда выполненные шаги.
 
