@@ -111,13 +111,13 @@ function ProjectList(props: { items: ProjectSummary[] }) {
 
         return (
           <Link className="row row-link" href={`/projects/${project.slug}`} key={project.id}>
-            <span style={{ display: 'grid', gap: '14px' }}>
+            <span className="project-row-main">
               {image ? (
                 <Image
                   alt={image.alt}
+                  className="project-row-image"
                   height={image.height}
                   src={image.src}
-                  style={{ maxWidth: '320px', width: '100%' }}
                   width={image.width}
                 />
               ) : null}

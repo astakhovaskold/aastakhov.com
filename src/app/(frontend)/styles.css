@@ -226,6 +226,17 @@ p {
   display: block;
 }
 
+.project-row-main {
+  display: grid;
+  gap: 14px;
+}
+
+.project-row-image {
+  width: min(100%, 320px);
+  height: auto;
+  object-fit: cover;
+}
+
 .row-title {
   margin-bottom: 3px;
   font-size: 17px;
@@ -283,6 +294,108 @@ p {
   flex-wrap: wrap;
   gap: 16px 26px;
   font-size: 14px;
+}
+
+.project-detail-body {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 680px;
+}
+
+.project-meta-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 10px 24px;
+  max-width: 680px;
+}
+
+.project-meta-label {
+  margin-bottom: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.project-cover {
+  width: min(100%, 680px);
+  margin: 0;
+}
+
+.project-cover img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+.project-content {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  max-width: 680px;
+  font-size: 18px;
+  line-height: 1.68;
+  letter-spacing: -0.01em;
+}
+
+.project-content p,
+.project-content li {
+  font-size: inherit;
+  line-height: inherit;
+}
+
+.project-content-h2 {
+  margin-top: 18px;
+  font-size: 28px;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+}
+
+.project-content-h3 {
+  margin-top: 10px;
+  font-size: 22px;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+.project-content ul,
+.project-content ol {
+  padding-left: 22px;
+}
+
+.project-content li + li {
+  margin-top: 8px;
+}
+
+.project-content-quote {
+  padding-left: 16px;
+  border-left: 1px solid currentColor;
+}
+
+.project-content pre {
+  overflow-x: auto;
+  font-size: 13px;
+  line-height: 1.55;
+  white-space: pre;
+}
+
+.project-content code,
+.project-content pre {
+  font-family:
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    Monaco,
+    Consolas,
+    'Liberation Mono',
+    monospace;
+}
+
+.project-related-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
 @media (max-width: 720px) {
@@ -345,6 +458,12 @@ p {
   .row-meta {
     justify-self: start;
     text-align: left;
+  }
+
+  .blog-meta,
+  .oss-meta {
+    justify-self: start;
+    white-space: normal;
   }
 
   .site-footer {

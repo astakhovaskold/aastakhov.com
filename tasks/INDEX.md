@@ -131,12 +131,12 @@
   Mockups: `08-home-page/mockups/`
   Goal: Hero, Selected projects, Selected case notes, Open Source, From the blog, Contacts.
 
-* [ ] **09 — Projects index `/projects`**
+* [x] **09 — Projects index `/projects`**
   Path: `09-projects-index/task.md`
   Mockups: `09-projects-index/mockups/`
   Goal: список проектов, не клиентское портфолио.
 
-* [ ] **10 — Project detail `/projects/:slug`**
+* [x] **10 — Project detail `/projects/:slug`**
   Path: `10-project-detail/task.md`
   Mockups: `10-project-detail/mockups/`
   Goal: универсальная detail-страница проекта, включая Automatica.
@@ -214,8 +214,8 @@
 * [ ] Payload admin доступен.
 * [ ] Все коллекции и globals созданы.
 * [ ] `/` работает без ошибок при пустых и заполненных данных.
-* [ ] `/projects` работает.
-* [ ] `/projects/:slug` отдаёт страницу или 404.
+* [x] `/projects` работает.
+* [x] `/projects/:slug` отдаёт страницу или 404.
 * [ ] `/posts` работает.
 * [ ] `/posts/category/:slug` работает и отдаёт 404 для неизвестной категории.
 * [ ] `/posts/:slug` отдаёт страницу или 404.
@@ -245,6 +245,8 @@
 - 2026-08-25 — Completed 05-payload-posts: added Posts collection for articles, notes, guides, essays, and case notes with category/language enums, publish metadata, home flags, related projects, media, tags, rich content, and SEO fields; checks: generate:types, lint, build, test:int, local API smoke.
 - 2026-08-25 — Completed 06-payload-open-source: added OpenSource collection for homepage credibility items with GitHub/article links, stars, featured/order controls, and no public route; checks: generate:types, lint, build, test:int, local API smoke.
 - 2026-08-25 — Completed 07-payload-cv: added CV global with formal profile fields, optional contacts/experience/skills/education/languages sections, optional PDF upload, and public read access; checks: generate:types, lint, build, test:int, local API smoke.
+- 2026-08-26 — Completed 09-projects-index: added `/projects` as a server-rendered zero-design index with Payload sorting, optional preview images, textual status distinction for archived/future items, and links to project detail; checks: eslint, tsc --noEmit, build.
+- 2026-08-26 — Completed 10-project-detail: added generic `/projects/:slug` page with async params, 404 handling, project meta, optional cover, rich content renderer, related posts by relationship or slug fallback, and contact/external links; checks: eslint, build.
 
 Пиши сюда выполненные шаги.
 

@@ -27,51 +27,6 @@ const sectionStackStyle: React.CSSProperties = {
   gap: '24px',
 }
 
-const bodyStyle: React.CSSProperties = {
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '16px',
-  maxWidth: '680px',
-}
-
-const richTextStyle: React.CSSProperties = {
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '18px',
-  fontSize: '16px',
-  lineHeight: 1.65,
-}
-
-const metaGridStyle: React.CSSProperties = {
-  display: 'grid',
-  gap: '10px 24px',
-  gridTemplateColumns: 'repeat(auto-fit, minmax(170px, 1fr))',
-  maxWidth: '680px',
-}
-
-const metaLabelStyle: React.CSSProperties = {
-  fontSize: '12px',
-  fontWeight: 600,
-  letterSpacing: '0.08em',
-  marginBottom: '4px',
-  textTransform: 'uppercase',
-}
-
-const relatedListStyle: React.CSSProperties = {
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '20px',
-}
-
-const coverStyle: React.CSSProperties = {
-  margin: 0,
-}
-
-const imageStyle: React.CSSProperties = {
-  height: 'auto',
-  width: '100%',
-}
-
 function isMedia(value: number | Media | null | undefined): value is Media {
   return typeof value === 'object' && value !== null
 }
@@ -169,7 +124,10 @@ function renderNode(node: LexicalNode, key: React.Key): React.ReactNode {
       const Tag = (node.tag ?? 'h2') as keyof React.JSX.IntrinsicElements
 
       return (
-        <Tag key={key} style={{ fontSize: Tag === 'h2' ? '28px' : '22px', lineHeight: 1.15 }}>
+        <Tag
+          className={Tag === 'h2' ? 'project-content-h2' : 'project-content-h3'}
+          key={key}
+        >
           {renderChildren(node.children)}
         </Tag>
       )
@@ -177,17 +135,14 @@ function renderNode(node: LexicalNode, key: React.Key): React.ReactNode {
 
     case 'paragraph':
       return (
-        <p key={key} style={{ maxWidth: '680px' }}>
+        <p key={key}>
           {renderChildren(node.children)}
         </p>
       )
 
     case 'quote':
       return (
-        <blockquote
-          key={key}
-          style={{ borderLeft: '1px solid currentColor', margin: 0, paddingLeft: '16px' }}
-        >
+        <blockquote className="project-content-quote" key={key}>
           {renderChildren(node.children)}
         </blockquote>
       )
@@ -196,7 +151,7 @@ function renderNode(node: LexicalNode, key: React.Key): React.ReactNode {
       const ListTag = node.listType === 'number' ? 'ol' : 'ul'
 
       return (
-        <ListTag key={key} style={{ paddingLeft: '20px' }}>
+        <ListTag key={key}>
           {renderChildren(node.children)}
         </ListTag>
       )
@@ -262,10 +217,10 @@ export function ProjectDetailMeta(props: { project: Project }) {
   }
 
   return (
-    <div style={metaGridStyle}>
+    <div className="project-meta-grid">
       {items.map((item) => (
         <div key={item.label}>
-          <p style={metaLabelStyle}>{item.label}</p>
+          <p className="project-meta-label">{item.label}</p>
           {item.label === 'External' ? <a href={item.value}>{item.value}</a> : <p>{item.value}</p>}
         </div>
       ))}
@@ -282,9 +237,9 @@ export function ProjectDetailCover(props: { project: Project }) {
   }
 
   return (
-    <figure style={coverStyle}>
+    <figure className="project-cover">
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img alt={coverImage.alt || project.title} src={coverImage.url} style={imageStyle} />
+      <img alt={coverImage.alt || project.title} src={coverImage.url} />
     </figure>
   )
 }
@@ -297,7 +252,7 @@ export function ProjectDetailContent(props: { project: Project }) {
     return null
   }
 
-  return <div style={richTextStyle}>{renderChildren(nodes)}</div>
+  return <div className="project-content">{renderChildren(nodes)}</div>
 }
 
 export function ProjectDetailRelatedPosts(props: { posts: Post[] }) {
@@ -316,7 +271,7 @@ export function ProjectDetailRelatedPosts(props: { posts: Post[] }) {
         </Link>
       </div>
 
-      <div style={relatedListStyle}>
+      <div className="project-related-list">
         {posts.map((post) => (
           <Link className="blog-item" href={`/posts/${post.slug}`} key={post.id}>
             <span>
@@ -357,7 +312,7 @@ export function ProjectDetailContacts(props: {
 }
 
 export function ProjectDetailBody(props: { children: React.ReactNode }) {
-  return <div style={bodyStyle}>{props.children}</div>
+  return <div className="project-detail-body">{props.children}</div>
 }
 
 export function ProjectDetailStack(props: { children: React.ReactNode }) {
