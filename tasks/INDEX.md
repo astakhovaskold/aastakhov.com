@@ -168,7 +168,7 @@
   Path: `15-shared-components/task.md`
   Goal: ProjectList, PostList, OpenSourceList, ContactLinks и переиспользуемые item-компоненты.
 
-* [ ] **16 — Content renderer**
+* [x] **16 — Content renderer**
   Path: `16-content-renderer/task.md`
   Mockups: `16-content-renderer/mockups/`
   Goal: единый renderer rich content для `/projects/:slug` и `/posts/:slug`.
@@ -252,6 +252,7 @@
 - 2026-08-26 — Completed 13-post-detail: added `/posts/:slug` with published-only slug lookup, zero-design detail header, optional cover image, rich content renderer, and adjacent navigation/back link; checks: eslint, tsc --noEmit, build.
 - 2026-08-26 — Completed 14-cv-page: rebuilt `/cv` to match the mockup structure, moved public CV contacts to `SiteSettings`, added CV-specific profile/expertise fields, and kept empty sections hidden; checks: generate:types, eslint, tsc --noEmit, build.
 - 2026-08-26 — Completed 15-shared-components: extracted reusable `SectionHeader`, `ContactLinks`, `ProjectList`, `PostList`, and `OpenSourceList` item/list components, then reused them on `/`, `/projects`, `/posts`, and `/posts/category/:slug`; checks: eslint, build. `tsc --noEmit` still fails on existing `.next/types` include mismatch in `tsconfig.json`.
+- 2026-08-26 — Completed 16-content-renderer: added collection-agnostic Lexical `ContentRenderer` for headings, paragraphs, lists, quotes, code, links, rules, uploads, and optional captions; reused it for project and post detail content; aligned typography with the zero-design reference; checks: eslint, tsc --noEmit, build.
 
 Пиши сюда выполненные шаги.
 

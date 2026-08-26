@@ -401,59 +401,87 @@ p {
   object-fit: cover;
 }
 
-.project-content {
+.content-renderer {
   display: flex;
   flex-direction: column;
-  gap: 18px;
-  max-width: 680px;
+  gap: 0;
+  max-width: 650px;
   font-size: 18px;
   line-height: 1.68;
   letter-spacing: -0.01em;
 }
 
-.project-content p,
-.project-content li {
+.content-renderer p,
+.content-renderer li {
   font-size: inherit;
   line-height: inherit;
 }
 
-.project-content-h2 {
-  margin-top: 18px;
+.content-renderer p {
+  margin-bottom: 26px;
+}
+
+.content-renderer h1,
+.content-renderer h2,
+.content-renderer h3,
+.content-renderer h4,
+.content-renderer h5,
+.content-renderer h6 {
+  max-width: none;
+  font-weight: 600;
+}
+
+.content-renderer h1,
+.content-renderer h2 {
+  margin: 56px 0 18px;
   font-size: 28px;
   line-height: 1.1;
   letter-spacing: -0.03em;
 }
 
-.project-content-h3 {
-  margin-top: 10px;
-  font-size: 22px;
-  line-height: 1.2;
-  letter-spacing: -0.02em;
+.content-renderer h3,
+.content-renderer h4,
+.content-renderer h5,
+.content-renderer h6 {
+  margin: 36px 0 12px;
+  font-size: 20px;
+  line-height: 1.25;
+  letter-spacing: -0.018em;
 }
 
-.project-content ul,
-.project-content ol {
-  padding-left: 22px;
+.content-renderer ul,
+.content-renderer ol {
+  margin: 0 0 28px 22px;
 }
 
-.project-content li + li {
+.content-renderer li + li {
   margin-top: 8px;
 }
 
-.project-content-quote {
-  padding-left: 16px;
-  border-left: 1px solid currentColor;
+.content-renderer blockquote {
+  margin: 42px 0;
+  font-size: 24px;
+  line-height: 1.35;
+  font-weight: 600;
+  letter-spacing: -0.03em;
 }
 
-.project-content pre {
+.content-renderer blockquote p {
+  margin: 0;
+  font-size: inherit;
+  line-height: inherit;
+}
+
+.content-renderer pre {
+  margin: 36px 0;
   overflow-x: auto;
   font-size: 13px;
   line-height: 1.55;
   white-space: pre;
 }
 
-.project-content code,
-.project-content pre {
+.content-renderer code,
+.content-renderer pre {
   font-family:
     ui-monospace,
     SFMono-Regular,
@@ -462,6 +490,29 @@ p {
     Consolas,
     'Liberation Mono',
     monospace;
+}
+
+.content-renderer figure {
+  margin: 42px 0;
+}
+
+.content-renderer figure img {
+  width: 100%;
+  height: auto;
+}
+
+.content-renderer figcaption {
+  margin-top: 8px;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.content-renderer hr {
+  width: 100%;
+  margin: 28px 0;
+  border: 0;
+  border-top: 1px solid currentColor;
+  opacity: 0.18;
 }
 
 .project-related-list {
