@@ -54,7 +54,7 @@ function formatProjectDate(project: Project): string | null {
 }
 
 function formatPostMeta(post: Post): string {
-  const parts: string[] = [getPostCategoryLabel(post.category)].filter(Boolean)
+  const parts: string[] = [getPostCategoryLabel(post.postCategory)].filter(Boolean)
 
   if (post.publishedAt) {
     const date = new Date(post.publishedAt)

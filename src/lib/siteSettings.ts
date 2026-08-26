@@ -1,6 +1,8 @@
 import config from '@payload-config'
 import { getPayload } from 'payload'
 
+import type { PostCategory } from '@/payload-types'
+
 export type PublicSiteSettings = {
   name: string
   email: string
@@ -10,6 +12,7 @@ export type PublicSiteSettings = {
   location: string
   availability: string
   bookingUrl?: string
+  featuredPostsCategory?: null | PostCategory
   seo: {
     defaultTitle: string
     defaultDescription: string
@@ -34,6 +37,16 @@ function optionalString(value: null | string | undefined): string | undefined {
   return value || undefined
 }
 
+function optionalPostCategory(
+  value: null | number | PostCategory | undefined,
+): null | PostCategory | undefined {
+  if (typeof value === 'object' && value !== null && 'slug' in value) {
+    return value
+  }
+
+  return undefined
+}
+
 export async function getSiteSettings(): Promise<PublicSiteSettings> {
   if (process.env.NEXT_PHASE === 'phase-production-build') {
     return fallbackSiteSettings
@@ -56,6 +69,7 @@ export async function getSiteSettings(): Promise<PublicSiteSettings> {
       location: settings.location || fallbackSiteSettings.location,
       availability: settings.availability || fallbackSiteSettings.availability,
       bookingUrl: optionalString(settings.bookingUrl),
+      featuredPostsCategory: optionalPostCategory(settings.featuredPostsCategory),
       seo: {
         ...fallbackSiteSettings.seo,
         ...settings.seo,

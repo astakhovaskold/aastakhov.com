@@ -11,7 +11,7 @@ export const Posts: CollectionConfig = {
   },
   admin: {
     useAsTitle: 'title',
-    defaultColumns: ['title', 'category', 'language', 'publishedAt', 'featured', 'showOnHome'],
+    defaultColumns: ['title', 'postCategory', 'language', 'publishedAt', 'featured', 'showOnHome'],
     group: 'Content',
     description: 'Articles, notes, case notes, guides, and essays.',
   },
@@ -64,8 +64,24 @@ export const Posts: CollectionConfig = {
     },
     {
       name: 'category',
-      type: 'relationship',
+      type: 'select',
+      defaultValue: 'article',
       index: true,
+      options: [
+        { label: 'Article', value: 'article' },
+        { label: 'Case note', value: 'case' },
+        { label: 'Note', value: 'note' },
+        { label: 'Guide', value: 'guide' },
+        { label: 'Essay', value: 'essay' },
+      ],
+      admin: {
+        hidden: true,
+      },
+      required: false,
+    },
+    {
+      name: 'postCategory',
+      type: 'relationship',
       relationTo: 'post-categories',
       required: true,
     },

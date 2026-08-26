@@ -15,8 +15,11 @@ type PostCategoryPageProps = {
 
 export default async function PostCategoryPage({ params }: PostCategoryPageProps) {
   const { slug } = await params
-  const categoryLinks = await getPostCategoryLinks()
-  const category = getPostCategoryBySlug(categoryLinks, slug)
+  const [categoryLinks, allCategoryLinks] = await Promise.all([
+    getPostCategoryLinks(),
+    getPostCategoryLinks({ includeHidden: true }),
+  ])
+  const category = getPostCategoryBySlug(allCategoryLinks, slug)
 
   if (!category) {
     notFound()
@@ -29,12 +32,7 @@ export default async function PostCategoryPage({ params }: PostCategoryPageProps
       <section className="hero">
         <p className="eyebrow">Posts category</p>
         <h1>{category.label}</h1>
-        <p className="lede">
-          {category.description ||
-            (category.kind === 'case'
-            ? 'Technical notes based on real product, architecture and delivery problems.'
-            : `${category.label} by Askold Astakhov.`)}
-        </p>
+        <p className="lede">{category.description || `${category.label} by Askold Astakhov.`}</p>
       </section>
 
       <section className="section" id="post-categories">

@@ -4,33 +4,41 @@ import Link from 'next/link'
 import React from 'react'
 import { getPayload } from 'payload'
 
-import { getPostCategoryLabel, getPostCategoryLinks } from '@/lib/posts-index'
-import { getSiteSettings } from '@/lib/siteSettings'
+import { getPostCategoryLabel } from '@/lib/posts-index'
+import { getSiteSettings, type PublicSiteSettings } from '@/lib/siteSettings'
 import type { OpenSource, Post, Project } from '@/payload-types'
 import './styles.css'
 
 type HomeContent = {
+  featuredPosts: Post[]
+  featuredPostsCategoryHref: null | string
+  featuredPostsHeading: null | string
   projects: Project[]
-  caseNotes: Post[]
   openSource: OpenSource[]
   blogPosts: Post[]
 }
 
 const emptyHomeContent: HomeContent = {
+  featuredPosts: [],
+  featuredPostsCategoryHref: null,
+  featuredPostsHeading: null,
   projects: [],
-  caseNotes: [],
   openSource: [],
   blogPosts: [],
 }
 
-async function getHomeContent(): Promise<HomeContent> {
+async function getHomeContent(settings: PublicSiteSettings): Promise<HomeContent> {
   if (process.env.NEXT_PHASE === 'phase-production-build') {
     return emptyHomeContent
   }
 
   try {
     const payload = await getPayload({ config })
-    const [projects, caseNotes, openSource, blogPosts] = await Promise.all([
+    const featuredPostsCategoryId =
+      typeof settings.featuredPostsCategory?.id === 'number'
+        ? settings.featuredPostsCategory.id
+        : null
+    const [projects, featuredPosts, openSource, blogPosts] = await Promise.all([
       payload.find({
         collection: 'projects',
         depth: 0,
@@ -44,7 +52,7 @@ async function getHomeContent(): Promise<HomeContent> {
       }),
       payload.find({
         collection: 'posts',
-        depth: 0,
+        depth: 1,
         limit: 3,
         sort: '-publishedAt',
         where: {
@@ -60,15 +68,19 @@ async function getHomeContent(): Promise<HomeContent> {
               },
             },
             {
-              'category.kind': {
-                equals: 'case',
-              },
-            },
-            {
               showOnHome: {
                 equals: true,
               },
             },
+            ...(featuredPostsCategoryId
+              ? [
+                  {
+                    postCategory: {
+                      equals: featuredPostsCategoryId,
+                    },
+                  },
+                ]
+              : []),
           ],
         },
       }),
@@ -85,7 +97,7 @@ async function getHomeContent(): Promise<HomeContent> {
       }),
       payload.find({
         collection: 'posts',
-        depth: 0,
+        depth: 1,
         limit: 3,
         sort: '-publishedAt',
         where: {
@@ -101,23 +113,31 @@ async function getHomeContent(): Promise<HomeContent> {
               },
             },
             {
-              'category.kind': {
-                not_equals: 'case',
-              },
-            },
-            {
               showOnHome: {
                 equals: true,
               },
             },
+            ...(featuredPostsCategoryId
+              ? [
+                  {
+                    postCategory: {
+                      not_equals: featuredPostsCategoryId,
+                    },
+                  },
+                ]
+              : []),
           ],
         },
       }),
     ])
 
     return {
+      featuredPosts: featuredPosts.docs,
+      featuredPostsCategoryHref: settings.featuredPostsCategory?.slug
+        ? `/posts/category/${settings.featuredPostsCategory.slug}`
+        : null,
+      featuredPostsHeading: settings.featuredPostsCategory?.title || null,
       projects: projects.docs,
-      caseNotes: caseNotes.docs,
       openSource: openSource.docs,
       blogPosts: blogPosts.docs,
     }
@@ -127,7 +147,7 @@ async function getHomeContent(): Promise<HomeContent> {
 }
 
 function formatPostMeta(post: Post): string {
-  const parts: string[] = [getPostCategoryLabel(post.category)].filter(Boolean)
+  const parts: string[] = [getPostCategoryLabel(post.postCategory)].filter(Boolean)
 
   if (post.publishedAt) {
     const date = new Date(post.publishedAt)
@@ -205,15 +225,10 @@ function OpenSourceList(props: { items: OpenSource[] }) {
 }
 
 export default async function HomePage() {
-  const [settings, content, categoryLinks] = await Promise.all([
-    getSiteSettings(),
-    getHomeContent(),
-    getPostCategoryLinks(),
-  ])
-  const caseCategoryLink = categoryLinks.find((category) => category.kind === 'case')
+  const settings = await getSiteSettings()
+  const content = await getHomeContent(settings)
   const topicLinks = [
     { href: '/projects', label: 'Architecture' },
-    { href: caseCategoryLink?.href || '/posts', label: 'Audits' },
     { href: '/posts', label: 'Technical notes' },
     { href: '/cv', label: 'Technical leadership' },
   ]
@@ -283,16 +298,22 @@ export default async function HomePage() {
         </section>
       ) : null}
 
-      {content.caseNotes.length > 0 ? (
-        <section className="section" id="case-notes">
+      {content.featuredPosts.length > 0 ? (
+        <section className="section" id="featured-posts">
           <div className="section-header">
-            <h2 className="section-title">Selected case notes</h2>
-            <Link className="section-link" href={caseCategoryLink?.href || '/posts'}>
-              All case notes
-            </Link>
+            <h2 className="section-title">{content.featuredPostsHeading || 'Selected posts'}</h2>
+            {content.featuredPostsCategoryHref ? (
+              <Link className="section-link" href={content.featuredPostsCategoryHref}>
+                All in category
+              </Link>
+            ) : (
+              <Link className="section-link" href="/posts">
+                All posts
+              </Link>
+            )}
           </div>
 
-          <PostList items={content.caseNotes} />
+          <PostList items={content.featuredPosts} />
         </section>
       ) : null}
 

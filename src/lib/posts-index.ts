@@ -7,7 +7,6 @@ export type PostCategoryLink = {
   description?: null | string
   href: string
   id: number
-  kind: PostCategory['kind']
   label: string
   singularLabel: string
   slug: string
@@ -17,7 +16,7 @@ export type PostListItem = Pick<
   Post,
   'id' | 'title' | 'slug' | 'description' | 'publishedAt' | 'readingTime' | 'language'
 > & {
-  category: PostCategory | null
+  postCategory: PostCategory | null
   previewImage: Media | null
 }
 
@@ -31,7 +30,7 @@ function isMedia(value: Post['previewImage']): value is Media {
 }
 
 export function isPostCategory(
-  value: null | number | Post['category'] | undefined,
+  value: null | number | Post['postCategory'] | undefined,
 ): value is PostCategory {
   return typeof value === 'object' && value !== null && 'slug' in value
 }
@@ -41,7 +40,6 @@ function mapCategoryLink(category: PostCategory): PostCategoryLink {
     description: category.description,
     href: `/posts/category/${category.slug}`,
     id: category.id,
-    kind: category.kind,
     label: category.title,
     singularLabel: category.singularLabel,
     slug: category.slug,
@@ -55,7 +53,7 @@ export function getPostCategoryBySlug(
   return categories.find((category) => category.slug === slug) ?? null
 }
 
-export function getPostCategoryLabel(category: null | Post['category']): string {
+export function getPostCategoryLabel(category: null | Post['postCategory']): string {
   if (!isPostCategory(category)) {
     return ''
   }
@@ -81,9 +79,9 @@ export function formatPostDate(value: string | null | undefined): string | null 
 }
 
 export function formatPostMeta(
-  post: Pick<PostListItem, 'category' | 'publishedAt' | 'readingTime' | 'language'>,
+  post: Pick<PostListItem, 'postCategory' | 'publishedAt' | 'readingTime' | 'language'>,
 ): string {
-  const parts = [getPostCategoryLabel(post.category)]
+  const parts = [getPostCategoryLabel(post.postCategory)]
   const date = formatPostDate(post.publishedAt)
 
   if (date) {
@@ -99,7 +97,9 @@ export function formatPostMeta(
   return parts.filter(Boolean).join(' / ')
 }
 
-export async function getPostCategoryLinks(): Promise<PostCategoryLink[]> {
+export async function getPostCategoryLinks(options?: {
+  includeHidden?: boolean
+}): Promise<PostCategoryLink[]> {
   if (process.env.NEXT_PHASE === 'phase-production-build') {
     return []
   }
@@ -111,6 +111,15 @@ export async function getPostCategoryLinks(): Promise<PostCategoryLink[]> {
       depth: 0,
       limit: 100,
       sort: ['order', 'title'],
+      ...(options?.includeHidden
+        ? {}
+        : {
+            where: {
+              showInPostsNavigation: {
+                equals: true,
+              },
+            },
+          }),
     })
 
     return categories.docs.map(mapCategoryLink)
@@ -119,7 +128,7 @@ export async function getPostCategoryLinks(): Promise<PostCategoryLink[]> {
   }
 }
 
-export async function getPublishedPosts(categoryId?: number): Promise<PostListItem[]> {
+export async function getPublishedPosts(postCategoryId?: number): Promise<PostListItem[]> {
   if (process.env.NEXT_PHASE === 'phase-production-build') {
     return []
   }
@@ -143,11 +152,11 @@ export async function getPublishedPosts(categoryId?: number): Promise<PostListIt
               less_than_equal: new Date().toISOString(),
             },
           },
-          ...(categoryId
+          ...(postCategoryId
             ? [
                 {
-                  category: {
-                    equals: categoryId,
+                  postCategory: {
+                    equals: postCategoryId,
                   },
                 },
               ]
@@ -161,7 +170,7 @@ export async function getPublishedPosts(categoryId?: number): Promise<PostListIt
       title: post.title,
       slug: post.slug,
       description: post.description,
-      category: isPostCategory(post.category) ? post.category : null,
+      postCategory: isPostCategory(post.postCategory) ? post.postCategory : null,
       publishedAt: post.publishedAt,
       readingTime: post.readingTime,
       language: post.language,
@@ -172,10 +181,10 @@ export async function getPublishedPosts(categoryId?: number): Promise<PostListIt
   }
 }
 
-export async function getPostsIndexPageData(categoryId?: number): Promise<PostsIndexPageData> {
+export async function getPostsIndexPageData(postCategoryId?: number): Promise<PostsIndexPageData> {
   const [categoryLinks, posts] = await Promise.all([
     getPostCategoryLinks(),
-    getPublishedPosts(categoryId),
+    getPublishedPosts(postCategoryId),
   ])
 
   return {

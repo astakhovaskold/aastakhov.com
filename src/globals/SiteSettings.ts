@@ -56,6 +56,15 @@ export const SiteSettings: GlobalConfig = {
       type: 'text',
     },
     {
+      name: 'featuredPostsCategory',
+      type: 'relationship',
+      relationTo: 'post-categories',
+      admin: {
+        description:
+          'Optional category used for the dedicated featured posts section on the home page.',
+      },
+    },
+    {
       name: 'seo',
       type: 'group',
       fields: [

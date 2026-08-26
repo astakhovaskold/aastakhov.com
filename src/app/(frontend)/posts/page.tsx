@@ -7,11 +7,10 @@ export default async function PostsPage() {
   return (
     <>
       <section className="hero">
-        <p className="eyebrow">Notes · Articles · Engineering practice</p>
-        <h1>Posts about building digital products</h1>
+        <p className="eyebrow">Writing and notes</p>
+        <h1>Posts</h1>
         <p className="lede">
-          Notes on frontend architecture, delivery, web quality, technical leadership and
-          practical product engineering.
+          Writing, notes, case studies, and practical material on building digital products.
         </p>
       </section>
 

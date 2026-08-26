@@ -250,10 +250,6 @@ export interface PostCategory {
   generateSlug?: boolean | null;
   slug: string;
   /**
-   * Semantic type used by the site for case notes, articles, notes, guides, and essays.
-   */
-  kind: 'article' | 'case' | 'note' | 'guide' | 'essay';
-  /**
    * Used in post meta and detail header, for example "Case note".
    */
   singularLabel: string;
@@ -262,6 +258,10 @@ export interface PostCategory {
    */
   description?: string | null;
   order?: number | null;
+  /**
+   * Controls whether this category appears in the /posts navigation.
+   */
+  showInPostsNavigation?: boolean | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -301,7 +301,8 @@ export interface Post {
    * Estimated reading time in minutes.
    */
   readingTime?: number | null;
-  category: number | PostCategory;
+  category?: ('article' | 'case' | 'note' | 'guide' | 'essay') | null;
+  postCategory: number | PostCategory;
   tags?:
     | {
         tag: string;
@@ -519,10 +520,10 @@ export interface PostCategoriesSelect<T extends boolean = true> {
   title?: T;
   generateSlug?: T;
   slug?: T;
-  kind?: T;
   singularLabel?: T;
   description?: T;
   order?: T;
+  showInPostsNavigation?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -540,6 +541,7 @@ export interface PostsSelect<T extends boolean = true> {
   language?: T;
   readingTime?: T;
   category?: T;
+  postCategory?: T;
   tags?:
     | T
     | {
@@ -630,6 +632,10 @@ export interface SiteSetting {
   location?: string | null;
   availability?: string | null;
   bookingUrl?: string | null;
+  /**
+   * Optional category used for the dedicated featured posts section on the home page.
+   */
+  featuredPostsCategory?: (number | null) | PostCategory;
   seo: {
     defaultTitle: string;
     defaultDescription: string;
@@ -750,6 +756,7 @@ export interface SiteSettingsSelect<T extends boolean = true> {
   location?: T;
   availability?: T;
   bookingUrl?: T;
+  featuredPostsCategory?: T;
   seo?:
     | T
     | {

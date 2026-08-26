@@ -246,7 +246,7 @@ export function PostDetailHeader(props: { post: Post }) {
 
   return (
     <header className="post-detail-header">
-      <p className="post-detail-label">{getPostCategoryLabel(post.category)}</p>
+      <p className="post-detail-label">{getPostCategoryLabel(post.postCategory)}</p>
       <h1>{post.title}</h1>
       <p className="lede">{post.description}</p>
       <div className="post-detail-meta" aria-label="Post metadata">
