@@ -193,7 +193,7 @@
 
 # Phase 6 — Data, responsive, cleanup
 
-* [ ] **20 — Seed content**
+* [x] **20 — Seed content**
   Path: `20-seed-content/task.md`
   Goal: demo data для проверки всех страниц.
 
@@ -256,6 +256,7 @@
 - 2026-08-26 — Completed 17-seo-metadata: added shared SEO metadata fallbacks, Open Graph, canonical URLs, noindex handling for unpublished detail pages, and CV metadata; checks: tsc --noEmit, lint, build.
 - 2026-08-26 — Completed 18-sitemap-robots: added env-backed sitemap/robots routes, public-only post/project filtering, project publication visibility, and sitemap tests; checks: generate:types, lint, tsc --noEmit, sitemap tests, build.
 - 2026-08-26 — Completed 19-analytics-adapter: added no-op-safe Umami adapter with configured defaults, page view events, contact/booking/CV click tracking, and tracking env examples; checks: lint, tsc --noEmit, build, sitemap tests.
+- 2026-08-26 — Completed 20-seed-content: added idempotent Payload seed for categories, 2 projects, 5 posts, 2 open-source items, SiteSettings, and CV; added scoped `seed:content:clear` cleanup and read-only `seed:content:verify`; checks: seed, verify, lint, tsc --noEmit, build, test:int.
 
 Пиши сюда выполненные шаги.
 
