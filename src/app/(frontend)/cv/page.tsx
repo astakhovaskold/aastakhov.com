@@ -1,5 +1,7 @@
 import type { Metadata } from 'next'
 
+import { AnalyticsLink } from '@/components/site/analytics-link'
+import { analyticsEventNames, getContactLinkEvent } from '@/lib/analytics'
 import { getCV } from '@/lib/cv'
 import { getSiteSettings } from '@/lib/siteSettings'
 
@@ -32,7 +34,11 @@ function formatContactHref(type: string, value: string): string | undefined {
     case 'github':
       return normalizeUrl(value)
     case 'telegram':
-      if (value.startsWith('http://') || value.startsWith('https://') || value.startsWith('tg://')) {
+      if (
+        value.startsWith('http://') ||
+        value.startsWith('https://') ||
+        value.startsWith('tg://')
+      ) {
         return value
       }
 
@@ -43,13 +49,16 @@ function formatContactHref(type: string, value: string): string | undefined {
 }
 
 function getContactItems(
-  contacts: {
-    email?: null | string
-    github?: null | string
-    linkedin?: null | string
-    phone?: null | string
-    telegram?: null | string
-  } | null | undefined,
+  contacts:
+    | {
+        email?: null | string
+        github?: null | string
+        linkedin?: null | string
+        phone?: null | string
+        telegram?: null | string
+      }
+    | null
+    | undefined,
 ): ContactItem[] {
   if (!contacts) {
     return []
@@ -104,7 +113,10 @@ function formatExperienceRange(
   return start || end || null
 }
 
-function formatEducationRange(startYear: null | number | undefined, endYear: null | number | undefined): string | null {
+function formatEducationRange(
+  startYear: null | number | undefined,
+  endYear: null | number | undefined,
+): string | null {
   if (startYear && endYear) {
     return `${startYear} - ${endYear}`
   }
@@ -203,6 +215,7 @@ export default async function CVPage() {
           label: 'Download PDF',
           rel: 'noreferrer',
           target: '_blank',
+          trackingEvent: analyticsEventNames.cvDownload,
         }
       : null,
     {
@@ -226,6 +239,7 @@ export default async function CVPage() {
     label: string
     rel?: string
     target?: string
+    trackingEvent?: (typeof analyticsEventNames)[keyof typeof analyticsEventNames]
   }>
 
   const hasStructuredContent =
@@ -256,9 +270,17 @@ export default async function CVPage() {
         {headerActions.length > 0 ? (
           <div className="header-actions" aria-label="CV actions">
             {headerActions.map((action) => (
-              <a href={action.href} key={action.label} rel={action.rel} target={action.target}>
+              <AnalyticsLink
+                href={action.href}
+                key={action.label}
+                rel={action.rel}
+                target={action.target}
+                trackingEvent={
+                  action.trackingEvent || getContactLinkEvent(action.label, action.href)
+                }
+              >
                 {action.label} →
-              </a>
+              </AnalyticsLink>
             ))}
           </div>
         ) : null}
@@ -316,7 +338,9 @@ export default async function CVPage() {
               return (
                 <article className="experience-item" key={item.id}>
                   <div className="experience-meta">
-                    {hasText(item.company) ? <p className="experience-company">{item.company}</p> : null}
+                    {hasText(item.company) ? (
+                      <p className="experience-company">{item.company}</p>
+                    ) : null}
                     {dateRange ? <p className="experience-period">{dateRange}</p> : null}
                     {hasText(item.location) ? <p>{item.location}</p> : null}
                   </div>
@@ -328,7 +352,9 @@ export default async function CVPage() {
                     {item.highlights?.some((highlight) => hasText(highlight.text)) ? (
                       <ul>
                         {item.highlights.map((highlight) =>
-                          hasText(highlight.text) ? <li key={highlight.id}>{highlight.text}</li> : null,
+                          hasText(highlight.text) ? (
+                            <li key={highlight.id}>{highlight.text}</li>
+                          ) : null,
                         )}
                       </ul>
                     ) : null}
@@ -383,8 +409,12 @@ export default async function CVPage() {
                   {dateRange ? <p className="education-meta">{dateRange}</p> : <div />}
                   <div>
                     {title ? <p className="education-title">{title}</p> : null}
-                    {hasText(item.institution) ? <p className="education-desc">{item.institution}</p> : null}
-                    {hasText(item.description) ? <p className="education-desc">{item.description}</p> : null}
+                    {hasText(item.institution) ? (
+                      <p className="education-desc">{item.institution}</p>
+                    ) : null}
+                    {hasText(item.description) ? (
+                      <p className="education-desc">{item.description}</p>
+                    ) : null}
                   </div>
                 </div>
               )
@@ -403,9 +433,7 @@ export default async function CVPage() {
 
           <div className="languages">
             {languageItems.map((item) => (
-              <span key={item.id}>
-                {[item.language, item.level].filter(hasText).join(' · ')}
-              </span>
+              <span key={item.id}>{[item.language, item.level].filter(hasText).join(' · ')}</span>
             ))}
           </div>
         </section>
@@ -422,15 +450,24 @@ export default async function CVPage() {
           <div className="contacts">
             {contactItems.map((item) =>
               item.href ? (
-                <a href={item.href} key={item.label}>
+                <AnalyticsLink
+                  href={item.href}
+                  key={item.label}
+                  trackingEvent={getContactLinkEvent(item.label, item.href)}
+                >
                   {item.label} →
-                </a>
+                </AnalyticsLink>
               ) : null,
             )}
             {cv?.pdf?.url ? (
-              <a href={cv.pdf.url} rel="noreferrer" target="_blank">
+              <AnalyticsLink
+                href={cv.pdf.url}
+                rel="noreferrer"
+                target="_blank"
+                trackingEvent={analyticsEventNames.cvDownload}
+              >
                 Download PDF →
-              </a>
+              </AnalyticsLink>
             ) : null}
           </div>
         </section>

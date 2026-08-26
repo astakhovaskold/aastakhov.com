@@ -161,6 +161,7 @@ export default async function HomePage() {
   const contactLinks = [
     settings.telegram ? { href: settings.telegram, label: 'Telegram' } : null,
     { href: `mailto:${settings.email}`, label: 'Email' },
+    settings.bookingUrl ? { href: settings.bookingUrl, label: 'Book a call' } : null,
     settings.linkedin ? { href: settings.linkedin, label: 'LinkedIn' } : null,
     settings.github ? { href: settings.github, label: 'GitHub' } : null,
     { href: '/cv', label: 'CV' },

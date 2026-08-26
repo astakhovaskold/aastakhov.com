@@ -1,5 +1,8 @@
 import Link from 'next/link'
+
+import { AnalyticsLink } from '@/components/site/analytics-link'
 import { ContentRenderer } from '@/components/site/content-renderer'
+import { getContactLinkEvent } from '@/lib/analytics'
 import { getPostCategoryLabel } from '@/lib/posts-index'
 import type { Media, Post, Project } from '@/payload-types'
 
@@ -44,7 +47,9 @@ export function ProjectDetailMeta(props: { project: Project }) {
       {items.map((item) => (
         <div className="project-meta-item" key={item.label}>
           <dt>{item.label}</dt>
-          <dd>{item.label === 'Project link' ? <a href={item.value}>{item.value}</a> : item.value}</dd>
+          <dd>
+            {item.label === 'Project link' ? <a href={item.value}>{item.value}</a> : item.value}
+          </dd>
         </div>
       ))}
     </dl>
@@ -75,8 +80,12 @@ export function ProjectDetailRelatedPosts(props: { posts: Post[]; title: string 
   return (
     <section className="project-detail-section" aria-labelledby={headingId}>
       <div className="section-header">
-        <h2 className="section-title" id={headingId}>{title}</h2>
-        <Link className="section-link" href="/posts">All posts →</Link>
+        <h2 className="section-title" id={headingId}>
+          {title}
+        </h2>
+        <Link className="section-link" href="/posts">
+          All posts →
+        </Link>
       </div>
       <div className="rows">
         {posts.map((post) => (
@@ -103,7 +112,15 @@ export function ProjectDetailContacts(props: { links: Array<{ href: string; labe
         conversation about the system, risks, and current technical bottlenecks.
       </p>
       <div className="contact-links">
-        {links.map((link) => <a href={link.href} key={link.label}>{link.label} →</a>)}
+        {links.map((link) => (
+          <AnalyticsLink
+            href={link.href}
+            key={link.label}
+            trackingEvent={getContactLinkEvent(link.label, link.href)}
+          >
+            {link.label} →
+          </AnalyticsLink>
+        ))}
       </div>
     </section>
   )

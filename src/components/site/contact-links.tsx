@@ -1,8 +1,5 @@
-import Link from 'next/link'
-
-function isInternalHref(href: string): boolean {
-  return href.startsWith('/')
-}
+import { AnalyticsLink } from '@/components/site/analytics-link'
+import { getContactLinkEvent } from '@/lib/analytics'
 
 export type ContactLinkItem = {
   href: string
@@ -18,17 +15,15 @@ export function ContactLinks(props: { links: ContactLinkItem[] }) {
 
   return (
     <div className="contact-links">
-      {links.map((link) =>
-        isInternalHref(link.href) ? (
-          <Link href={link.href} key={link.label}>
-            {link.label} →
-          </Link>
-        ) : (
-          <a href={link.href} key={link.label}>
-            {link.label} →
-          </a>
-        ),
-      )}
+      {links.map((link) => (
+        <AnalyticsLink
+          href={link.href}
+          key={link.label}
+          trackingEvent={getContactLinkEvent(link.label, link.href)}
+        >
+          {link.label} →
+        </AnalyticsLink>
+      ))}
     </div>
   )
 }
