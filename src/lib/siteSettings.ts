@@ -6,6 +6,7 @@ import type { PostCategory } from '@/payload-types'
 export type PublicSiteSettings = {
   name: string
   email: string
+  phone?: string
   telegram?: string
   linkedin?: string
   github?: string
@@ -23,6 +24,7 @@ export type PublicSiteSettings = {
 export const fallbackSiteSettings: PublicSiteSettings = {
   name: 'Askold Astakhov',
   email: 'astakhovaskold@gmail.com',
+  phone: undefined,
   telegram: 'https://t.me/askold_astakhov',
   linkedin: 'https://www.linkedin.com/in/askold-astakhov/',
   location: 'Madrid',
@@ -63,6 +65,7 @@ export async function getSiteSettings(): Promise<PublicSiteSettings> {
       ...fallbackSiteSettings,
       name: settings.name || fallbackSiteSettings.name,
       email: settings.email || fallbackSiteSettings.email,
+      phone: optionalString(settings.phone),
       telegram: optionalString(settings.telegram) || fallbackSiteSettings.telegram,
       linkedin: optionalString(settings.linkedin) || fallbackSiteSettings.linkedin,
       github: optionalString(settings.github),

@@ -534,6 +534,177 @@ p {
   text-align: right;
 }
 
+.cv-header {
+  max-width: 650px;
+  margin-bottom: 74px;
+}
+
+.cv-title {
+  margin-bottom: 22px;
+  font-size: clamp(44px, 6vw, 62px);
+  line-height: 0.98;
+  font-weight: 600;
+  letter-spacing: -0.045em;
+}
+
+.cv-subtitle {
+  max-width: 640px;
+  font-size: 21px;
+  line-height: 1.48;
+  letter-spacing: -0.018em;
+}
+
+.header-actions,
+.languages,
+.contacts {
+  display: flex;
+  flex-wrap: wrap;
+  font-size: 14px;
+}
+
+.header-actions {
+  gap: 26px;
+  margin-top: 34px;
+}
+
+.summary-grid {
+  display: grid;
+  grid-template-columns: 160px minmax(0, 1fr);
+  gap: 40px;
+  max-width: var(--container);
+  margin-bottom: 80px;
+}
+
+.summary-list,
+.skills-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.summary-list {
+  gap: 18px 44px;
+}
+
+.summary-item dt {
+  margin-bottom: 2px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.summary-item dd {
+  font-size: 15px;
+  line-height: 1.45;
+}
+
+.section-note {
+  max-width: 460px;
+  font-size: 14px;
+  line-height: 1.5;
+  text-align: right;
+}
+
+.experience-list,
+.education-list {
+  display: flex;
+  flex-direction: column;
+  gap: 46px;
+}
+
+.experience-item,
+.education-item {
+  display: grid;
+  grid-template-columns: 180px minmax(0, 1fr);
+  gap: 40px;
+}
+
+.experience-meta {
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.experience-company {
+  font-weight: 600;
+}
+
+.experience-period {
+  margin-top: 4px;
+}
+
+.experience-role {
+  margin-bottom: 10px;
+  font-size: 18px;
+  line-height: 1.35;
+  font-weight: 600;
+  letter-spacing: -0.014em;
+}
+
+.experience-body p {
+  max-width: 610px;
+  margin-bottom: 10px;
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+.experience-body ul {
+  max-width: 610px;
+  margin-top: 14px;
+  padding-left: 18px;
+}
+
+.experience-body li {
+  margin-bottom: 8px;
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.stack {
+  margin-top: 14px;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.skills-grid {
+  gap: 44px 58px;
+  padding-top: 4px;
+}
+
+.skill-group h3 {
+  margin-bottom: 5px;
+  font-size: 16px;
+  line-height: 1.35;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.skill-group p {
+  font-size: 14px;
+  line-height: 1.52;
+}
+
+.education-title {
+  margin-bottom: 3px;
+  font-size: 17px;
+  line-height: 1.35;
+  font-weight: 600;
+  letter-spacing: -0.012em;
+}
+
+.education-meta,
+.education-desc {
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.languages {
+  gap: 28px;
+}
+
+.contacts {
+  gap: 26px;
+}
+
 @media (max-width: 720px) {
   :root {
     --space-section: 64px;
@@ -552,11 +723,6 @@ p {
   .site-nav {
     justify-content: flex-start;
     margin-top: 18px;
-  }
-
-  .hero {
-    padding-top: 0;
-    margin-bottom: 68px;
   }
 
   .hero-grid {
@@ -628,6 +794,44 @@ p {
   }
 
   .post-detail-pagination-link-next {
+    text-align: left;
+  }
+
+  .cv-header {
+    margin-bottom: 60px;
+  }
+
+  .cv-title {
+    font-size: clamp(42px, 13vw, 58px);
+  }
+
+  .cv-subtitle {
+    font-size: 18px;
+  }
+
+  .summary-grid,
+  .experience-item,
+  .education-item {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .summary-list,
+  .skills-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .section {
+    margin-bottom: 64px;
+  }
+
+  .section-header {
+    display: block;
+  }
+
+  .section-note {
+    margin-top: 10px;
     text-align: left;
   }
 

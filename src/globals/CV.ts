@@ -32,6 +32,13 @@ export const CV: GlobalConfig = {
       },
     },
     {
+      name: 'location',
+      type: 'text',
+      admin: {
+        description: 'Optional current location shown in the profile summary.',
+      },
+    },
+    {
       name: 'summary',
       type: 'textarea',
       admin: {
@@ -39,39 +46,40 @@ export const CV: GlobalConfig = {
       },
     },
     {
-      name: 'contacts',
-      type: 'group',
+      name: 'focus',
+      type: 'text',
       admin: {
-        description: 'Optional contact details for the CV page.',
+        description: 'Optional short focus line for the profile summary block.',
+      },
+    },
+    {
+      name: 'stack',
+      type: 'text',
+      admin: {
+        description: 'Optional primary stack line for the profile summary block.',
+      },
+    },
+    {
+      name: 'expertiseNote',
+      type: 'textarea',
+      admin: {
+        description: 'Optional short note shown next to the key expertise section title.',
+      },
+    },
+    {
+      name: 'expertise',
+      type: 'array',
+      admin: {
+        description: 'Optional expertise cards shown before experience.',
       },
       fields: [
         {
-          name: 'email',
-          type: 'email',
-        },
-        {
-          name: 'phone',
+          name: 'title',
           type: 'text',
         },
         {
-          name: 'location',
-          type: 'text',
-        },
-        {
-          name: 'website',
-          type: 'text',
-        },
-        {
-          name: 'linkedin',
-          type: 'text',
-        },
-        {
-          name: 'github',
-          type: 'text',
-        },
-        {
-          name: 'telegram',
-          type: 'text',
+          name: 'description',
+          type: 'textarea',
         },
       ],
     },
@@ -110,6 +118,10 @@ export const CV: GlobalConfig = {
         {
           name: 'summary',
           type: 'textarea',
+        },
+        {
+          name: 'stack',
+          type: 'text',
         },
         {
           name: 'highlights',

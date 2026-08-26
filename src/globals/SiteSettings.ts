@@ -29,6 +29,10 @@ export const SiteSettings: GlobalConfig = {
       defaultValue: 'astakhovaskold@gmail.com',
     },
     {
+      name: 'phone',
+      type: 'text',
+    },
+    {
       name: 'telegram',
       type: 'text',
       defaultValue: 'https://t.me/askold_astakhov',

@@ -156,7 +156,7 @@
   Mockups: `13-post-detail/mockups/`
   Goal: универсальный zero-design renderer для article/case/note/guide/essay.
 
-* [ ] **14 — CV page `/cv`**
+* [x] **14 — CV page `/cv`**
   Path: `14-cv-page/task.md`
   Goal: онлайн-резюме из Payload Global `CV`.
 
@@ -219,7 +219,7 @@
 * [x] `/posts` работает.
 * [x] `/posts/category/:slug` работает и отдаёт 404 для неизвестной категории.
 * [x] `/posts/:slug` отдаёт страницу или 404.
-* [ ] `/cv` работает и скрывает пустые блоки.
+* [x] `/cv` работает и скрывает пустые блоки.
 * [ ] Open Source выводится только как блок, без отдельного route.
 * [ ] Services не являются отдельным route.
 * [ ] Cases не являются отдельным route, только `Posts.category = case`.
@@ -250,6 +250,7 @@
 - 2026-08-26 — Completed 11-posts-index: added `/posts` with published-only Payload query, category navigation, shared post list items with optional preview images, and meta for category/date/reading time/language; checks: eslint, tsc --noEmit, build.
 - 2026-08-26 — Completed 12-post-category-page: added `/posts/category/:slug` with slug-to-category mapping, 404 handling for invalid categories, shared category nav/list reuse, and category-specific headers; checks: eslint, tsc --noEmit, build.
 - 2026-08-26 — Completed 13-post-detail: added `/posts/:slug` with published-only slug lookup, zero-design detail header, optional cover image, rich content renderer, and adjacent navigation/back link; checks: eslint, tsc --noEmit, build.
+- 2026-08-26 — Completed 14-cv-page: rebuilt `/cv` to match the mockup structure, moved public CV contacts to `SiteSettings`, added CV-specific profile/expertise fields, and kept empty sections hidden; checks: generate:types, eslint, tsc --noEmit, build.
 
 Пиши сюда выполненные шаги.
 

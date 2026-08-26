@@ -626,6 +626,7 @@ export interface SiteSetting {
   id: number;
   name: string;
   email: string;
+  phone?: string | null;
   telegram?: string | null;
   linkedin?: string | null;
   github?: string | null;
@@ -661,21 +662,35 @@ export interface Cv {
    */
   role?: string | null;
   /**
+   * Optional current location shown in the profile summary.
+   */
+  location?: string | null;
+  /**
    * Short formal profile summary.
    */
   summary?: string | null;
   /**
-   * Optional contact details for the CV page.
+   * Optional short focus line for the profile summary block.
    */
-  contacts?: {
-    email?: string | null;
-    phone?: string | null;
-    location?: string | null;
-    website?: string | null;
-    linkedin?: string | null;
-    github?: string | null;
-    telegram?: string | null;
-  };
+  focus?: string | null;
+  /**
+   * Optional primary stack line for the profile summary block.
+   */
+  stack?: string | null;
+  /**
+   * Optional short note shown next to the key expertise section title.
+   */
+  expertiseNote?: string | null;
+  /**
+   * Optional expertise cards shown before experience.
+   */
+  expertise?:
+    | {
+        title?: string | null;
+        description?: string | null;
+        id?: string | null;
+      }[]
+    | null;
   /**
    * Optional professional experience entries.
    */
@@ -688,6 +703,7 @@ export interface Cv {
         endDate?: string | null;
         current?: boolean | null;
         summary?: string | null;
+        stack?: string | null;
         highlights?:
           | {
               text?: string | null;
@@ -750,6 +766,7 @@ export interface Cv {
 export interface SiteSettingsSelect<T extends boolean = true> {
   name?: T;
   email?: T;
+  phone?: T;
   telegram?: T;
   linkedin?: T;
   github?: T;
@@ -775,17 +792,17 @@ export interface SiteSettingsSelect<T extends boolean = true> {
 export interface CvSelect<T extends boolean = true> {
   name?: T;
   role?: T;
+  location?: T;
   summary?: T;
-  contacts?:
+  focus?: T;
+  stack?: T;
+  expertiseNote?: T;
+  expertise?:
     | T
     | {
-        email?: T;
-        phone?: T;
-        location?: T;
-        website?: T;
-        linkedin?: T;
-        github?: T;
-        telegram?: T;
+        title?: T;
+        description?: T;
+        id?: T;
       };
   experience?:
     | T
@@ -797,6 +814,7 @@ export interface CvSelect<T extends boolean = true> {
         endDate?: T;
         current?: T;
         summary?: T;
+        stack?: T;
         highlights?:
           | T
           | {
