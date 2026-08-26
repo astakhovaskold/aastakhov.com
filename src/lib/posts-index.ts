@@ -1,51 +1,66 @@
 import config from '@payload-config'
 import { getPayload } from 'payload'
 
-import type { Media, Post } from '@/payload-types'
+import type { Media, Post, PostCategory } from '@/payload-types'
 
-export const postCategoryLinks = [
-  { href: '/posts', label: 'All', slug: null, value: null },
-  { href: '/posts/category/cases', label: 'Case notes', slug: 'cases', value: 'case' },
-  { href: '/posts/category/articles', label: 'Articles', slug: 'articles', value: 'article' },
-  { href: '/posts/category/notes', label: 'Notes', slug: 'notes', value: 'note' },
-  { href: '/posts/category/guides', label: 'Guides', slug: 'guides', value: 'guide' },
-  { href: '/posts/category/essays', label: 'Essays', slug: 'essays', value: 'essay' },
-] as const
-
-type PostCategoryLink = (typeof postCategoryLinks)[number]
-
-export type PostCategorySlug = Exclude<PostCategoryLink['slug'], null>
-export type PostCategoryValue = Exclude<PostCategoryLink['value'], null>
+export type PostCategoryLink = {
+  description?: null | string
+  href: string
+  id: number
+  kind: PostCategory['kind']
+  label: string
+  singularLabel: string
+  slug: string
+}
 
 export type PostListItem = Pick<
   Post,
   'id' | 'title' | 'slug' | 'description' | 'publishedAt' | 'readingTime' | 'language'
 > & {
-  category: PostCategoryValue
+  category: PostCategory | null
   previewImage: Media | null
+}
+
+export type PostsIndexPageData = {
+  categoryLinks: PostCategoryLink[]
+  posts: PostListItem[]
 }
 
 function isMedia(value: Post['previewImage']): value is Media {
   return typeof value === 'object' && value !== null && 'url' in value
 }
 
-export function getPostCategoryBySlug(slug: string): PostCategoryLink | null {
-  return postCategoryLinks.find((category) => category.slug === slug) ?? null
+export function isPostCategory(
+  value: null | number | Post['category'] | undefined,
+): value is PostCategory {
+  return typeof value === 'object' && value !== null && 'slug' in value
 }
 
-export function getPostCategoryLabel(category: PostCategoryValue): string {
-  switch (category) {
-    case 'article':
-      return 'Article'
-    case 'case':
-      return 'Case note'
-    case 'note':
-      return 'Note'
-    case 'guide':
-      return 'Guide'
-    case 'essay':
-      return 'Essay'
+function mapCategoryLink(category: PostCategory): PostCategoryLink {
+  return {
+    description: category.description,
+    href: `/posts/category/${category.slug}`,
+    id: category.id,
+    kind: category.kind,
+    label: category.title,
+    singularLabel: category.singularLabel,
+    slug: category.slug,
   }
+}
+
+export function getPostCategoryBySlug(
+  categories: PostCategoryLink[],
+  slug: string,
+): PostCategoryLink | null {
+  return categories.find((category) => category.slug === slug) ?? null
+}
+
+export function getPostCategoryLabel(category: null | Post['category']): string {
+  if (!isPostCategory(category)) {
+    return ''
+  }
+
+  return category.singularLabel || category.title
 }
 
 export function formatPostDate(value: string | null | undefined): string | null {
@@ -65,7 +80,9 @@ export function formatPostDate(value: string | null | undefined): string | null 
   }).format(date)
 }
 
-export function formatPostMeta(post: Pick<PostListItem, 'category' | 'publishedAt' | 'readingTime' | 'language'>): string {
+export function formatPostMeta(
+  post: Pick<PostListItem, 'category' | 'publishedAt' | 'readingTime' | 'language'>,
+): string {
   const parts = [getPostCategoryLabel(post.category)]
   const date = formatPostDate(post.publishedAt)
 
@@ -79,10 +96,30 @@ export function formatPostMeta(post: Pick<PostListItem, 'category' | 'publishedA
 
   parts.push(post.language.toUpperCase())
 
-  return parts.join(' / ')
+  return parts.filter(Boolean).join(' / ')
 }
 
-export async function getPublishedPosts(category?: PostCategoryValue): Promise<PostListItem[]> {
+export async function getPostCategoryLinks(): Promise<PostCategoryLink[]> {
+  if (process.env.NEXT_PHASE === 'phase-production-build') {
+    return []
+  }
+
+  try {
+    const payload = await getPayload({ config })
+    const categories = await payload.find({
+      collection: 'post-categories',
+      depth: 0,
+      limit: 100,
+      sort: ['order', 'title'],
+    })
+
+    return categories.docs.map(mapCategoryLink)
+  } catch {
+    return []
+  }
+}
+
+export async function getPublishedPosts(categoryId?: number): Promise<PostListItem[]> {
   if (process.env.NEXT_PHASE === 'phase-production-build') {
     return []
   }
@@ -106,11 +143,11 @@ export async function getPublishedPosts(category?: PostCategoryValue): Promise<P
               less_than_equal: new Date().toISOString(),
             },
           },
-          ...(category
+          ...(categoryId
             ? [
                 {
                   category: {
-                    equals: category,
+                    equals: categoryId,
                   },
                 },
               ]
@@ -124,7 +161,7 @@ export async function getPublishedPosts(category?: PostCategoryValue): Promise<P
       title: post.title,
       slug: post.slug,
       description: post.description,
-      category: post.category,
+      category: isPostCategory(post.category) ? post.category : null,
       publishedAt: post.publishedAt,
       readingTime: post.readingTime,
       language: post.language,
@@ -132,5 +169,17 @@ export async function getPublishedPosts(category?: PostCategoryValue): Promise<P
     }))
   } catch {
     return []
+  }
+}
+
+export async function getPostsIndexPageData(categoryId?: number): Promise<PostsIndexPageData> {
+  const [categoryLinks, posts] = await Promise.all([
+    getPostCategoryLinks(),
+    getPublishedPosts(categoryId),
+  ])
+
+  return {
+    categoryLinks,
+    posts,
   }
 }

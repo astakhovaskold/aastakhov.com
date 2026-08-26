@@ -3,26 +3,36 @@ import Link from 'next/link'
 
 import {
   formatPostMeta,
-  postCategoryLinks,
-  type PostCategorySlug,
+  type PostCategoryLink,
   type PostListItem,
 } from '@/lib/posts-index'
 
-function isActiveCategory(currentSlug: PostCategorySlug | null, linkSlug: PostCategorySlug | null): boolean {
+function isActiveCategory(currentSlug: null | string, linkSlug: string): boolean {
   return currentSlug === linkSlug
 }
 
-export function PostCategoryNav(props: { currentSlug?: PostCategorySlug | null }) {
-  const { currentSlug = null } = props
+export function PostCategoryNav(props: {
+  categoryLinks: PostCategoryLink[]
+  currentSlug?: null | string
+}) {
+  const { categoryLinks, currentSlug = null } = props
 
   return (
     <nav className="post-category-nav" aria-label="Post categories">
-      {postCategoryLinks.map((link) => (
+      <Link
+        aria-current={currentSlug === null ? 'page' : undefined}
+        className="post-category-link"
+        href="/posts"
+      >
+        All
+      </Link>
+
+      {categoryLinks.map((link) => (
         <Link
           aria-current={isActiveCategory(currentSlug, link.slug) ? 'page' : undefined}
           className="post-category-link"
           href={link.href}
-          key={link.href}
+          key={link.id}
         >
           {link.label}
         </Link>

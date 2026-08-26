@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import React from 'react'
 
+import { getPostCategoryLabel } from '@/lib/posts-index'
 import type { Media, Post, Project } from '@/payload-types'
 
 type LexicalNode = {
@@ -53,7 +54,7 @@ function formatProjectDate(project: Project): string | null {
 }
 
 function formatPostMeta(post: Post): string {
-  const parts: string[] = [post.category]
+  const parts: string[] = [getPostCategoryLabel(post.category)].filter(Boolean)
 
   if (post.publishedAt) {
     const date = new Date(post.publishedAt)

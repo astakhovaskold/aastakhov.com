@@ -3,14 +3,6 @@ import { slugField } from 'payload'
 
 const postLanguages = ['en', 'ru', 'es'] as const
 
-const postCategories = [
-  { label: 'Article', value: 'article' },
-  { label: 'Case note', value: 'case' },
-  { label: 'Note', value: 'note' },
-  { label: 'Guide', value: 'guide' },
-  { label: 'Essay', value: 'essay' },
-] as const
-
 export const Posts: CollectionConfig = {
   slug: 'posts',
   labels: {
@@ -72,10 +64,9 @@ export const Posts: CollectionConfig = {
     },
     {
       name: 'category',
-      type: 'select',
-      defaultValue: 'article',
+      type: 'relationship',
       index: true,
-      options: [...postCategories],
+      relationTo: 'post-categories',
       required: true,
     },
     {

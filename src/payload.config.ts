@@ -8,6 +8,7 @@ import sharp from 'sharp'
 import { Users } from './collections/Users'
 import { Media } from './collections/Media'
 import { Projects } from './collections/Projects'
+import { PostCategories } from './collections/PostCategories'
 import { Posts } from './collections/Posts'
 import { OpenSource } from './collections/OpenSource'
 import { SiteSettings } from './globals/SiteSettings'
@@ -23,7 +24,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Media, Projects, Posts, OpenSource],
+  collections: [Users, Media, Projects, PostCategories, Posts, OpenSource],
   globals: [SiteSettings, CV],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',

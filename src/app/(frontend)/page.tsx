@@ -4,6 +4,7 @@ import Link from 'next/link'
 import React from 'react'
 import { getPayload } from 'payload'
 
+import { getPostCategoryLabel, getPostCategoryLinks } from '@/lib/posts-index'
 import { getSiteSettings } from '@/lib/siteSettings'
 import type { OpenSource, Post, Project } from '@/payload-types'
 import './styles.css'
@@ -21,13 +22,6 @@ const emptyHomeContent: HomeContent = {
   openSource: [],
   blogPosts: [],
 }
-
-const topicLinks = [
-  { href: '/projects', label: 'Architecture' },
-  { href: '/posts/category/cases', label: 'Audits' },
-  { href: '/posts', label: 'Technical notes' },
-  { href: '/cv', label: 'Technical leadership' },
-]
 
 async function getHomeContent(): Promise<HomeContent> {
   if (process.env.NEXT_PHASE === 'phase-production-build') {
@@ -56,7 +50,17 @@ async function getHomeContent(): Promise<HomeContent> {
         where: {
           and: [
             {
-              category: {
+              publishedAt: {
+                exists: true,
+              },
+            },
+            {
+              publishedAt: {
+                less_than_equal: new Date().toISOString(),
+              },
+            },
+            {
+              'category.kind': {
                 equals: 'case',
               },
             },
@@ -87,7 +91,17 @@ async function getHomeContent(): Promise<HomeContent> {
         where: {
           and: [
             {
-              category: {
+              publishedAt: {
+                exists: true,
+              },
+            },
+            {
+              publishedAt: {
+                less_than_equal: new Date().toISOString(),
+              },
+            },
+            {
+              'category.kind': {
                 not_equals: 'case',
               },
             },
@@ -113,7 +127,7 @@ async function getHomeContent(): Promise<HomeContent> {
 }
 
 function formatPostMeta(post: Post): string {
-  const parts: string[] = [post.category]
+  const parts: string[] = [getPostCategoryLabel(post.category)].filter(Boolean)
 
   if (post.publishedAt) {
     const date = new Date(post.publishedAt)
@@ -191,7 +205,18 @@ function OpenSourceList(props: { items: OpenSource[] }) {
 }
 
 export default async function HomePage() {
-  const [settings, content] = await Promise.all([getSiteSettings(), getHomeContent()])
+  const [settings, content, categoryLinks] = await Promise.all([
+    getSiteSettings(),
+    getHomeContent(),
+    getPostCategoryLinks(),
+  ])
+  const caseCategoryLink = categoryLinks.find((category) => category.kind === 'case')
+  const topicLinks = [
+    { href: '/projects', label: 'Architecture' },
+    { href: caseCategoryLink?.href || '/posts', label: 'Audits' },
+    { href: '/posts', label: 'Technical notes' },
+    { href: '/cv', label: 'Technical leadership' },
+  ]
   const contactLinks = [
     settings.telegram ? { href: settings.telegram, label: 'Telegram' } : null,
     { href: `mailto:${settings.email}`, label: 'Email' },
@@ -262,7 +287,7 @@ export default async function HomePage() {
         <section className="section" id="case-notes">
           <div className="section-header">
             <h2 className="section-title">Selected case notes</h2>
-            <Link className="section-link" href="/posts/category/cases">
+            <Link className="section-link" href={caseCategoryLink?.href || '/posts'}>
               All case notes
             </Link>
           </div>

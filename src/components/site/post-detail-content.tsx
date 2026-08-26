@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import React from 'react'
 
+import { getPostCategoryLabel } from '@/lib/posts-index'
 import type { Media, Post } from '@/payload-types'
 
 type LexicalNode = {
@@ -20,14 +21,6 @@ type LexicalNode = {
   url?: string
   value?: Media | { alt?: string | null; url?: string | null } | null
 } & Record<string, unknown>
-
-const postCategoryLabels: Record<Post['category'], string> = {
-  article: 'Article',
-  case: 'Case note',
-  essay: 'Essay',
-  guide: 'Guide',
-  note: 'Note',
-}
 
 const languageLabels: Record<Post['language'], string> = {
   en: 'English',
@@ -253,7 +246,7 @@ export function PostDetailHeader(props: { post: Post }) {
 
   return (
     <header className="post-detail-header">
-      <p className="post-detail-label">{postCategoryLabels[post.category]}</p>
+      <p className="post-detail-label">{getPostCategoryLabel(post.category)}</p>
       <h1>{post.title}</h1>
       <p className="lede">{post.description}</p>
       <div className="post-detail-meta" aria-label="Post metadata">

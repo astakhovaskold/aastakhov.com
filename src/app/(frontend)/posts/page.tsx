@@ -1,8 +1,8 @@
 import { PostCategoryNav, PostIndexList } from '@/components/site/post-index-list'
-import { getPublishedPosts } from '@/lib/posts-index'
+import { getPostsIndexPageData } from '@/lib/posts-index'
 
 export default async function PostsPage() {
-  const posts = await getPublishedPosts()
+  const { categoryLinks, posts } = await getPostsIndexPageData()
 
   return (
     <>
@@ -20,7 +20,7 @@ export default async function PostsPage() {
           <h2 className="section-title">Categories</h2>
         </div>
 
-        <PostCategoryNav currentSlug={null} />
+        <PostCategoryNav categoryLinks={categoryLinks} currentSlug={null} />
       </section>
 
       <section className="section" id="posts-list">

@@ -70,6 +70,7 @@ export interface Config {
     users: User;
     media: Media;
     projects: Project;
+    'post-categories': PostCategory;
     posts: Post;
     'open-source': OpenSource;
     'payload-kv': PayloadKv;
@@ -82,6 +83,7 @@ export interface Config {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     projects: ProjectsSelect<false> | ProjectsSelect<true>;
+    'post-categories': PostCategoriesSelect<false> | PostCategoriesSelect<true>;
     posts: PostsSelect<false> | PostsSelect<true>;
     'open-source': OpenSourceSelect<false> | OpenSourceSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
@@ -234,6 +236,36 @@ export interface Project {
   createdAt: string;
 }
 /**
+ * Configurable post categories used across the public posts pages.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "post-categories".
+ */
+export interface PostCategory {
+  id: number;
+  title: string;
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  slug: string;
+  /**
+   * Semantic type used by the site for case notes, articles, notes, guides, and essays.
+   */
+  kind: 'article' | 'case' | 'note' | 'guide' | 'essay';
+  /**
+   * Used in post meta and detail header, for example "Case note".
+   */
+  singularLabel: string;
+  /**
+   * Optional introduction for the category page.
+   */
+  description?: string | null;
+  order?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * Articles, notes, case notes, guides, and essays.
  *
  * This interface was referenced by `Config`'s JSON-Schema
@@ -269,7 +301,7 @@ export interface Post {
    * Estimated reading time in minutes.
    */
   readingTime?: number | null;
-  category: 'article' | 'case' | 'note' | 'guide' | 'essay';
+  category: number | PostCategory;
   tags?:
     | {
         tag: string;
@@ -348,6 +380,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'projects';
         value: number | Project;
+      } | null)
+    | ({
+        relationTo: 'post-categories';
+        value: number | PostCategory;
       } | null)
     | ({
         relationTo: 'posts';
@@ -472,6 +508,21 @@ export interface ProjectsSelect<T extends boolean = true> {
         description?: T;
         image?: T;
       };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "post-categories_select".
+ */
+export interface PostCategoriesSelect<T extends boolean = true> {
+  title?: T;
+  generateSlug?: T;
+  slug?: T;
+  kind?: T;
+  singularLabel?: T;
+  description?: T;
+  order?: T;
   updatedAt?: T;
   createdAt?: T;
 }
