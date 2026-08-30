@@ -83,7 +83,7 @@ export default async function ProjectDetailPage({ params }: ProjectDetailPagePro
         ) : null}
       </article>
 
-      <ProjectDetailRelatedPosts posts={selectedCaseNotes} title="Selected case notes" />
+      <ProjectDetailRelatedPosts posts={selectedCaseNotes} title="Related writing" />
       <ProjectDetailRelatedPosts posts={relatedWriting} title="Related writing" />
       <ProjectDetailContacts links={contactLinks} />
     </>

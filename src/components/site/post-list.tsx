@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 
-import { formatPostMeta } from '@/lib/posts-index'
+import { formatPostDate, formatPostMeta } from '@/lib/posts-index'
 import type { Post } from '@/payload-types'
 
 type PostImage = {
@@ -43,9 +43,26 @@ function getPostImage(image: PostListEntry['previewImage']): null | ReadyPostIma
   return null
 }
 
-export function PostListItem<T extends PostListEntry>(props: { item: T; showImages?: boolean }) {
-  const { item, showImages = true } = props
+type PostListPresentation = 'compact' | 'default'
+
+export function PostListItem<T extends PostListEntry>(props: {
+  item: T
+  presentation?: PostListPresentation
+  showImages?: boolean
+}) {
+  const { item, presentation = 'default', showImages = true } = props
   const image = showImages ? getPostImage(item.previewImage) : null
+
+  if (presentation === 'compact') {
+    const date = formatPostDate(item.publishedAt)
+
+    return (
+      <Link className="post-item post-item--compact" href={`/posts/${item.slug}`}>
+        <span className="post-title">{item.title}</span>
+        {date ? <span className="post-meta post-meta--compact">{date}</span> : null}
+      </Link>
+    )
+  }
 
   return (
     <Link className="post-item" href={`/posts/${item.slug}`}>
@@ -73,13 +90,17 @@ export function PostListItem<T extends PostListEntry>(props: { item: T; showImag
   )
 }
 
-export function PostList<T extends PostListEntry>(props: { items: T[]; showImages?: boolean }) {
-  const { items, showImages = true } = props
+export function PostList<T extends PostListEntry>(props: {
+  items: T[]
+  presentation?: PostListPresentation
+  showImages?: boolean
+}) {
+  const { items, presentation = 'default', showImages = true } = props
 
   return (
     <div className="post-list">
       {items.map((item) => (
-        <PostListItem item={item} key={item.id} showImages={showImages} />
+        <PostListItem item={item} key={item.id} presentation={presentation} showImages={showImages} />
       ))}
     </div>
   )

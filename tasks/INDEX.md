@@ -197,11 +197,11 @@
   Path: `20-seed-content/task.md`
   Goal: demo data для проверки всех страниц.
 
-* [ ] **21 — Responsive check**
+* [x] **21 — Responsive check**
   Path: `21-responsive-check/task.md`
   Goal: проверить mobile/tablet/desktop, особенно hero, списки и изображения.
 
-* [ ] **22 — UI cleanup**
+* [x] **22 — UI cleanup**
   Path: `22-ui-cleanup/task.md`
   Mockups: `22-ui-cleanup/mockups/`
   Goal: финальная чистка против лишнего UI, карточности и слабой иерархии.
@@ -231,12 +231,16 @@
 * [x] Sitemap/robots работают.
 * [x] Metadata настроена.
 * [x] Analytics adapter не ломает сайт без env.
-* [ ] Mobile layout читаемый.
-* [ ] Визуальный стиль соответствует zero design.
+* [x] Mobile layout читаемый.
+* [x] Визуальный стиль соответствует zero design.
 
 ---
 
 # Implementation log
+
+- 2026-08-27 — Follow-up 22-ui-cleanup: home post lists now use the reference-aligned compact layout (title plus month/year); `/posts` and category pages retain preview images and full metadata. Checks: `pnpm lint`, `pnpm build`, `git diff --check`.
+- 2026-08-26 — Completed 21-responsive-check: проверены `/`, `/projects`, project/post detail, category и `/cv` на 320px и tablet; горизонтального скролла нет, hero, списки, изображения, renderer и footer читаемы. Проверки: Playwright, `pnpm lint`, `pnpm build`.
+- 2026-08-26 — Completed 22-ui-cleanup: убраны декоративные rich-text разделители, `Selected case notes` переименован в `Related writing`; проверены отсутствие chips/cards/dividers, агентских routes и отдельного Open Source раздела. Проверки: `pnpm lint`, `pnpm build`, `git diff --check`.
 
 - 2026-08-25 — Completed 01-init-blank-payload: verified blank Payload + Next.js App Router setup, removed starter frontend content, aligned env example with Postgres, fixed pnpm/ESLint/build/test scripts; checks: generate:types, lint, build, test:int.
 - 2026-08-25 — Completed 02-base-layout-zero-design: added shared public site container, header, footer, high-contrast zero-design typography, link styles, spacing, and responsive rules; checks: generate:types, lint, build.

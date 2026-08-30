@@ -7,27 +7,18 @@ import { getPayload } from 'payload'
 import { ContactLinks } from '@/components/site/contact-links'
 import { OpenSourceList } from '@/components/site/open-source-list'
 import { PostList } from '@/components/site/post-list'
-import { ProjectList } from '@/components/site/project-list'
+import { SelectedWorkList } from '@/components/site/selected-work-list'
 import { SectionHeader } from '@/components/site/section-header'
-import { getPublishedProjects } from '@/lib/projects'
 import { getSiteSettings, type PublicSiteSettings } from '@/lib/siteSettings'
-import type { OpenSource, Post, Project } from '@/payload-types'
+import type { OpenSource, Post } from '@/payload-types'
 import './styles.css'
 
 type HomeContent = {
-  featuredPosts: Post[]
-  featuredPostsCategoryHref: null | string
-  featuredPostsHeading: null | string
-  projects: Project[]
   openSource: OpenSource[]
   blogPosts: Post[]
 }
 
 const emptyHomeContent: HomeContent = {
-  featuredPosts: [],
-  featuredPostsCategoryHref: null,
-  featuredPostsHeading: null,
-  projects: [],
   openSource: [],
   blogPosts: [],
 }
@@ -39,50 +30,8 @@ async function getHomeContent(settings: PublicSiteSettings): Promise<HomeContent
 
   try {
     const payload = await getPayload({ config })
-    const featuredPostsCategoryId =
-      typeof settings.featuredPostsCategory?.id === 'number'
-        ? settings.featuredPostsCategory.id
-        : null
-    const [projects, featuredPosts, openSource, blogPosts] = await Promise.all([
-      getPublishedProjects({
-        depth: 0,
-        limit: 100,
-        sort: ['order', '-year', '-updatedAt'],
-      }).then((projects) => projects.filter((project) => project.featured).slice(0, 3)),
-      payload.find({
-        collection: 'posts',
-        depth: 1,
-        limit: 3,
-        sort: '-publishedAt',
-        where: {
-          and: [
-            {
-              publishedAt: {
-                exists: true,
-              },
-            },
-            {
-              publishedAt: {
-                less_than_equal: new Date().toISOString(),
-              },
-            },
-            {
-              showOnHome: {
-                equals: true,
-              },
-            },
-            ...(featuredPostsCategoryId
-              ? [
-                  {
-                    postCategory: {
-                      equals: featuredPostsCategoryId,
-                    },
-                  },
-                ]
-              : []),
-          ],
-        },
-      }),
+    const selectedWorkPostIds = settings.selectedWork.map((item) => item.post.id)
+    const [openSource, blogPosts] = await Promise.all([
       payload.find({
         collection: 'open-source',
         depth: 0,
@@ -116,11 +65,11 @@ async function getHomeContent(settings: PublicSiteSettings): Promise<HomeContent
                 equals: true,
               },
             },
-            ...(featuredPostsCategoryId
+            ...(selectedWorkPostIds.length > 0
               ? [
                   {
-                    postCategory: {
-                      not_equals: featuredPostsCategoryId,
+                    id: {
+                      not_in: selectedWorkPostIds,
                     },
                   },
                 ]
@@ -131,12 +80,6 @@ async function getHomeContent(settings: PublicSiteSettings): Promise<HomeContent
     ])
 
     return {
-      featuredPosts: featuredPosts.docs,
-      featuredPostsCategoryHref: settings.featuredPostsCategory?.slug
-        ? `/posts/category/${settings.featuredPostsCategory.slug}`
-        : null,
-      featuredPostsHeading: settings.featuredPostsCategory?.title || null,
-      projects,
       openSource: openSource.docs,
       blogPosts: blogPosts.docs,
     }
@@ -192,40 +135,32 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {content.projects.length > 0 ? (
-        <section className="section" id="projects">
-          <SectionHeader action={{ href: '/projects', label: 'All projects' }} title="Selected projects" />
-
-          <ProjectList
-            getMeta={(project) => [project.role, project.year].filter(Boolean).join(' / ')}
-            items={content.projects}
-            showImages={false}
+      {settings.selectedWork.length > 0 ? (
+        <section className="section" id="work">
+          <SectionHeader action={{ href: '/posts', label: 'All posts' }} title="Selected work" />
+          <SelectedWorkList
+            items={settings.selectedWork.map((item) => ({
+              caption: item.caption,
+              description: item.post.description,
+              id: item.post.id,
+              slug: item.post.slug,
+              title: item.post.title,
+            }))}
           />
         </section>
       ) : null}
 
-      {content.featuredPosts.length > 0 ? (
-        <section className="section" id="featured-posts">
-          <SectionHeader
-            action={{
-              href: content.featuredPostsCategoryHref || '/posts',
-              label: content.featuredPostsCategoryHref ? 'All in category' : 'All posts',
-            }}
-            title={content.featuredPostsHeading || 'Selected posts'}
-          />
-
-          <PostList items={content.featuredPosts} showImages={false} />
-        </section>
-      ) : null}
-
-      {content.openSource.length > 0 ? (
-        <section className="section" id="open-source">
-          <SectionHeader
-            action={settings.github ? { href: settings.github, label: 'GitHub' } : undefined}
-            title="Open Source"
-          />
-
-          <OpenSourceList items={content.openSource} />
+      {settings.services.length > 0 ? (
+        <section className="section" id="services">
+          <SectionHeader title="Services" />
+          <div className="expertise-grid">
+            {settings.services.map((service) => (
+              <article className="expertise-item" key={service.title}>
+                <h3>{service.title}</h3>
+                <p>{service.description}</p>
+              </article>
+            ))}
+          </div>
         </section>
       ) : null}
 
@@ -233,7 +168,18 @@ export default async function HomePage() {
         <section className="section" id="blog">
           <SectionHeader action={{ href: '/posts', label: 'All posts' }} title="From the blog" />
 
-          <PostList items={content.blogPosts} showImages={false} />
+          <PostList items={content.blogPosts} presentation="compact" showImages={false} />
+        </section>
+      ) : null}
+
+      {content.openSource.length > 0 ? (
+        <section className="section" id="open-source">
+          <SectionHeader
+            action={settings.github ? { href: settings.github, label: 'GitHub' } : undefined}
+            title="Open source"
+          />
+
+          <OpenSourceList items={content.openSource} />
         </section>
       ) : null}
 

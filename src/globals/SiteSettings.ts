@@ -81,13 +81,55 @@ export const SiteSettings: GlobalConfig = {
       type: 'text',
     },
     {
-      name: 'featuredPostsCategory',
-      type: 'relationship',
-      relationTo: 'post-categories',
+      name: 'selectedWork',
+      type: 'array',
+      labels: {
+        singular: 'Selected work item',
+        plural: 'Selected work',
+      },
       admin: {
         description:
-          'Optional category used for the dedicated featured posts section on the home page.',
+          'Posts selected and ordered manually for the home page. Caption is a free-text label, not a post category.',
       },
+      fields: [
+        {
+          name: 'post',
+          type: 'relationship',
+          relationTo: 'posts',
+          required: true,
+        },
+        {
+          name: 'caption',
+          type: 'text',
+          required: true,
+          admin: {
+            description: 'Short label shown to the right of the post, for example “Architecture”.',
+          },
+        },
+      ],
+    },
+    {
+      name: 'services',
+      type: 'array',
+      labels: {
+        singular: 'Service',
+        plural: 'Services',
+      },
+      admin: {
+        description: 'Services shown on the home page. These do not have a separate collection or route.',
+      },
+      fields: [
+        {
+          name: 'title',
+          type: 'text',
+          required: true,
+        },
+        {
+          name: 'description',
+          type: 'textarea',
+          required: true,
+        },
+      ],
     },
     {
       name: 'seo',

@@ -1,7 +1,17 @@
 import config from '@payload-config'
 import { getPayload } from 'payload'
 
-import type { PostCategory } from '@/payload-types'
+import type { Post } from '@/payload-types'
+
+export type HomeSelectedWork = {
+  caption: string
+  post: Post
+}
+
+export type HomeService = {
+  description: string
+  title: string
+}
 
 export type PublicSiteSettings = {
   name: string
@@ -16,7 +26,8 @@ export type PublicSiteSettings = {
   projectsEyebrow?: string
   postsEyebrow?: string
   bookingUrl?: string
-  featuredPostsCategory?: null | PostCategory
+  selectedWork: HomeSelectedWork[]
+  services: HomeService[]
   seo: {
     defaultTitle: string
     defaultDescription: string
@@ -32,6 +43,8 @@ export const fallbackSiteSettings: PublicSiteSettings = {
   linkedin: 'https://www.linkedin.com/in/askold-astakhov/',
   location: 'Madrid',
   availability: 'Available for selected projects',
+  selectedWork: [],
+  services: [],
   seo: {
     defaultTitle: 'Askold Astakhov',
     defaultDescription: 'Personal site for Askold Astakhov.',
@@ -42,14 +55,8 @@ function optionalString(value: null | string | undefined): string | undefined {
   return value || undefined
 }
 
-function optionalPostCategory(
-  value: null | number | PostCategory | undefined,
-): null | PostCategory | undefined {
-  if (typeof value === 'object' && value !== null && 'slug' in value) {
-    return value
-  }
-
-  return undefined
+function populatedPost(value: null | number | Post | undefined): value is Post {
+  return typeof value === 'object' && value !== null && 'slug' in value
 }
 
 export async function getSiteSettings(): Promise<PublicSiteSettings> {
@@ -78,7 +85,14 @@ export async function getSiteSettings(): Promise<PublicSiteSettings> {
       projectsEyebrow: optionalString(settings.projectsEyebrow),
       postsEyebrow: optionalString(settings.postsEyebrow),
       bookingUrl: optionalString(settings.bookingUrl),
-      featuredPostsCategory: optionalPostCategory(settings.featuredPostsCategory),
+      selectedWork: (settings.selectedWork || []).flatMap((item) =>
+        populatedPost(item.post) && item.caption ? [{ caption: item.caption, post: item.post }] : [],
+      ),
+      services: (settings.services || []).flatMap((service) =>
+        service.title && service.description
+          ? [{ description: service.description, title: service.title }]
+          : [],
+      ),
       seo: {
         ...fallbackSiteSettings.seo,
         ...settings.seo,

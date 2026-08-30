@@ -681,9 +681,28 @@ export interface SiteSetting {
   postsEyebrow?: string | null;
   bookingUrl?: string | null;
   /**
-   * Optional category used for the dedicated featured posts section on the home page.
+   * Posts selected and ordered manually for the home page. Caption is a free-text label, not a post category.
    */
-  featuredPostsCategory?: (number | null) | PostCategory;
+  selectedWork?:
+    | {
+        post: number | Post;
+        /**
+         * Short label shown to the right of the post, for example “Architecture”.
+         */
+        caption: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Services shown on the home page. These do not have a separate collection or route.
+   */
+  services?:
+    | {
+        title: string;
+        description: string;
+        id?: string | null;
+      }[]
+    | null;
   seo: {
     defaultTitle: string;
     defaultDescription: string;
@@ -827,7 +846,20 @@ export interface SiteSettingsSelect<T extends boolean = true> {
   projectsEyebrow?: T;
   postsEyebrow?: T;
   bookingUrl?: T;
-  featuredPostsCategory?: T;
+  selectedWork?:
+    | T
+    | {
+        post?: T;
+        caption?: T;
+        id?: T;
+      };
+  services?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        id?: T;
+      };
   seo?:
     | T
     | {

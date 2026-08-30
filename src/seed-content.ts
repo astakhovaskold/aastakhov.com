@@ -646,11 +646,37 @@ async function seedContent(payload: Payload): Promise<void> {
 
   await Promise.all(openSourceSeeds.map((item) => upsertOpenSource(payload, item)))
 
-  const casesCategory = categoryIds.get('cases')
   await payload.updateGlobal({
     data: {
       ...siteSettingsSeed,
-      featuredPostsCategory: casesCategory,
+      selectedWork: [
+        {
+          caption: 'Architecture',
+          post: postIds.get('frontend-architecture-for-data-heavy-workflows'),
+        },
+        {
+          caption: 'Consulting',
+          post: postIds.get('release-process-for-enterprise-frontend-team'),
+        },
+      ],
+      services: [
+        {
+          description: 'Architecture, code quality, CI/CD, security, and performance.',
+          title: 'Audit',
+        },
+        {
+          description: 'Technical strategy, roadmaps, and technology selection.',
+          title: 'Consulting',
+        },
+        {
+          description: 'Custom modules, integrations, migrations, and automation.',
+          title: 'Development',
+        },
+        {
+          description: 'Ongoing product support, incidents, and improvements.',
+          title: 'Support & retainer',
+        },
+      ],
     },
     slug: 'site-settings',
   })
@@ -732,10 +758,6 @@ async function verifySeedContent(payload: Payload): Promise<void> {
     return counts
   }, {})
   const automatica = projects.docs.find((project) => project.slug === 'automatica')
-  const featuredCategory =
-    typeof siteSettings.featuredPostsCategory === 'object' && siteSettings.featuredPostsCategory !== null
-      ? siteSettings.featuredPostsCategory.slug
-      : null
   const checks = {
     categories: categories.docs.filter((category) =>
       categorySeeds.some((seed) => seed.slug === category.slug),
@@ -751,8 +773,9 @@ async function verifySeedContent(payload: Payload): Promise<void> {
     },
     projects: projects.docs.length,
     siteSettings: {
-      featuredPostsCategory: featuredCategory,
       name: siteSettings.name,
+      selectedWork: siteSettings.selectedWork?.length ?? 0,
+      services: siteSettings.services?.length ?? 0,
     },
   }
 
@@ -768,7 +791,8 @@ async function verifySeedContent(payload: Payload): Promise<void> {
     checks.projectRelations.relatedWriting === 3 &&
     checks.projectRelations.selectedCaseNotes === 2 &&
     checks.projects === 2 &&
-    checks.siteSettings.featuredPostsCategory === 'cases'
+    checks.siteSettings.selectedWork === 2 &&
+    checks.siteSettings.services === 4
 
   if (!isValid) {
     throw new Error(`Seed verification failed: ${JSON.stringify(checks)}`)
