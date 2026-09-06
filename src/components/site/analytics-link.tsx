@@ -9,6 +9,10 @@ function isInternalHref(href: string): boolean {
   return href.startsWith('/')
 }
 
+function isExternalHref(href: string): boolean {
+  return !isInternalHref(href) && !href.startsWith('mailto:') && !href.startsWith('tel:')
+}
+
 export function AnalyticsLink(props: {
   ariaCurrent?: 'page'
   children: ReactNode
@@ -33,14 +37,16 @@ export function AnalyticsLink(props: {
     )
   }
 
+  const external = isExternalHref(href)
+
   return (
     <a
       aria-current={ariaCurrent}
       className={className}
       href={href}
       onClick={handleClick}
-      rel={rel}
-      target={target}
+      rel={rel ?? (external ? 'noopener noreferrer' : undefined)}
+      target={target ?? (external ? '_blank' : undefined)}
     >
       {children}
     </a>
