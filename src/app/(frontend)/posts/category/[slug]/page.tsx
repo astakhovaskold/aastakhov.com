@@ -7,6 +7,7 @@ import { SectionHeader } from '@/components/site/section-header'
 import {
   getPostCategoryBySlug,
   getPostCategoryLinks,
+  getPostCategoryLinksWithPosts,
   getPublishedPosts,
 } from '@/lib/posts-index'
 import { createNotFoundMetadata, createSeoMetadata } from '@/lib/seo'
@@ -46,7 +47,7 @@ export async function generateMetadata({ params }: PostCategoryPageProps): Promi
 export default async function PostCategoryPage({ params }: PostCategoryPageProps) {
   const { slug } = await params
   const [categoryLinks, allCategoryLinks] = await Promise.all([
-    getPostCategoryLinks(),
+    getPostCategoryLinksWithPosts(),
     getPostCategoryLinks({ includeHidden: true }),
   ])
   const category = getPostCategoryBySlug(allCategoryLinks, slug)
@@ -65,11 +66,13 @@ export default async function PostCategoryPage({ params }: PostCategoryPageProps
         <p className="lede">{category.description || `${category.label} by Askold Astakhov.`}</p>
       </section>
 
-      <section className="section" id="post-categories">
-        <SectionHeader title="Categories" />
+      {categoryLinks.length > 0 ? (
+        <section className="section" id="post-categories">
+          <SectionHeader title="Topics" />
 
-        <PostCategoryNav categoryLinks={categoryLinks} currentSlug={category.slug} />
-      </section>
+          <PostCategoryNav categoryLinks={categoryLinks} currentSlug={category.slug} />
+        </section>
+      ) : null}
 
       <section className="section" id="posts-list">
         <SectionHeader title={category.label} />

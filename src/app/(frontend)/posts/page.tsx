@@ -59,11 +59,13 @@ export default async function PostsPage() {
         {posts.length > 0 ? <PostList items={posts} /> : <p>No posts published yet.</p>}
       </section>
 
-      <section className="section" id="post-categories">
-        <SectionHeader title="Topics" />
+      {categoryLinks.length > 0 ? (
+        <section className="section" id="post-categories">
+          <SectionHeader title="Topics" />
 
-        <PostCategoryNav categoryLinks={categoryLinks} currentSlug={null} />
-      </section>
+          <PostCategoryNav categoryLinks={categoryLinks} currentSlug={null} />
+        </section>
+      ) : null}
 
       <section className="section" id="contact">
         <SectionHeader title="Contacts" />

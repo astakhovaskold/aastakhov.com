@@ -123,6 +123,55 @@ export async function getPostCategoryLinks(options?: {
   }
 }
 
+export async function getPostCategoryIdsWithPosts(): Promise<Set<number>> {
+  if (process.env.NEXT_PHASE === 'phase-production-build') {
+    return new Set()
+  }
+
+  try {
+    const payload = await getPayload({ config })
+    const posts = await payload.find({
+      collection: 'posts',
+      depth: 0,
+      limit: 1000,
+      select: {
+        postCategory: true,
+      },
+      where: {
+        and: [
+          {
+            publishedAt: {
+              exists: true,
+            },
+          },
+          {
+            publishedAt: {
+              less_than_equal: new Date().toISOString(),
+            },
+          },
+        ],
+      },
+    })
+
+    return new Set(
+      posts.docs
+        .map((post) => (typeof post.postCategory === 'number' ? post.postCategory : null))
+        .filter((id): id is number => id !== null),
+    )
+  } catch {
+    return new Set()
+  }
+}
+
+export async function getPostCategoryLinksWithPosts(): Promise<PostCategoryLink[]> {
+  const [categoryLinks, categoryIdsWithPosts] = await Promise.all([
+    getPostCategoryLinks(),
+    getPostCategoryIdsWithPosts(),
+  ])
+
+  return categoryLinks.filter((category) => categoryIdsWithPosts.has(category.id))
+}
+
 export async function getPublishedPosts(postCategoryId?: number): Promise<PostListItem[]> {
   if (process.env.NEXT_PHASE === 'phase-production-build') {
     return []
@@ -235,7 +284,7 @@ export async function getFeaturedPost(): Promise<PostListItem | null> {
 
 export async function getPostsIndexPageData(postCategoryId?: number): Promise<PostsIndexPageData> {
   const [categoryLinks, posts, featuredPost] = await Promise.all([
-    getPostCategoryLinks(),
+    getPostCategoryLinksWithPosts(),
     getPublishedPosts(postCategoryId),
     postCategoryId ? Promise.resolve(null) : getFeaturedPost(),
   ])
