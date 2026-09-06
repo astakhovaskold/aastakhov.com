@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 
-import { formatPostDate, formatPostMeta } from '@/lib/posts-index'
+import { formatPostDate, getPostCardMeta } from '@/lib/posts-index'
 import type { Post } from '@/payload-types'
 
 type PostImage = {
@@ -64,6 +64,8 @@ export function PostListItem<T extends PostListEntry>(props: {
     )
   }
 
+  const cardMeta = getPostCardMeta(item)
+
   return (
     <Link className="post-item" href={`/posts/${item.slug}`}>
       {showImages ? (
@@ -85,7 +87,11 @@ export function PostListItem<T extends PostListEntry>(props: {
         {item.description ? <span className="post-desc">{item.description}</span> : null}
       </span>
 
-      <span className="post-meta">{formatPostMeta(item)}</span>
+      <span className="post-meta">
+        {cardMeta.category}
+        {cardMeta.category && cardMeta.date ? <br /> : null}
+        {cardMeta.date}
+      </span>
     </Link>
   )
 }

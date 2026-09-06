@@ -1,5 +1,7 @@
 import type { Metadata } from 'next'
 
+import { ContactLinks } from '@/components/site/contact-links'
+import { FeaturedPost } from '@/components/site/featured-post'
 import { PostList } from '@/components/site/post-list'
 import { PostCategoryNav } from '@/components/site/post-index-list'
 import { SectionHeader } from '@/components/site/section-header'
@@ -19,7 +21,19 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function PostsPage() {
-  const [{ categoryLinks, posts }, settings] = await Promise.all([getPostsIndexPageData(), getSiteSettings()])
+  const [{ categoryLinks, featuredPost, posts }, settings] = await Promise.all([
+    getPostsIndexPageData(),
+    getSiteSettings(),
+  ])
+
+  const contactLinks = [
+    settings.telegram ? { href: settings.telegram, label: 'Telegram' } : null,
+    { href: `mailto:${settings.email}`, label: 'Email' },
+    settings.bookingUrl ? { href: settings.bookingUrl, label: 'Book a call' } : null,
+    settings.linkedin ? { href: settings.linkedin, label: 'LinkedIn' } : null,
+    settings.github ? { href: settings.github, label: 'GitHub' } : null,
+    { href: '/cv', label: 'CV' },
+  ].filter((link): link is { href: string; label: string } => Boolean(link))
 
   return (
     <>
@@ -31,16 +45,29 @@ export default async function PostsPage() {
         </p>
       </section>
 
-      <section className="section" id="post-categories">
-        <SectionHeader title="Categories" />
+      {featuredPost ? (
+        <section className="section" id="featured-post">
+          <SectionHeader title="Featured post" />
 
-        <PostCategoryNav categoryLinks={categoryLinks} currentSlug={null} />
-      </section>
+          <FeaturedPost post={featuredPost} />
+        </section>
+      ) : null}
 
       <section className="section" id="posts-list">
         <SectionHeader title="All posts" />
 
         {posts.length > 0 ? <PostList items={posts} /> : <p>No posts published yet.</p>}
+      </section>
+
+      <section className="section" id="post-categories">
+        <SectionHeader title="Topics" />
+
+        <PostCategoryNav categoryLinks={categoryLinks} currentSlug={null} />
+      </section>
+
+      <section className="section" id="contact">
+        <SectionHeader title="Contacts" />
+        <ContactLinks links={contactLinks} />
       </section>
     </>
   )
