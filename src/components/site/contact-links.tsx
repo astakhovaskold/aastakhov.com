@@ -1,4 +1,4 @@
-import { AnalyticsLink } from '@/components/site/analytics-link'
+import { ArrowLink } from '@/components/site/arrow-link'
 import { getContactLinkEvent } from '@/lib/analytics'
 
 export type ContactLinkItem = {
@@ -16,13 +16,13 @@ export function ContactLinks(props: { links: ContactLinkItem[] }) {
   return (
     <div className="contact-links">
       {links.map((link) => (
-        <AnalyticsLink
+        <ArrowLink
           href={link.href}
           key={link.label}
           trackingEvent={getContactLinkEvent(link.label, link.href)}
         >
-          {link.label} →
-        </AnalyticsLink>
+          {link.label}
+        </ArrowLink>
       ))}
     </div>
   )

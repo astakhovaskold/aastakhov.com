@@ -1,6 +1,6 @@
 import Link from 'next/link'
 
-import { AnalyticsLink } from '@/components/site/analytics-link'
+import { ArrowLink } from '@/components/site/arrow-link'
 import { ContentRenderer } from '@/components/site/content-renderer'
 import { getContactLinkEvent } from '@/lib/analytics'
 import { getPostCategoryLabel } from '@/lib/posts-index'
@@ -83,9 +83,9 @@ export function ProjectDetailRelatedPosts(props: { posts: Post[]; title: string 
         <h2 className="section-title" id={headingId}>
           {title}
         </h2>
-        <Link className="section-link" href="/posts">
-          All posts →
-        </Link>
+        <ArrowLink className="section-link" href="/posts">
+          All posts
+        </ArrowLink>
       </div>
       <div className="rows">
         {posts.map((post) => (
@@ -113,13 +113,13 @@ export function ProjectDetailContacts(props: { links: Array<{ href: string; labe
       </p>
       <div className="contact-links">
         {links.map((link) => (
-          <AnalyticsLink
+          <ArrowLink
             href={link.href}
             key={link.label}
             trackingEvent={getContactLinkEvent(link.label, link.href)}
           >
-            {link.label} →
-          </AnalyticsLink>
+            {link.label}
+          </ArrowLink>
         ))}
       </div>
     </section>

@@ -1,9 +1,6 @@
-import Link from 'next/link'
 import type { ReactNode } from 'react'
 
-function isInternalHref(href: string): boolean {
-  return href.startsWith('/')
-}
+import { ArrowLink } from '@/components/site/arrow-link'
 
 type SectionHeaderAction =
   | {
@@ -22,15 +19,9 @@ export function SectionHeader(props: {
     <div className="section-header">
       <h2 className="section-title">{title}</h2>
       {typeof action === 'object' && action !== null && 'href' in action ? (
-        isInternalHref(action.href) ? (
-          <Link className="section-link" href={action.href}>
-            {action.label}
-          </Link>
-        ) : (
-          <a className="section-link" href={action.href}>
-            {action.label}
-          </a>
-        )
+        <ArrowLink className="section-link" href={action.href}>
+          {action.label}
+        </ArrowLink>
       ) : action ? (
         action
       ) : null}

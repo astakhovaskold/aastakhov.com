@@ -1,6 +1,5 @@
 import config from '@payload-config'
 import Image from 'next/image'
-import Link from 'next/link'
 import React from 'react'
 import { getPayload } from 'payload'
 
@@ -91,11 +90,7 @@ async function getHomeContent(settings: PublicSiteSettings): Promise<HomeContent
 export default async function HomePage() {
   const settings = await getSiteSettings()
   const content = await getHomeContent(settings)
-  const topicLinks = [
-    { href: '/projects', label: 'Architecture' },
-    { href: '/posts', label: 'Technical notes' },
-    { href: '/cv', label: 'Technical leadership' },
-  ]
+  const heroTags = ['Architecture', 'Audits', 'Technical consulting', 'Full-stack dev', 'Team lead']
   const contactLinks = [
     settings.telegram ? { href: settings.telegram, label: 'Telegram' } : null,
     { href: `mailto:${settings.email}`, label: 'Email' },
@@ -110,19 +105,23 @@ export default async function HomePage() {
       <section className="hero">
         <div className="hero-grid">
           <div>
-            {settings.homeEyebrow ? <p className="eyebrow">{settings.homeEyebrow}</p> : null}
-            <h1>Builder and technical partner.</h1>
-            <p className="lede">
-              I help turn complex product and engineering problems into pragmatic software:
-              architecture, audits, implementation, and technical leadership.
+            <p className="eyebrow">
+              {settings.location} · {settings.availability}
             </p>
-            <nav className="topic-links" aria-label="Topics">
-              {topicLinks.map((link) => (
-                <Link href={link.href} key={link.href}>
-                  {link.label}
-                </Link>
+            <h1>
+              Independent
+              <br />
+              IT expert
+            </h1>
+            <p className="lede">
+              Technical partner for complex projects — architecture, audits, consulting and
+              development. Enterprise background, pragmatic approach.
+            </p>
+            <div className="topic-links" aria-label="Topics">
+              {heroTags.map((tag) => (
+                <span key={tag}>{tag}</span>
               ))}
-            </nav>
+            </div>
           </div>
 
           <Image

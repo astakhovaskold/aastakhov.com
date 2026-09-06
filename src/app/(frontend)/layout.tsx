@@ -6,6 +6,7 @@ import React from 'react'
 import { AnalyticsPageView } from '@/components/site/analytics-page-view'
 import { getUmamiConfig } from '@/lib/analytics'
 import { createSeoMetadata, getSiteUrl } from '@/lib/seo'
+import { FEATURES } from '@/lib/feature-flags'
 import { getSiteSettings } from '@/lib/siteSettings'
 import './styles.css'
 
@@ -50,7 +51,7 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
             </Link>
 
             <nav className="site-nav" aria-label="Main navigation">
-              <Link href="/projects">Projects</Link>
+              {FEATURES.projects ? <Link href="/projects">Projects</Link> : null}
               <Link href="/posts">Posts</Link>
               <Link href="/cv">CV</Link>
             </nav>

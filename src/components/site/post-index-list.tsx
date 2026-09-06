@@ -1,5 +1,4 @@
-import Link from 'next/link'
-
+import { ArrowLink } from '@/components/site/arrow-link'
 import type { PostCategoryLink, PostListItem as PostListEntry } from '@/lib/posts-index'
 import { PostList } from '@/components/site/post-list'
 
@@ -15,23 +14,23 @@ export function PostCategoryNav(props: {
 
   return (
     <nav className="post-category-nav" aria-label="Post categories">
-      <Link
-        aria-current={currentSlug === null ? 'page' : undefined}
+      <ArrowLink
+        ariaCurrent={currentSlug === null ? 'page' : undefined}
         className="post-category-link"
         href="/posts"
       >
         All
-      </Link>
+      </ArrowLink>
 
       {categoryLinks.map((link) => (
-        <Link
-          aria-current={isActiveCategory(currentSlug, link.slug) ? 'page' : undefined}
+        <ArrowLink
+          ariaCurrent={isActiveCategory(currentSlug, link.slug) ? 'page' : undefined}
           className="post-category-link"
           href={link.href}
           key={link.id}
         >
           {link.label}
-        </Link>
+        </ArrowLink>
       ))}
     </nav>
   )

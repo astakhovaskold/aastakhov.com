@@ -10,6 +10,7 @@ function isInternalHref(href: string): boolean {
 }
 
 export function AnalyticsLink(props: {
+  ariaCurrent?: 'page'
   children: ReactNode
   className?: string
   href: string
@@ -17,7 +18,7 @@ export function AnalyticsLink(props: {
   target?: string
   trackingEvent?: AnalyticsEvent
 }) {
-  const { children, className, href, rel, target, trackingEvent } = props
+  const { ariaCurrent, children, className, href, rel, target, trackingEvent } = props
   const handleClick = () => {
     if (trackingEvent) {
       track(trackingEvent)
@@ -26,14 +27,21 @@ export function AnalyticsLink(props: {
 
   if (isInternalHref(href)) {
     return (
-      <Link className={className} href={href} onClick={handleClick}>
+      <Link aria-current={ariaCurrent} className={className} href={href} onClick={handleClick}>
         {children}
       </Link>
     )
   }
 
   return (
-    <a className={className} href={href} onClick={handleClick} rel={rel} target={target}>
+    <a
+      aria-current={ariaCurrent}
+      className={className}
+      href={href}
+      onClick={handleClick}
+      rel={rel}
+      target={target}
+    >
       {children}
     </a>
   )

@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 
-import { AnalyticsLink } from '@/components/site/analytics-link'
+import { ArrowLink } from '@/components/site/arrow-link'
 import { analyticsEventNames, getContactLinkEvent } from '@/lib/analytics'
 import { getCV } from '@/lib/cv'
 import { createSeoMetadata } from '@/lib/seo'
@@ -273,7 +273,7 @@ export default async function CVPage() {
         {headerActions.length > 0 ? (
           <div className="header-actions" aria-label="CV actions">
             {headerActions.map((action) => (
-              <AnalyticsLink
+              <ArrowLink
                 href={action.href}
                 key={action.label}
                 rel={action.rel}
@@ -282,8 +282,8 @@ export default async function CVPage() {
                   action.trackingEvent || getContactLinkEvent(action.label, action.href)
                 }
               >
-                {action.label} →
-              </AnalyticsLink>
+                {action.label}
+              </ArrowLink>
             ))}
           </div>
         ) : null}
@@ -453,24 +453,24 @@ export default async function CVPage() {
           <div className="contacts">
             {contactItems.map((item) =>
               item.href ? (
-                <AnalyticsLink
+                <ArrowLink
                   href={item.href}
                   key={item.label}
                   trackingEvent={getContactLinkEvent(item.label, item.href)}
                 >
-                  {item.label} →
-                </AnalyticsLink>
+                  {item.label}
+                </ArrowLink>
               ) : null,
             )}
             {cv?.pdf?.url ? (
-              <AnalyticsLink
+              <ArrowLink
                 href={cv.pdf.url}
                 rel="noreferrer"
                 target="_blank"
                 trackingEvent={analyticsEventNames.cvDownload}
               >
-                Download PDF →
-              </AnalyticsLink>
+                Download PDF
+              </ArrowLink>
             ) : null}
           </div>
         </section>
