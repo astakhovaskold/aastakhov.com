@@ -88,7 +88,7 @@ export default async function PostDetailPage({ params }: PostDetailPageProps) {
 
       <section className="section" id="post-more">
         <div className="post-detail-shell">
-          <SectionHeader action={{ href: '/posts', label: 'All posts →' }} title="More" />
+          <SectionHeader action={{ href: '/posts', label: 'All posts' }} title="More" />
           <PostDetailPagination nextPost={nextPost} previousPost={previousPost} />
         </div>
       </section>
