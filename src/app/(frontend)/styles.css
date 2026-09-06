@@ -602,13 +602,21 @@ p {
 
 .content-renderer figure img {
   width: 100%;
-  height: auto;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  background: #f2f2f2;
 }
 
 .content-renderer figcaption {
   margin-top: 8px;
   font-size: 13px;
   line-height: 1.45;
+}
+
+.content-renderer hr {
+  margin: 48px 0;
+  border: none;
+  border-top: 1px solid rgba(17, 17, 17, 0.15);
 }
 
 .project-detail-section {
@@ -641,49 +649,22 @@ p {
   gap: 16px;
 }
 
-.post-detail-label,
-.post-detail-pagination-label {
+.post-detail-label {
   font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
-.post-detail-meta {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px 28px;
-  font-size: 14px;
-}
-
 .post-detail-cover {
   width: min(100%, 650px);
 }
 
-.post-detail-content-media img {
+.post-detail-cover img {
   width: 100%;
-  height: auto;
-}
-
-.post-detail-back-link {
-  font-size: 14px;
-}
-
-.post-detail-pagination {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 20px 32px;
-}
-
-.post-detail-pagination-link {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  text-decoration: none;
-}
-
-.post-detail-pagination-link-next {
-  text-align: right;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  background: #f2f2f2;
 }
 
 .cv-header {
@@ -996,14 +977,6 @@ p {
   .oss-meta {
     justify-self: start;
     white-space: normal;
-  }
-
-  .post-detail-pagination {
-    grid-template-columns: 1fr;
-  }
-
-  .post-detail-pagination-link-next {
-    text-align: left;
   }
 
   .cv-header {

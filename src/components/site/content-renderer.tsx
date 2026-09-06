@@ -94,7 +94,7 @@ function renderNode(node: RichTextNode, key: React.Key): React.ReactNode {
     case 'autolink':
       return renderLink(node, key)
     case 'horizontalrule':
-      return null
+      return <hr key={key} />
     case 'upload': {
       const media = extractMedia(node)
       if (!media?.url) return null

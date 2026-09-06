@@ -5,8 +5,6 @@ import { ContentRenderer } from '@/components/site/content-renderer'
 import { getPostCategoryLabel } from '@/lib/posts-index'
 import type { Media, Post } from '@/payload-types'
 
-const languageLabels: Record<Post['language'], string> = { en: 'English', es: 'Spanish', ru: 'Russian' }
-
 function isMedia(value: unknown): value is Media {
   return typeof value === 'object' && value !== null && 'url' in value
 }
@@ -18,25 +16,21 @@ function formatPostDate(publishedAt?: string | null): string | null {
   return new Intl.DateTimeFormat('en', { day: 'numeric', month: 'long', year: 'numeric' }).format(date)
 }
 
-export function formatPostMeta(post: Pick<Post, 'language' | 'publishedAt' | 'readingTime'>): string[] {
-  const items: string[] = []
-  const date = formatPostDate(post.publishedAt)
-  if (date) items.push(date)
-  if (post.readingTime) items.push(`${post.readingTime} min read`)
-  items.push(languageLabels[post.language])
-  return items
-}
-
 export function PostDetailHeader(props: { post: Post }) {
   const { post } = props
+  const metaLine = [
+    getPostCategoryLabel(post.postCategory),
+    formatPostDate(post.publishedAt),
+    post.readingTime ? `${post.readingTime} min read` : null,
+  ]
+    .filter(Boolean)
+    .join(' · ')
+
   return (
     <header className="post-detail-header">
-      <p className="post-detail-label">{getPostCategoryLabel(post.postCategory)}</p>
+      {metaLine ? <p className="post-detail-label">{metaLine}</p> : null}
       <h1>{post.title}</h1>
       <p className="lede">{post.description}</p>
-      <div className="post-detail-meta" aria-label="Post metadata">
-        {formatPostMeta(post).map((item) => <span key={item}>{item}</span>)}
-      </div>
     </header>
   )
 }
@@ -61,18 +55,12 @@ export function PostDetailPagination(props: { nextPost: Post | null; previousPos
   const { nextPost, previousPost } = props
   if (!nextPost && !previousPost) return null
   return (
-    <nav aria-label="Post pagination" className="post-detail-pagination">
+    <nav aria-label="Post pagination" className="contact-links">
       {previousPost ? (
-        <Link className="post-detail-pagination-link" href={`/posts/${previousPost.slug}`}>
-          <span className="post-detail-pagination-label">Previous</span>
-          <span className="row-title">{previousPost.title}</span>
-        </Link>
-      ) : <span />}
+        <Link href={`/posts/${previousPost.slug}`}>Previous post →</Link>
+      ) : null}
       {nextPost ? (
-        <Link className="post-detail-pagination-link post-detail-pagination-link-next" href={`/posts/${nextPost.slug}`}>
-          <span className="post-detail-pagination-label">Next</span>
-          <span className="row-title">{nextPost.title}</span>
-        </Link>
+        <Link href={`/posts/${nextPost.slug}`}>Next post →</Link>
       ) : null}
     </nav>
   )
