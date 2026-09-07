@@ -1,10 +1,18 @@
 import type { Metadata } from 'next'
+import { hasLocale } from 'next-intl'
+import { getTranslations, setRequestLocale } from 'next-intl/server'
+import { notFound } from 'next/navigation'
 
 import { ArrowLink } from '@/components/site/arrow-link'
+import { routing } from '@/i18n/routing'
 import { analyticsEventNames, getContactLinkEvent } from '@/lib/analytics'
 import { getCV } from '@/lib/cv'
 import { createSeoMetadata } from '@/lib/seo'
 import { getSiteSettings } from '@/lib/siteSettings'
+
+type CVPageProps = {
+  params: Promise<{ locale: string }>
+}
 
 type ContactItem = {
   href?: string
@@ -60,17 +68,18 @@ function getContactItems(
       }
     | null
     | undefined,
+  contactT: (key: string) => string,
 ): ContactItem[] {
   if (!contacts) {
     return []
   }
 
   const items = [
-    { key: 'email', label: 'Email', value: contacts.email },
-    { key: 'phone', label: 'Phone', value: contacts.phone },
-    { key: 'linkedin', label: 'LinkedIn', value: contacts.linkedin },
-    { key: 'github', label: 'GitHub', value: contacts.github },
-    { key: 'telegram', label: 'Telegram', value: contacts.telegram },
+    { key: 'email', label: contactT('email'), value: contacts.email },
+    { key: 'phone', label: contactT('phone'), value: contacts.phone },
+    { key: 'linkedin', label: contactT('linkedin'), value: contacts.linkedin },
+    { key: 'github', label: contactT('github'), value: contacts.github },
+    { key: 'telegram', label: contactT('telegram'), value: contacts.telegram },
   ]
 
   return items
@@ -103,9 +112,10 @@ function formatExperienceRange(
   startDate: null | string | undefined,
   endDate: null | string | undefined,
   current: boolean | null | undefined,
+  presentLabel: string,
 ): string | null {
   const start = formatMonthYear(startDate)
-  const end = current ? 'Present' : formatMonthYear(endDate)
+  const end = current ? presentLabel : formatMonthYear(endDate)
 
   if (start && end) {
     return `${start} - ${end}`
@@ -133,22 +143,22 @@ function formatEducationRange(
   return null
 }
 
-function formatSummaryPairs(cv: Awaited<ReturnType<typeof getCV>>) {
+function formatSummaryPairs(cv: Awaited<ReturnType<typeof getCV>>, t: (key: string) => string) {
   if (!cv) {
     return []
   }
 
   return [
-    { label: 'Role', value: cv.role },
-    { label: 'Location', value: cv.location },
-    { label: 'Focus', value: cv.focus },
-    { label: 'Stack', value: cv.stack },
+    { label: t('role'), value: cv.role },
+    { label: t('location'), value: cv.location },
+    { label: t('focus'), value: cv.focus },
+    { label: t('stack'), value: cv.stack },
   ].filter((item): item is { label: string; value: string } => hasText(item.value))
 }
 
-function splitName(value: null | string | undefined): string[] {
+function splitName(value: null | string | undefined, fallback: string): string[] {
   if (!hasText(value)) {
-    return ['CV']
+    return [fallback]
   }
 
   const parts = value.trim().split(/\s+/)
@@ -160,28 +170,50 @@ function splitName(value: null | string | undefined): string[] {
   return [parts[0], parts.slice(1).join(' ')]
 }
 
-export async function generateMetadata(): Promise<Metadata> {
-  const [cv, settings] = await Promise.all([getCV(), getSiteSettings()])
-  const titleParts = [cv?.name || 'CV', cv?.role || null].filter(Boolean)
+export async function generateMetadata({ params }: CVPageProps): Promise<Metadata> {
+  const { locale } = await params
+  const [cv, settings, t] = await Promise.all([
+    getCV(locale),
+    getSiteSettings(locale),
+    getTranslations({ locale, namespace: 'cv' }),
+  ])
+  const titleParts = [cv?.name || t('cvFallback'), cv?.role || null].filter(Boolean)
 
   return createSeoMetadata({
     canonicalPath: '/cv',
-    description: cv?.summary || 'Professional profile and CV.',
+    description: cv?.summary || t('defaultDescription'),
+    locale: locale as 'ru' | 'en',
     settings,
     title: titleParts.join(' - '),
   })
 }
 
-export default async function CVPage() {
-  const [cv, siteSettings] = await Promise.all([getCV(), getSiteSettings()])
-  const contactItems = getContactItems({
-    email: siteSettings.email,
-    phone: siteSettings.phone,
-    linkedin: siteSettings.linkedin,
-    github: siteSettings.github,
-    telegram: siteSettings.telegram,
-  })
-  const summaryPairs = formatSummaryPairs(cv)
+export default async function CVPage({ params }: CVPageProps) {
+  const { locale } = await params
+
+  if (!hasLocale(routing.locales, locale)) {
+    notFound()
+  }
+
+  setRequestLocale(locale)
+
+  const [cv, siteSettings, t, contactT] = await Promise.all([
+    getCV(locale),
+    getSiteSettings(locale),
+    getTranslations('cv'),
+    getTranslations('contact'),
+  ])
+  const contactItems = getContactItems(
+    {
+      email: siteSettings.email,
+      phone: siteSettings.phone,
+      linkedin: siteSettings.linkedin,
+      github: siteSettings.github,
+      telegram: siteSettings.telegram,
+    },
+    contactT,
+  )
+  const summaryPairs = formatSummaryPairs(cv, t)
   const expertiseItems =
     cv?.expertise?.filter((item) => hasText(item.title) || hasText(item.description)) ?? []
   const experienceItems =
@@ -215,7 +247,7 @@ export default async function CVPage() {
     cv?.pdf?.url
       ? {
           href: cv.pdf.url,
-          label: 'Download PDF',
+          label: t('downloadPdf'),
           rel: 'noreferrer',
           target: '_blank',
           trackingEvent: analyticsEventNames.cvDownload,
@@ -223,18 +255,18 @@ export default async function CVPage() {
       : null,
     {
       href: `mailto:${siteSettings.email}`,
-      label: 'Email',
+      label: contactT('email'),
     },
     siteSettings.linkedin
       ? {
           href: siteSettings.linkedin,
-          label: 'LinkedIn',
+          label: contactT('linkedin'),
         }
       : null,
     siteSettings.telegram
       ? {
           href: siteSettings.telegram,
-          label: 'Telegram',
+          label: contactT('telegram'),
         }
       : null,
   ].filter(Boolean) as Array<{
@@ -261,7 +293,7 @@ export default async function CVPage() {
       <header className="cv-header">
         {hasText(cv?.eyebrow) ? <p className="eyebrow">{cv.eyebrow}</p> : null}
         <h1 className="cv-title">
-          {splitName(cv?.name).map((part, index) => (
+          {splitName(cv?.name, t('cvFallback')).map((part, index) => (
             <span key={`${part}-${index}`}>
               {index > 0 ? <br /> : null}
               {part}
@@ -292,7 +324,7 @@ export default async function CVPage() {
       {summaryPairs.length > 0 ? (
         <section className="summary-grid" aria-labelledby="profile-title">
           <h2 className="section-title" id="profile-title">
-            Profile
+            {t('profile')}
           </h2>
 
           <dl className="summary-list">
@@ -310,7 +342,7 @@ export default async function CVPage() {
         <section className="section" aria-labelledby="expertise-title">
           <div className="section-header">
             <h2 className="section-title" id="expertise-title">
-              Key expertise
+              {t('keyExpertise')}
             </h2>
             {hasText(cv?.expertiseNote) ? <p className="section-note">{cv.expertiseNote}</p> : null}
           </div>
@@ -330,13 +362,18 @@ export default async function CVPage() {
         <section className="section" aria-labelledby="experience-title">
           <div className="section-header">
             <h2 className="section-title" id="experience-title">
-              Experience
+              {t('experience')}
             </h2>
           </div>
 
           <div className="experience-list">
             {experienceItems.map((item) => {
-              const dateRange = formatExperienceRange(item.startDate, item.endDate, item.current)
+              const dateRange = formatExperienceRange(
+                item.startDate,
+                item.endDate,
+                item.current,
+                t('present'),
+              )
 
               return (
                 <article className="experience-item" key={item.id}>
@@ -362,7 +399,9 @@ export default async function CVPage() {
                       </ul>
                     ) : null}
 
-                    {hasText(item.stack) ? <p className="stack">Stack: {item.stack}</p> : null}
+                    {hasText(item.stack) ? (
+                      <p className="stack">{t('stackLabel', { stack: item.stack })}</p>
+                    ) : null}
                   </div>
                 </article>
               )
@@ -375,7 +414,7 @@ export default async function CVPage() {
         <section className="section" aria-labelledby="skills-title">
           <div className="section-header">
             <h2 className="section-title" id="skills-title">
-              Technology
+              {t('technology')}
             </h2>
           </div>
 
@@ -398,7 +437,7 @@ export default async function CVPage() {
         <section className="section" aria-labelledby="education-title">
           <div className="section-header">
             <h2 className="section-title" id="education-title">
-              Education
+              {t('education')}
             </h2>
           </div>
 
@@ -430,7 +469,7 @@ export default async function CVPage() {
         <section className="section" aria-labelledby="languages-title">
           <div className="section-header">
             <h2 className="section-title" id="languages-title">
-              Languages
+              {t('languages')}
             </h2>
           </div>
 
@@ -446,7 +485,7 @@ export default async function CVPage() {
         <section className="section" aria-labelledby="contact-title">
           <div className="section-header">
             <h2 className="section-title" id="contact-title">
-              Contacts
+              {t('contacts')}
             </h2>
           </div>
 
@@ -469,7 +508,7 @@ export default async function CVPage() {
                 target="_blank"
                 trackingEvent={analyticsEventNames.cvDownload}
               >
-                Download PDF
+                {t('downloadPdf')}
               </ArrowLink>
             ) : null}
           </div>
@@ -478,7 +517,7 @@ export default async function CVPage() {
 
       {!hasStructuredContent ? (
         <section className="section">
-          <p>Formal CV details will appear here once they are added in Payload.</p>
+          <p>{t('noContent')}</p>
         </section>
       ) : null}
     </>

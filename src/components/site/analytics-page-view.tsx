@@ -1,8 +1,8 @@
 'use client'
 
-import { usePathname } from 'next/navigation'
 import { useEffect, useRef } from 'react'
 
+import { usePathname } from '@/i18n/navigation'
 import { analyticsEventNames, track, type AnalyticsEvent } from '@/lib/analytics'
 
 function decodeSlug(value: string): string {

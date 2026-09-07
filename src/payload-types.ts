@@ -94,7 +94,7 @@ export interface Config {
   db: {
     defaultIDType: number;
   };
-  fallbackLocale: null;
+  fallbackLocale: ('false' | 'none' | 'null') | false | null | ('ru' | 'en') | ('ru' | 'en')[];
   globals: {
     'site-settings': SiteSetting;
     cv: Cv;
@@ -103,7 +103,7 @@ export interface Config {
     'site-settings': SiteSettingsSelect<false> | SiteSettingsSelect<true>;
     cv: CvSelect<false> | CvSelect<true>;
   };
-  locale: null;
+  locale: 'ru' | 'en';
   widgets: {
     collections: CollectionsWidget;
   };
@@ -290,7 +290,6 @@ export interface Post {
     [k: string]: unknown;
   } | null;
   publishedAt?: string | null;
-  language: 'en' | 'ru' | 'es';
   /**
    * Estimated reading time in minutes.
    */
@@ -573,7 +572,6 @@ export interface PostsSelect<T extends boolean = true> {
   eyebrow?: T;
   content?: T;
   publishedAt?: T;
-  language?: T;
   readingTime?: T;
   category?: T;
   postCategory?: T;

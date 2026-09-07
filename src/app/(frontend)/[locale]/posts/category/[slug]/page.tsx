@@ -1,9 +1,12 @@
 import type { Metadata } from 'next'
+import { hasLocale } from 'next-intl'
+import { getTranslations, setRequestLocale } from 'next-intl/server'
 import { notFound } from 'next/navigation'
 
 import { PostList } from '@/components/site/post-list'
 import { PostCategoryNav } from '@/components/site/post-index-list'
 import { SectionHeader } from '@/components/site/section-header'
+import { routing } from '@/i18n/routing'
 import {
   getPostCategoryBySlug,
   getPostCategoryLinks,
@@ -15,15 +18,16 @@ import { getSiteSettings } from '@/lib/siteSettings'
 
 type PostCategoryPageProps = {
   params: Promise<{
+    locale: string
     slug: string
   }>
 }
 
 export async function generateMetadata({ params }: PostCategoryPageProps): Promise<Metadata> {
-  const { slug } = await params
+  const { locale, slug } = await params
   const [allCategoryLinks, settings] = await Promise.all([
-    getPostCategoryLinks({ includeHidden: true }),
-    getSiteSettings(),
+    getPostCategoryLinks(locale, { includeHidden: true }),
+    getSiteSettings(locale),
   ])
   const category = getPostCategoryBySlug(allCategoryLinks, slug)
   const canonicalPath = `/posts/category/${slug}`
@@ -31,6 +35,7 @@ export async function generateMetadata({ params }: PostCategoryPageProps): Promi
   if (!category) {
     return createNotFoundMetadata({
       canonicalPath,
+      locale: locale as 'ru' | 'en',
       resource: 'Category',
       settings,
     })
@@ -39,16 +44,25 @@ export async function generateMetadata({ params }: PostCategoryPageProps): Promi
   return createSeoMetadata({
     canonicalPath,
     description: category.description || `${category.label} by Askold Astakhov.`,
+    locale: locale as 'ru' | 'en',
     settings,
     title: category.label,
   })
 }
 
 export default async function PostCategoryPage({ params }: PostCategoryPageProps) {
-  const { slug } = await params
-  const [categoryLinks, allCategoryLinks] = await Promise.all([
-    getPostCategoryLinksWithPosts(),
-    getPostCategoryLinks({ includeHidden: true }),
+  const { locale, slug } = await params
+
+  if (!hasLocale(routing.locales, locale)) {
+    notFound()
+  }
+
+  setRequestLocale(locale)
+
+  const [categoryLinks, allCategoryLinks, common] = await Promise.all([
+    getPostCategoryLinksWithPosts(locale),
+    getPostCategoryLinks(locale, { includeHidden: true }),
+    getTranslations('common'),
   ])
   const category = getPostCategoryBySlug(allCategoryLinks, slug)
 
@@ -56,7 +70,7 @@ export default async function PostCategoryPage({ params }: PostCategoryPageProps
     notFound()
   }
 
-  const posts = await getPublishedPosts(category.id)
+  const posts = await getPublishedPosts(locale, category.id)
 
   return (
     <>
@@ -68,7 +82,7 @@ export default async function PostCategoryPage({ params }: PostCategoryPageProps
 
       {categoryLinks.length > 0 ? (
         <section className="section" id="post-categories">
-          <SectionHeader title="Topics" />
+          <SectionHeader title={common('topics')} />
 
           <PostCategoryNav categoryLinks={categoryLinks} currentSlug={category.slug} />
         </section>
@@ -77,7 +91,7 @@ export default async function PostCategoryPage({ params }: PostCategoryPageProps
       <section className="section" id="posts-list">
         <SectionHeader title={category.label} />
 
-        {posts.length > 0 ? <PostList items={posts} /> : <p>No posts published yet.</p>}
+        {posts.length > 0 ? <PostList items={posts} /> : <p>{common('noPostsPublished')}</p>}
       </section>
     </>
   )

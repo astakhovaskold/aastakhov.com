@@ -1,6 +1,6 @@
 import Image from 'next/image'
-import Link from 'next/link'
 
+import { Link } from '@/i18n/navigation'
 import { formatPostDate, getPostCardMeta } from '@/lib/posts-index'
 import type { Post } from '@/payload-types'
 
@@ -21,7 +21,6 @@ type ReadyPostImage = {
 export type PostListEntry = {
   description?: Post['description']
   id: Post['id']
-  language: Post['language']
   postCategory: null | Post['postCategory']
   publishedAt?: Post['publishedAt']
   readingTime?: Post['readingTime']

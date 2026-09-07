@@ -1,3 +1,5 @@
+import { getTranslations } from 'next-intl/server'
+
 import { ArrowLink } from '@/components/site/arrow-link'
 import type { PostCategoryLink, PostListItem as PostListEntry } from '@/lib/posts-index'
 import { PostList } from '@/components/site/post-list'
@@ -6,20 +8,21 @@ function isActiveCategory(currentSlug: null | string, linkSlug: string): boolean
   return currentSlug === linkSlug
 }
 
-export function PostCategoryNav(props: {
+export async function PostCategoryNav(props: {
   categoryLinks: PostCategoryLink[]
   currentSlug?: null | string
 }) {
   const { categoryLinks, currentSlug = null } = props
+  const t = await getTranslations('common')
 
   return (
-    <nav className="post-category-nav" aria-label="Post categories">
+    <nav className="post-category-nav" aria-label={t('topics')}>
       <ArrowLink
         ariaCurrent={currentSlug === null ? 'page' : undefined}
         className="post-category-link"
         href="/posts"
       >
-        All
+        {t('all')}
       </ArrowLink>
 
       {categoryLinks.map((link) => (

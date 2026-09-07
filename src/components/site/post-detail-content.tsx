@@ -1,7 +1,8 @@
-import Link from 'next/link'
+import { getTranslations } from 'next-intl/server'
 import React from 'react'
 
 import { ContentRenderer } from '@/components/site/content-renderer'
+import { Link } from '@/i18n/navigation'
 import { getPostCategoryLabel } from '@/lib/posts-index'
 import type { Media, Post } from '@/payload-types'
 
@@ -51,17 +52,22 @@ export function PostDetailContent(props: { post: Post }) {
   return <ContentRenderer content={props.post.content} />
 }
 
-export function PostDetailPagination(props: { nextPost: Post | null; previousPost: Post | null }) {
+export async function PostDetailPagination(props: {
+  nextPost: Post | null
+  previousPost: Post | null
+}) {
   const { nextPost, previousPost } = props
   if (!nextPost && !previousPost) return null
+  const [t, common] = await Promise.all([
+    getTranslations('post'),
+    getTranslations('common'),
+  ])
   return (
-    <nav aria-label="Post pagination" className="contact-links">
+    <nav aria-label={t('postPagination')} className="contact-links">
       {previousPost ? (
-        <Link href={`/posts/${previousPost.slug}`}>Previous post →</Link>
+        <Link href={`/posts/${previousPost.slug}`}>{common('previousPost')} →</Link>
       ) : null}
-      {nextPost ? (
-        <Link href={`/posts/${nextPost.slug}`}>Next post →</Link>
-      ) : null}
+      {nextPost ? <Link href={`/posts/${nextPost.slug}`}>{common('nextPost')} →</Link> : null}
     </nav>
   )
 }

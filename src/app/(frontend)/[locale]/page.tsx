@@ -1,5 +1,8 @@
 import config from '@payload-config'
 import Image from 'next/image'
+import { hasLocale } from 'next-intl'
+import { getTranslations, setRequestLocale } from 'next-intl/server'
+import { notFound } from 'next/navigation'
 import React from 'react'
 import { getPayload } from 'payload'
 
@@ -8,9 +11,9 @@ import { OpenSourceList } from '@/components/site/open-source-list'
 import { PostList } from '@/components/site/post-list'
 import { SelectedWorkList } from '@/components/site/selected-work-list'
 import { SectionHeader } from '@/components/site/section-header'
+import { routing } from '@/i18n/routing'
 import { getSiteSettings, type PublicSiteSettings } from '@/lib/siteSettings'
 import type { OpenSource, Post } from '@/payload-types'
-import './styles.css'
 
 type HomeContent = {
   openSource: OpenSource[]
@@ -22,7 +25,10 @@ const emptyHomeContent: HomeContent = {
   blogPosts: [],
 }
 
-async function getHomeContent(settings: PublicSiteSettings): Promise<HomeContent> {
+async function getHomeContent(
+  settings: PublicSiteSettings,
+  locale: string,
+): Promise<HomeContent> {
   if (process.env.NEXT_PHASE === 'phase-production-build') {
     return emptyHomeContent
   }
@@ -35,6 +41,8 @@ async function getHomeContent(settings: PublicSiteSettings): Promise<HomeContent
         collection: 'open-source',
         depth: 0,
         limit: 3,
+        locale: locale as 'en' | 'ru',
+        fallbackLocale: 'ru',
         sort: ['order', '-stars', '-updatedAt'],
         where: {
           featured: {
@@ -46,6 +54,8 @@ async function getHomeContent(settings: PublicSiteSettings): Promise<HomeContent
         collection: 'posts',
         depth: 1,
         limit: 3,
+        locale: locale as 'en' | 'ru',
+        fallbackLocale: 'ru',
         sort: '-publishedAt',
         where: {
           and: [
@@ -87,10 +97,26 @@ async function getHomeContent(settings: PublicSiteSettings): Promise<HomeContent
   }
 }
 
-export default async function HomePage() {
-  const settings = await getSiteSettings()
-  const content = await getHomeContent(settings)
-  const heroTags = ['Architecture', 'Audits', 'Technical consulting', 'Full-stack dev', 'Team lead']
+export default async function HomePage({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}) {
+  const { locale } = await params
+
+  if (!hasLocale(routing.locales, locale)) {
+    notFound()
+  }
+
+  setRequestLocale(locale)
+
+  const [settings, t, common] = await Promise.all([
+    getSiteSettings(locale),
+    getTranslations('home'),
+    getTranslations('common'),
+  ])
+  const content = await getHomeContent(settings, locale)
+  const heroTags = t.raw('heroTags') as string[]
   const contactLinks = [
     settings.telegram ? { href: settings.telegram, label: 'Telegram' } : null,
     { href: `mailto:${settings.email}`, label: 'Email' },
@@ -109,15 +135,12 @@ export default async function HomePage() {
               {settings.location} · {settings.availability}
             </p>
             <h1>
-              Independent
+              {t('heroTitleLine1')}
               <br />
-              IT expert
+              {t('heroTitleLine2')}
             </h1>
-            <p className="lede">
-              Technical partner for complex projects — architecture, audits, consulting and
-              development. Enterprise background, pragmatic approach.
-            </p>
-            <div className="topic-links" aria-label="Topics">
+            <p className="lede">{t('heroDescription')}</p>
+            <div className="topic-links" aria-label={common('topics')}>
               {heroTags.map((tag) => (
                 <span key={tag}>{tag}</span>
               ))}
@@ -136,7 +159,10 @@ export default async function HomePage() {
 
       {settings.selectedWork.length > 0 ? (
         <section className="section" id="work">
-          <SectionHeader action={{ href: '/posts', label: 'All posts' }} title="Selected work" />
+          <SectionHeader
+            action={{ href: '/posts', label: common('allPosts') }}
+            title={t('selectedWork')}
+          />
           <SelectedWorkList
             items={settings.selectedWork.map((item) => ({
               caption: item.caption,
@@ -151,7 +177,7 @@ export default async function HomePage() {
 
       {settings.services.length > 0 ? (
         <section className="section" id="services">
-          <SectionHeader title="Services" />
+          <SectionHeader title={t('services')} />
           <div className="expertise-grid">
             {settings.services.map((service) => (
               <article className="expertise-item" key={service.title}>
@@ -165,7 +191,10 @@ export default async function HomePage() {
 
       {content.blogPosts.length > 0 ? (
         <section className="section" id="blog">
-          <SectionHeader action={{ href: '/posts', label: 'All posts' }} title="From the blog" />
+          <SectionHeader
+            action={{ href: '/posts', label: common('allPosts') }}
+            title={t('fromTheBlog')}
+          />
 
           <PostList items={content.blogPosts} presentation="compact" showImages={false} />
         </section>
@@ -175,7 +204,7 @@ export default async function HomePage() {
         <section className="section" id="open-source">
           <SectionHeader
             action={settings.github ? { href: settings.github, label: 'GitHub' } : undefined}
-            title="Open source"
+            title={t('openSource')}
           />
 
           <OpenSourceList items={content.openSource} />
@@ -183,7 +212,7 @@ export default async function HomePage() {
       ) : null}
 
       <section className="section" id="contact">
-        <SectionHeader title="Contacts" />
+        <SectionHeader title={common('contacts')} />
         <ContactLinks links={contactLinks} />
       </section>
     </>

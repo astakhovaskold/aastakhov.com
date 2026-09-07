@@ -35,6 +35,7 @@ export const Projects: CollectionConfig = {
       type: 'text',
       required: true,
       index: true,
+      localized: true,
     },
     slugField({
       useAsSlug: 'title',
@@ -43,10 +44,12 @@ export const Projects: CollectionConfig = {
       name: 'description',
       type: 'textarea',
       required: true,
+      localized: true,
     },
     {
       name: 'eyebrow',
       type: 'text',
+      localized: true,
       admin: {
         description: 'Optional eyebrow shown on the project detail page.',
       },
@@ -78,6 +81,7 @@ export const Projects: CollectionConfig = {
     {
       name: 'role',
       type: 'text',
+      localized: true,
       admin: {
         description: 'Short role label, e.g. Founder, Technical partner, Architect.',
       },
@@ -85,6 +89,7 @@ export const Projects: CollectionConfig = {
     {
       name: 'focus',
       type: 'textarea',
+      localized: true,
       admin: {
         description: 'Optional focus line shown in the project detail metadata.',
       },
@@ -140,6 +145,7 @@ export const Projects: CollectionConfig = {
     {
       name: 'content',
       type: 'richText',
+      localized: true,
     },
     {
       name: 'relatedPosts',
@@ -181,10 +187,12 @@ export const Projects: CollectionConfig = {
         {
           name: 'title',
           type: 'text',
+          localized: true,
         },
         {
           name: 'description',
           type: 'textarea',
+          localized: true,
         },
         {
           name: 'image',

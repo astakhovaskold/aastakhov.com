@@ -26,6 +26,11 @@ export default buildConfig({
   },
   collections: [Users, Media, Projects, PostCategories, Posts, OpenSource],
   globals: [SiteSettings, CV],
+  localization: {
+    locales: ['ru', 'en'],
+    defaultLocale: 'ru',
+    fallback: true,
+  },
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {

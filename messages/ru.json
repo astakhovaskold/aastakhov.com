@@ -1,0 +1,117 @@
+{
+  "nav": {
+    "siteName": "Askold Astakhov",
+    "mainNavigation": "Главная навигация",
+    "projects": "Проекты",
+    "posts": "Публикации",
+    "cv": "Резюме"
+  },
+  "footer": {
+    "copyright": "© 2026 {name}",
+    "tagline": "Личный сайт"
+  },
+  "common": {
+    "allPosts": "Все публикации",
+    "more": "Далее",
+    "contacts": "Контакты",
+    "readMore": "Читать далее",
+    "backToPosts": "Назад к публикациям",
+    "backToProjects": "Назад к проектам",
+    "topics": "Темы",
+    "all": "Все",
+    "noPostsPublished": "Пока нет опубликованных материалов.",
+    "noProjectsPublished": "Пока нет опубликованных проектов.",
+    "previousPost": "Предыдущая публикация",
+    "nextPost": "Следующая публикация"
+  },
+  "post": {
+    "publishedOn": "Опубликовано {date}",
+    "readingTime": "{minutes} мин чтения",
+    "featuredPost": "Рекомендуемая публикация",
+    "postPagination": "Навигация по публикациям"
+  },
+  "project": {
+    "status": "Статус",
+    "viewProject": "Смотреть проект",
+    "role": "Роль",
+    "focus": "Фокус",
+    "year": "Год",
+    "started": "Начало",
+    "projectLink": "Ссылка на проект",
+    "archivedAndFuture": "Архивные и будущие проекты остаются в списке.",
+    "statusValues": {
+      "active": "активный",
+      "in-progress": "в процессе",
+      "concept": "концепт",
+      "paused": "приостановлен",
+      "archived": "архив",
+      "future": "будущий"
+    },
+    "typeValues": {
+      "company": "компания",
+      "product": "продукт",
+      "website": "сайт",
+      "brand": "бренд",
+      "concept": "концепт",
+      "experiment": "эксперимент"
+    }
+  },
+  "contact": {
+    "telegram": "Telegram",
+    "email": "Email",
+    "bookCall": "Забронировать звонок",
+    "linkedin": "LinkedIn",
+    "github": "GitHub",
+    "phone": "Телефон",
+    "website": "Сайт"
+  },
+  "notFound": {
+    "postNotFound": "Публикация не найдена",
+    "categoryNotFound": "Категория не найдена",
+    "projectNotFound": "Проект не найден"
+  },
+  "home": {
+    "heroTitleLine1": "Независимый",
+    "heroTitleLine2": "IT-эксперт",
+    "heroDescription": "Технический партнёр для сложных проектов — архитектура, аудиты, консалтинг и разработка. Опыт в enterprise, прагматичный подход.",
+    "heroTags": ["Архитектура", "Аудиты", "Технический консалтинг", "Full-stack разработка", "Team lead"],
+    "selectedWork": "Избранные работы",
+    "services": "Услуги",
+    "fromTheBlog": "Из блога",
+    "openSource": "Open source"
+  },
+  "cv": {
+    "cvFallback": "Резюме",
+    "downloadPdf": "Скачать PDF",
+    "profile": "Профиль",
+    "keyExpertise": "Ключевая экспертиза",
+    "experience": "Опыт работы",
+    "technology": "Технологии",
+    "education": "Образование",
+    "languages": "Языки",
+    "contacts": "Контакты",
+    "role": "Роль",
+    "location": "Местоположение",
+    "focus": "Фокус",
+    "stack": "Стек",
+    "stackLabel": "Стек: {stack}",
+    "present": "Настоящее время",
+    "noContent": "Формальные данные резюме появятся здесь после добавления в Payload.",
+    "defaultDescription": "Профессиональный профиль и резюме."
+  },
+  "posts": {
+    "title": "Публикации",
+    "description": "Статьи, заметки, кейсы и практические материалы о разработке цифровых продуктов."
+  },
+  "projects": {
+    "title": "Проекты",
+    "description": "Продукты, компании, сайты, концепты, эксперименты и будущие инициативы. Это список проектов, а не клиентское портфолио."
+  },
+  "projectDetail": {
+    "relatedWriting": "Связанные публикации",
+    "nextStep": "Если направление проекта релевантно вашей компании, простой следующий шаг — короткий разговор о системе, рисках и текущих технических узких местах."
+  },
+  "seo": {
+    "personalSite": "Личный сайт Askold Astakhov."
+  }
+}

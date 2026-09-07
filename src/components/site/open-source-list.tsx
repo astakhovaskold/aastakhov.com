@@ -1,5 +1,4 @@
-import Link from 'next/link'
-
+import { Link } from '@/i18n/navigation'
 import type { OpenSource } from '@/payload-types'
 
 function isInternalHref(href: string): boolean {

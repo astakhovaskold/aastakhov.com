@@ -23,6 +23,7 @@ type CreateSeoMetadataOptions = {
   description?: null | string
   entity?: SeoEntity | null
   image?: unknown
+  locale: 'ru' | 'en'
   noindex?: boolean
   publishedTime?: null | string
   settings: PublicSiteSettings
@@ -32,6 +33,7 @@ type CreateSeoMetadataOptions = {
 
 type NotFoundMetadataOptions = {
   canonicalPath: string
+  locale: 'ru' | 'en'
   resource: string
   settings: PublicSiteSettings
 }
@@ -118,7 +120,7 @@ export function createSeoMetadata(options: CreateSeoMetadataOptions): Metadata {
       options.settings.seo.defaultDescription,
     ) || 'Personal site for Askold Astakhov.'
   const image = getSeoImage(options)
-  const canonicalUrl = absoluteSiteUrl(options.canonicalPath)
+  const canonicalUrl = absoluteSiteUrl(`/${options.locale}${options.canonicalPath}`)
   const openGraph = {
     description,
     images: [{ alt: title, url: image }],
@@ -134,6 +136,11 @@ export function createSeoMetadata(options: CreateSeoMetadataOptions): Metadata {
   return {
     alternates: {
       canonical: canonicalUrl,
+      languages: {
+        ru: absoluteSiteUrl(`/ru${options.canonicalPath}`),
+        en: absoluteSiteUrl(`/en${options.canonicalPath}`),
+        'x-default': absoluteSiteUrl(`/ru${options.canonicalPath}`),
+      },
     },
     description,
     openGraph,
@@ -153,6 +160,7 @@ export function createSeoMetadata(options: CreateSeoMetadataOptions): Metadata {
 export function createNotFoundMetadata(options: NotFoundMetadataOptions): Metadata {
   return createSeoMetadata({
     canonicalPath: options.canonicalPath,
+    locale: options.locale,
     noindex: true,
     settings: options.settings,
     title: `${options.resource} not found`,

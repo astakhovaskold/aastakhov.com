@@ -1,4 +1,6 @@
 import type { Metadata } from 'next'
+import { hasLocale } from 'next-intl'
+import { getTranslations, setRequestLocale } from 'next-intl/server'
 import { notFound } from 'next/navigation'
 
 import {
@@ -8,6 +10,7 @@ import {
   ProjectDetailMeta,
   ProjectDetailRelatedPosts,
 } from '@/components/site/project-detail-content'
+import { routing } from '@/i18n/routing'
 import { getProjectDetailBySlug } from '@/lib/project-detail'
 import {
   createNotFoundMetadata,
@@ -18,21 +21,23 @@ import { getSiteSettings } from '@/lib/siteSettings'
 
 type ProjectDetailPageProps = {
   params: Promise<{
+    locale: string
     slug: string
   }>
 }
 
 export async function generateMetadata({ params }: ProjectDetailPageProps): Promise<Metadata> {
-  const { slug } = await params
+  const { locale, slug } = await params
   const [{ project }, settings] = await Promise.all([
-    getProjectDetailBySlug(slug),
-    getSiteSettings(),
+    getProjectDetailBySlug(slug, locale),
+    getSiteSettings(locale),
   ])
   const canonicalPath = `/projects/${slug}`
 
   if (!project || !isPubliclyIndexableEntity(project)) {
     return createNotFoundMetadata({
       canonicalPath,
+      locale: locale as 'ru' | 'en',
       resource: 'Project',
       settings,
     })
@@ -41,16 +46,26 @@ export async function generateMetadata({ params }: ProjectDetailPageProps): Prom
   return createSeoMetadata({
     canonicalPath,
     entity: project,
+    locale: locale as 'ru' | 'en',
     settings,
   })
 }
 
 export default async function ProjectDetailPage({ params }: ProjectDetailPageProps) {
-  const { slug } = await params
-  const [{ project, relatedWriting, selectedCaseNotes }, settings] = await Promise.all([
-    getProjectDetailBySlug(slug),
-    getSiteSettings(),
-  ])
+  const { locale, slug } = await params
+
+  if (!hasLocale(routing.locales, locale)) {
+    notFound()
+  }
+
+  setRequestLocale(locale)
+
+  const [{ project, relatedWriting, selectedCaseNotes }, settings, projectDetailT] =
+    await Promise.all([
+      getProjectDetailBySlug(slug, locale),
+      getSiteSettings(locale),
+      getTranslations('projectDetail'),
+    ])
 
   if (!project || !isPubliclyIndexableEntity(project)) {
     notFound()
@@ -83,8 +98,8 @@ export default async function ProjectDetailPage({ params }: ProjectDetailPagePro
         ) : null}
       </article>
 
-      <ProjectDetailRelatedPosts posts={selectedCaseNotes} title="Related writing" />
-      <ProjectDetailRelatedPosts posts={relatedWriting} title="Related writing" />
+      <ProjectDetailRelatedPosts posts={selectedCaseNotes} title={projectDetailT('relatedWriting')} />
+      <ProjectDetailRelatedPosts posts={relatedWriting} title={projectDetailT('relatedWriting')} />
       <ProjectDetailContacts links={contactLinks} />
     </>
   )

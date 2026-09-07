@@ -38,11 +38,14 @@ export function isProjectPublic(
   return true
 }
 
-export async function getPublishedProjects(options?: {
-  depth?: number
-  limit?: number
-  sort?: string | string[]
-}): Promise<PublicProject[]> {
+export async function getPublishedProjects(
+  locale: string,
+  options?: {
+    depth?: number
+    limit?: number
+    sort?: string | string[]
+  },
+): Promise<PublicProject[]> {
   if (process.env.NEXT_PHASE === 'phase-production-build') {
     return []
   }
@@ -53,6 +56,8 @@ export async function getPublishedProjects(options?: {
       collection: 'projects',
       depth: options?.depth ?? 0,
       limit: 0,
+      locale: locale as 'en' | 'ru',
+      fallbackLocale: 'ru',
       pagination: false,
       sort: options?.sort ?? ['order', '-year', '-startedAt', '-updatedAt'],
     })

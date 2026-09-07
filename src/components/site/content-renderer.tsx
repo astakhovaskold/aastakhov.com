@@ -1,6 +1,6 @@
-import Link from 'next/link'
 import React from 'react'
 
+import { Link } from '@/i18n/navigation'
 import type { Media } from '@/payload-types'
 
 export type RichTextNode = {

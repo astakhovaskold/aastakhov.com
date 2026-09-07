@@ -1,29 +1,53 @@
 import type { Metadata } from 'next'
+import { hasLocale } from 'next-intl'
+import { getTranslations, setRequestLocale } from 'next-intl/server'
+import { notFound } from 'next/navigation'
 
 import { ContactLinks } from '@/components/site/contact-links'
 import { FeaturedPost } from '@/components/site/featured-post'
 import { PostList } from '@/components/site/post-list'
 import { PostCategoryNav } from '@/components/site/post-index-list'
 import { SectionHeader } from '@/components/site/section-header'
+import { routing } from '@/i18n/routing'
 import { createSeoMetadata } from '@/lib/seo'
 import { getPostsIndexPageData } from '@/lib/posts-index'
 import { getSiteSettings } from '@/lib/siteSettings'
 
-export async function generateMetadata(): Promise<Metadata> {
-  const settings = await getSiteSettings()
+type PostsPageProps = {
+  params: Promise<{ locale: string }>
+}
+
+export async function generateMetadata({ params }: PostsPageProps): Promise<Metadata> {
+  const { locale } = await params
+  const [settings, t] = await Promise.all([
+    getSiteSettings(locale),
+    getTranslations({ locale, namespace: 'posts' }),
+  ])
 
   return createSeoMetadata({
     canonicalPath: '/posts',
-    description: 'Writing, notes, case studies, and practical material on building digital products.',
+    description: t('description'),
+    locale: locale as 'ru' | 'en',
     settings,
-    title: 'Posts',
+    title: t('title'),
   })
 }
 
-export default async function PostsPage() {
-  const [{ categoryLinks, featuredPost, posts }, settings] = await Promise.all([
-    getPostsIndexPageData(),
-    getSiteSettings(),
+export default async function PostsPage({ params }: PostsPageProps) {
+  const { locale } = await params
+
+  if (!hasLocale(routing.locales, locale)) {
+    notFound()
+  }
+
+  setRequestLocale(locale)
+
+  const [{ categoryLinks, featuredPost, posts }, settings, t, common, postT] = await Promise.all([
+    getPostsIndexPageData(locale),
+    getSiteSettings(locale),
+    getTranslations('posts'),
+    getTranslations('common'),
+    getTranslations('post'),
   ])
 
   const contactLinks = [
@@ -39,36 +63,34 @@ export default async function PostsPage() {
     <>
       <section className="hero">
         {settings.postsEyebrow ? <p className="eyebrow">{settings.postsEyebrow}</p> : null}
-        <h1>Posts</h1>
-        <p className="lede">
-          Writing, notes, case studies, and practical material on building digital products.
-        </p>
+        <h1>{t('title')}</h1>
+        <p className="lede">{t('description')}</p>
       </section>
 
       {featuredPost ? (
         <section className="section" id="featured-post">
-          <SectionHeader title="Featured post" />
+          <SectionHeader title={postT('featuredPost')} />
 
           <FeaturedPost post={featuredPost} />
         </section>
       ) : null}
 
       <section className="section" id="posts-list">
-        <SectionHeader title="All posts" />
+        <SectionHeader title={common('allPosts')} />
 
-        {posts.length > 0 ? <PostList items={posts} /> : <p>No posts published yet.</p>}
+        {posts.length > 0 ? <PostList items={posts} /> : <p>{common('noPostsPublished')}</p>}
       </section>
 
       {categoryLinks.length > 0 ? (
         <section className="section" id="post-categories">
-          <SectionHeader title="Topics" />
+          <SectionHeader title={common('topics')} />
 
           <PostCategoryNav categoryLinks={categoryLinks} currentSlug={null} />
         </section>
       ) : null}
 
       <section className="section" id="contact">
-        <SectionHeader title="Contacts" />
+        <SectionHeader title={common('contacts')} />
         <ContactLinks links={contactLinks} />
       </section>
     </>

@@ -15,7 +15,7 @@ export type PostCategoryLink = {
 
 export type PostListItem = Pick<
   Post,
-  'id' | 'title' | 'slug' | 'description' | 'publishedAt' | 'readingTime' | 'language'
+  'id' | 'title' | 'slug' | 'description' | 'publishedAt' | 'readingTime'
 > & {
   postCategory: PostCategory | null
   previewImage: Media | null
@@ -92,9 +92,12 @@ export function getPostCardMeta(post: {
   }
 }
 
-export async function getPostCategoryLinks(options?: {
-  includeHidden?: boolean
-}): Promise<PostCategoryLink[]> {
+export async function getPostCategoryLinks(
+  locale: string,
+  options?: {
+    includeHidden?: boolean
+  },
+): Promise<PostCategoryLink[]> {
   if (process.env.NEXT_PHASE === 'phase-production-build') {
     return []
   }
@@ -105,6 +108,8 @@ export async function getPostCategoryLinks(options?: {
       collection: 'post-categories',
       depth: 0,
       limit: 100,
+      locale: locale as 'en' | 'ru',
+      fallbackLocale: 'ru',
       sort: ['order', 'title'],
       ...(options?.includeHidden
         ? {}
@@ -123,7 +128,7 @@ export async function getPostCategoryLinks(options?: {
   }
 }
 
-export async function getPostCategoryIdsWithPosts(): Promise<Set<number>> {
+export async function getPostCategoryIdsWithPosts(locale: string): Promise<Set<number>> {
   if (process.env.NEXT_PHASE === 'phase-production-build') {
     return new Set()
   }
@@ -134,6 +139,8 @@ export async function getPostCategoryIdsWithPosts(): Promise<Set<number>> {
       collection: 'posts',
       depth: 0,
       limit: 1000,
+      locale: locale as 'en' | 'ru',
+      fallbackLocale: 'ru',
       select: {
         postCategory: true,
       },
@@ -163,16 +170,19 @@ export async function getPostCategoryIdsWithPosts(): Promise<Set<number>> {
   }
 }
 
-export async function getPostCategoryLinksWithPosts(): Promise<PostCategoryLink[]> {
+export async function getPostCategoryLinksWithPosts(locale: string): Promise<PostCategoryLink[]> {
   const [categoryLinks, categoryIdsWithPosts] = await Promise.all([
-    getPostCategoryLinks(),
-    getPostCategoryIdsWithPosts(),
+    getPostCategoryLinks(locale),
+    getPostCategoryIdsWithPosts(locale),
   ])
 
   return categoryLinks.filter((category) => categoryIdsWithPosts.has(category.id))
 }
 
-export async function getPublishedPosts(postCategoryId?: number): Promise<PostListItem[]> {
+export async function getPublishedPosts(
+  locale: string,
+  postCategoryId?: number,
+): Promise<PostListItem[]> {
   if (process.env.NEXT_PHASE === 'phase-production-build') {
     return []
   }
@@ -183,6 +193,8 @@ export async function getPublishedPosts(postCategoryId?: number): Promise<PostLi
       collection: 'posts',
       depth: 1,
       limit: 100,
+      locale: locale as 'en' | 'ru',
+      fallbackLocale: 'ru',
       sort: '-publishedAt',
       where: {
         and: [
@@ -217,7 +229,6 @@ export async function getPublishedPosts(postCategoryId?: number): Promise<PostLi
       postCategory: isPostCategory(post.postCategory) ? post.postCategory : null,
       publishedAt: post.publishedAt,
       readingTime: post.readingTime,
-      language: post.language,
       previewImage: isMedia(post.previewImage) ? post.previewImage : null,
       coverImage: isMedia(post.coverImage) ? post.coverImage : null,
     }))
@@ -226,7 +237,7 @@ export async function getPublishedPosts(postCategoryId?: number): Promise<PostLi
   }
 }
 
-export async function getFeaturedPost(): Promise<PostListItem | null> {
+export async function getFeaturedPost(locale: string): Promise<PostListItem | null> {
   if (process.env.NEXT_PHASE === 'phase-production-build') {
     return null
   }
@@ -237,6 +248,8 @@ export async function getFeaturedPost(): Promise<PostListItem | null> {
       collection: 'posts',
       depth: 1,
       limit: 1,
+      locale: locale as 'en' | 'ru',
+      fallbackLocale: 'ru',
       sort: '-publishedAt',
       where: {
         and: [
@@ -273,7 +286,6 @@ export async function getFeaturedPost(): Promise<PostListItem | null> {
       postCategory: isPostCategory(post.postCategory) ? post.postCategory : null,
       publishedAt: post.publishedAt,
       readingTime: post.readingTime,
-      language: post.language,
       previewImage: isMedia(post.previewImage) ? post.previewImage : null,
       coverImage: isMedia(post.coverImage) ? post.coverImage : null,
     }
@@ -282,11 +294,14 @@ export async function getFeaturedPost(): Promise<PostListItem | null> {
   }
 }
 
-export async function getPostsIndexPageData(postCategoryId?: number): Promise<PostsIndexPageData> {
+export async function getPostsIndexPageData(
+  locale: string,
+  postCategoryId?: number,
+): Promise<PostsIndexPageData> {
   const [categoryLinks, posts, featuredPost] = await Promise.all([
-    getPostCategoryLinksWithPosts(),
-    getPublishedPosts(postCategoryId),
-    postCategoryId ? Promise.resolve(null) : getFeaturedPost(),
+    getPostCategoryLinksWithPosts(locale),
+    getPublishedPosts(locale, postCategoryId),
+    postCategoryId ? Promise.resolve(null) : getFeaturedPost(locale),
   ])
 
   return {

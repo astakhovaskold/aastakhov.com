@@ -1,6 +1,6 @@
 import Image from 'next/image'
-import Link from 'next/link'
 
+import { Link } from '@/i18n/navigation'
 import { formatPostDate, getPostCategoryLabel } from '@/lib/posts-index'
 import type { Media, Post, PostCategory } from '@/payload-types'
 

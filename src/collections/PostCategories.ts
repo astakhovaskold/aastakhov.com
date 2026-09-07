@@ -23,6 +23,7 @@ export const PostCategories: CollectionConfig = {
       type: 'text',
       required: true,
       index: true,
+      localized: true,
     },
     slugField({
       useAsSlug: 'title',
@@ -31,6 +32,7 @@ export const PostCategories: CollectionConfig = {
       name: 'singularLabel',
       type: 'text',
       required: true,
+      localized: true,
       admin: {
         description: 'Used in post meta and detail header, for example "Case note".',
       },
@@ -38,6 +40,7 @@ export const PostCategories: CollectionConfig = {
     {
       name: 'description',
       type: 'textarea',
+      localized: true,
       admin: {
         description: 'Optional introduction for the category page.',
       },
@@ -45,6 +48,7 @@ export const PostCategories: CollectionConfig = {
     {
       name: 'eyebrow',
       type: 'text',
+      localized: true,
       admin: {
         description: 'Optional eyebrow shown on the category page.',
       },

@@ -11,7 +11,7 @@ function isMedia(value: Cv['pdf']): value is Media {
   return typeof value === 'object' && value !== null && 'url' in value
 }
 
-export async function getCV(): Promise<PublicCv | null> {
+export async function getCV(locale: string): Promise<PublicCv | null> {
   if (process.env.NEXT_PHASE === 'phase-production-build') {
     return null
   }
@@ -21,6 +21,8 @@ export async function getCV(): Promise<PublicCv | null> {
     const cv = await payload.findGlobal({
       slug: 'cv',
       depth: 1,
+      locale: locale as 'en' | 'ru',
+      fallbackLocale: 'ru',
     })
 
     return {

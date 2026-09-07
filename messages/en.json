@@ -1,0 +1,117 @@
+{
+  "nav": {
+    "siteName": "Askold Astakhov",
+    "mainNavigation": "Main navigation",
+    "projects": "Projects",
+    "posts": "Posts",
+    "cv": "CV"
+  },
+  "footer": {
+    "copyright": "(c) 2026 {name}",
+    "tagline": "Personal website"
+  },
+  "common": {
+    "allPosts": "All posts",
+    "more": "More",
+    "contacts": "Contacts",
+    "readMore": "Read more",
+    "backToPosts": "Back to posts",
+    "backToProjects": "Back to projects",
+    "topics": "Topics",
+    "all": "All",
+    "noPostsPublished": "No posts published yet.",
+    "noProjectsPublished": "No projects published yet.",
+    "previousPost": "Previous post",
+    "nextPost": "Next post"
+  },
+  "post": {
+    "publishedOn": "Published on {date}",
+    "readingTime": "{minutes} min read",
+    "featuredPost": "Featured post",
+    "postPagination": "Post pagination"
+  },
+  "project": {
+    "status": "Status",
+    "viewProject": "View project",
+    "role": "Role",
+    "focus": "Focus",
+    "year": "Year",
+    "started": "Started",
+    "projectLink": "Project link",
+    "archivedAndFuture": "Archived and future items stay in the list.",
+    "statusValues": {
+      "active": "active",
+      "in-progress": "in progress",
+      "concept": "concept",
+      "paused": "paused",
+      "archived": "archived",
+      "future": "future"
+    },
+    "typeValues": {
+      "company": "company",
+      "product": "product",
+      "website": "website",
+      "brand": "brand",
+      "concept": "concept",
+      "experiment": "experiment"
+    }
+  },
+  "contact": {
+    "telegram": "Telegram",
+    "email": "Email",
+    "bookCall": "Book a call",
+    "linkedin": "LinkedIn",
+    "github": "GitHub",
+    "phone": "Phone",
+    "website": "Website"
+  },
+  "notFound": {
+    "postNotFound": "Post not found",
+    "categoryNotFound": "Category not found",
+    "projectNotFound": "Project not found"
+  },
+  "home": {
+    "heroTitleLine1": "Independent",
+    "heroTitleLine2": "IT expert",
+    "heroDescription": "Technical partner for complex projects — architecture, audits, consulting and development. Enterprise background, pragmatic approach.",
+    "heroTags": ["Architecture", "Audits", "Technical consulting", "Full-stack dev", "Team lead"],
+    "selectedWork": "Selected work",
+    "services": "Services",
+    "fromTheBlog": "From the blog",
+    "openSource": "Open source"
+  },
+  "cv": {
+    "cvFallback": "CV",
+    "downloadPdf": "Download PDF",
+    "profile": "Profile",
+    "keyExpertise": "Key expertise",
+    "experience": "Experience",
+    "technology": "Technology",
+    "education": "Education",
+    "languages": "Languages",
+    "contacts": "Contacts",
+    "role": "Role",
+    "location": "Location",
+    "focus": "Focus",
+    "stack": "Stack",
+    "stackLabel": "Stack: {stack}",
+    "present": "Present",
+    "noContent": "Formal CV details will appear here once they are added in Payload.",
+    "defaultDescription": "Professional profile and CV."
+  },
+  "posts": {
+    "title": "Posts",
+    "description": "Writing, notes, case studies, and practical material on building digital products."
+  },
+  "projects": {
+    "title": "Projects",
+    "description": "Products, companies, websites, concepts, experiments, and future initiatives. This is an index of projects, not a client portfolio."
+  },
+  "projectDetail": {
+    "relatedWriting": "Related writing",
+    "nextStep": "If the project direction is relevant to your company, the simplest next step is a short conversation about the system, risks, and current technical bottlenecks."
+  },
+  "seo": {
+    "personalSite": "Personal site for Askold Astakhov."
+  }
+}

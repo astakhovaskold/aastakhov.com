@@ -59,7 +59,7 @@ function populatedPost(value: null | number | Post | undefined): value is Post {
   return typeof value === 'object' && value !== null && 'slug' in value
 }
 
-export async function getSiteSettings(): Promise<PublicSiteSettings> {
+export async function getSiteSettings(locale: string): Promise<PublicSiteSettings> {
   if (process.env.NEXT_PHASE === 'phase-production-build') {
     return fallbackSiteSettings
   }
@@ -69,6 +69,8 @@ export async function getSiteSettings(): Promise<PublicSiteSettings> {
     const settings = await payload.findGlobal({
       slug: 'site-settings',
       depth: 1,
+      locale: locale as 'en' | 'ru',
+      fallbackLocale: 'ru',
     })
 
     return {

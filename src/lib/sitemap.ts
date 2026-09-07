@@ -1,15 +1,9 @@
+import { getSiteUrl as getCanonicalSiteUrl } from '@/lib/seo'
 import { getPublishedProjects } from '@/lib/projects'
 import { getPostCategoryLinks, getPublishedPosts } from '@/lib/posts-index'
 
 export function getSiteUrl(): string {
-  const configuredUrl =
-    process.env.NEXT_PUBLIC_SITE_URL?.trim() || process.env.NEXT_PUBLIC_SERVER_URL?.trim()
-
-  if (!configuredUrl) {
-    throw new Error('NEXT_PUBLIC_SITE_URL must be configured for sitemap and robots URLs.')
-  }
-
-  return configuredUrl.replace(/\/+$/, '')
+  return getCanonicalSiteUrl().toString().replace(/\/+$/, '')
 }
 
 export function buildSitemapUrl(path: string): string {
@@ -34,9 +28,9 @@ export function buildPublicSitemapPaths(input: {
 
 export async function getPublicSitemapPaths(): Promise<string[]> {
   const [projects, categories, posts] = await Promise.all([
-    getPublishedProjects({ depth: 0 }),
-    getPostCategoryLinks({ includeHidden: true }),
-    getPublishedPosts(),
+    getPublishedProjects('ru', { depth: 0 }),
+    getPostCategoryLinks('ru', { includeHidden: true }),
+    getPublishedPosts('ru'),
   ])
 
   return buildPublicSitemapPaths({ categories, posts, projects })

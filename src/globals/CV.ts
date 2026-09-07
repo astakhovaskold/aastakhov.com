@@ -20,6 +20,7 @@ export const CV: GlobalConfig = {
     {
       name: 'name',
       type: 'text',
+      localized: true,
       admin: {
         description: 'Name displayed on the formal CV page.',
       },
@@ -27,6 +28,7 @@ export const CV: GlobalConfig = {
     {
       name: 'eyebrow',
       type: 'text',
+      localized: true,
       admin: {
         description: 'Optional eyebrow shown above the CV title.',
       },
@@ -34,6 +36,7 @@ export const CV: GlobalConfig = {
     {
       name: 'role',
       type: 'text',
+      localized: true,
       admin: {
         description: 'Current professional title or positioning.',
       },
@@ -41,6 +44,7 @@ export const CV: GlobalConfig = {
     {
       name: 'location',
       type: 'text',
+      localized: true,
       admin: {
         description: 'Optional current location shown in the profile summary.',
       },
@@ -48,6 +52,7 @@ export const CV: GlobalConfig = {
     {
       name: 'summary',
       type: 'textarea',
+      localized: true,
       admin: {
         description: 'Short formal profile summary.',
       },
@@ -55,6 +60,7 @@ export const CV: GlobalConfig = {
     {
       name: 'focus',
       type: 'text',
+      localized: true,
       admin: {
         description: 'Optional short focus line for the profile summary block.',
       },
@@ -62,6 +68,7 @@ export const CV: GlobalConfig = {
     {
       name: 'stack',
       type: 'text',
+      localized: true,
       admin: {
         description: 'Optional primary stack line for the profile summary block.',
       },
@@ -69,6 +76,7 @@ export const CV: GlobalConfig = {
     {
       name: 'expertiseNote',
       type: 'textarea',
+      localized: true,
       admin: {
         description: 'Optional short note shown next to the key expertise section title.',
       },
@@ -83,10 +91,12 @@ export const CV: GlobalConfig = {
         {
           name: 'title',
           type: 'text',
+          localized: true,
         },
         {
           name: 'description',
           type: 'textarea',
+          localized: true,
         },
       ],
     },
@@ -100,14 +110,17 @@ export const CV: GlobalConfig = {
         {
           name: 'company',
           type: 'text',
+          localized: true,
         },
         {
           name: 'role',
           type: 'text',
+          localized: true,
         },
         {
           name: 'location',
           type: 'text',
+          localized: true,
         },
         {
           name: 'startDate',
@@ -125,10 +138,12 @@ export const CV: GlobalConfig = {
         {
           name: 'summary',
           type: 'textarea',
+          localized: true,
         },
         {
           name: 'stack',
           type: 'text',
+          localized: true,
         },
         {
           name: 'highlights',
@@ -137,6 +152,7 @@ export const CV: GlobalConfig = {
             {
               name: 'text',
               type: 'textarea',
+              localized: true,
             },
           ],
         },
@@ -152,6 +168,7 @@ export const CV: GlobalConfig = {
         {
           name: 'category',
           type: 'text',
+          localized: true,
         },
         {
           name: 'items',
@@ -160,6 +177,7 @@ export const CV: GlobalConfig = {
             {
               name: 'name',
               type: 'text',
+              localized: true,
             },
           ],
         },
@@ -175,14 +193,17 @@ export const CV: GlobalConfig = {
         {
           name: 'institution',
           type: 'text',
+          localized: true,
         },
         {
           name: 'degree',
           type: 'text',
+          localized: true,
         },
         {
           name: 'field',
           type: 'text',
+          localized: true,
         },
         {
           name: 'startYear',
@@ -199,6 +220,7 @@ export const CV: GlobalConfig = {
         {
           name: 'description',
           type: 'textarea',
+          localized: true,
         },
       ],
     },
@@ -212,10 +234,12 @@ export const CV: GlobalConfig = {
         {
           name: 'language',
           type: 'text',
+          localized: true,
         },
         {
           name: 'level',
           type: 'text',
+          localized: true,
         },
       ],
     },

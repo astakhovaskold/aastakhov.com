@@ -23,11 +23,13 @@ export const OpenSource: CollectionConfig = {
       type: 'text',
       required: true,
       index: true,
+      localized: true,
     },
     {
       name: 'description',
       type: 'textarea',
       required: true,
+      localized: true,
     },
     {
       name: 'githubUrl',

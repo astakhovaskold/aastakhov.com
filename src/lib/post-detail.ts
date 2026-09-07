@@ -15,7 +15,10 @@ const emptyPostDetailData: PostDetailData = {
   previousPost: null,
 }
 
-async function findAdjacentPosts(post: Post): Promise<Pick<PostDetailData, 'nextPost' | 'previousPost'>> {
+async function findAdjacentPosts(
+  post: Post,
+  locale: string,
+): Promise<Pick<PostDetailData, 'nextPost' | 'previousPost'>> {
   if (!post.publishedAt) {
     return {
       nextPost: null,
@@ -28,6 +31,8 @@ async function findAdjacentPosts(post: Post): Promise<Pick<PostDetailData, 'next
     collection: 'posts',
     depth: 0,
     limit: 100,
+    locale: locale as 'en' | 'ru',
+    fallbackLocale: 'ru',
     sort: '-publishedAt',
     where: {
       and: [
@@ -60,7 +65,10 @@ async function findAdjacentPosts(post: Post): Promise<Pick<PostDetailData, 'next
   }
 }
 
-export async function getPostDetailBySlug(slug: string): Promise<PostDetailData> {
+export async function getPostDetailBySlug(
+  slug: string,
+  locale: string,
+): Promise<PostDetailData> {
   if (process.env.NEXT_PHASE === 'phase-production-build') {
     return emptyPostDetailData
   }
@@ -71,6 +79,8 @@ export async function getPostDetailBySlug(slug: string): Promise<PostDetailData>
       collection: 'posts',
       depth: 1,
       limit: 1,
+      locale: locale as 'en' | 'ru',
+      fallbackLocale: 'ru',
       where: {
         and: [
           {
@@ -99,7 +109,7 @@ export async function getPostDetailBySlug(slug: string): Promise<PostDetailData>
     }
 
     try {
-      const adjacentPosts = await findAdjacentPosts(post)
+      const adjacentPosts = await findAdjacentPosts(post, locale)
 
       return {
         post,

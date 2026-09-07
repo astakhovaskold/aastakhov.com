@@ -1,4 +1,6 @@
 import type { Metadata } from 'next'
+import { hasLocale } from 'next-intl'
+import { getTranslations, setRequestLocale } from 'next-intl/server'
 import { notFound } from 'next/navigation'
 
 import { ContactLinks } from '@/components/site/contact-links'
@@ -9,6 +11,7 @@ import {
   PostDetailPagination,
 } from '@/components/site/post-detail-content'
 import { SectionHeader } from '@/components/site/section-header'
+import { routing } from '@/i18n/routing'
 import { getPostDetailBySlug } from '@/lib/post-detail'
 import {
   createNotFoundMetadata,
@@ -19,21 +22,23 @@ import { getSiteSettings } from '@/lib/siteSettings'
 
 type PostDetailPageProps = {
   params: Promise<{
+    locale: string
     slug: string
   }>
 }
 
 export async function generateMetadata({ params }: PostDetailPageProps): Promise<Metadata> {
-  const { slug } = await params
+  const { locale, slug } = await params
   const [{ post }, settings] = await Promise.all([
-    getPostDetailBySlug(slug),
-    getSiteSettings(),
+    getPostDetailBySlug(slug, locale),
+    getSiteSettings(locale),
   ])
   const canonicalPath = `/posts/${slug}`
 
   if (!post || !isPubliclyIndexableEntity(post)) {
     return createNotFoundMetadata({
       canonicalPath,
+      locale: locale as 'ru' | 'en',
       resource: 'Post',
       settings,
     })
@@ -42,6 +47,7 @@ export async function generateMetadata({ params }: PostDetailPageProps): Promise
   return createSeoMetadata({
     canonicalPath,
     entity: post,
+    locale: locale as 'ru' | 'en',
     publishedTime: post.publishedAt,
     settings,
     type: 'article',
@@ -49,10 +55,18 @@ export async function generateMetadata({ params }: PostDetailPageProps): Promise
 }
 
 export default async function PostDetailPage({ params }: PostDetailPageProps) {
-  const { slug } = await params
-  const [{ nextPost, post, previousPost }, settings] = await Promise.all([
-    getPostDetailBySlug(slug),
-    getSiteSettings(),
+  const { locale, slug } = await params
+
+  if (!hasLocale(routing.locales, locale)) {
+    notFound()
+  }
+
+  setRequestLocale(locale)
+
+  const [{ nextPost, post, previousPost }, settings, common] = await Promise.all([
+    getPostDetailBySlug(slug, locale),
+    getSiteSettings(locale),
+    getTranslations('common'),
   ])
 
   if (!post || !isPubliclyIndexableEntity(post)) {
@@ -88,14 +102,14 @@ export default async function PostDetailPage({ params }: PostDetailPageProps) {
 
       <section className="section" id="post-more">
         <div className="post-detail-shell">
-          <SectionHeader action={{ href: '/posts', label: 'All posts' }} title="More" />
+          <SectionHeader action={{ href: '/posts', label: common('allPosts') }} title={common('more')} />
           <PostDetailPagination nextPost={nextPost} previousPost={previousPost} />
         </div>
       </section>
 
       <section className="section" id="contact">
         <div className="post-detail-shell">
-          <SectionHeader title="Contacts" />
+          <SectionHeader title={common('contacts')} />
           <ContactLinks links={contactLinks} />
         </div>
       </section>

@@ -1,7 +1,8 @@
 'use client'
 
-import Link from 'next/link'
 import type { ReactNode } from 'react'
+
+import { Link } from '@/i18n/navigation'
 
 import { track, type AnalyticsEvent } from '@/lib/analytics'
 

@@ -49,15 +49,18 @@ export const SiteSettings: GlobalConfig = {
     {
       name: 'location',
       type: 'text',
+      localized: true,
     },
     {
       name: 'availability',
       type: 'text',
       defaultValue: 'Available for selected projects',
+      localized: true,
     },
     {
       name: 'homeEyebrow',
       type: 'text',
+      localized: true,
       admin: {
         description: 'Optional eyebrow shown on the home page hero.',
       },
@@ -65,6 +68,7 @@ export const SiteSettings: GlobalConfig = {
     {
       name: 'projectsEyebrow',
       type: 'text',
+      localized: true,
       admin: {
         description: 'Optional eyebrow shown on the projects index page.',
       },
@@ -72,6 +76,7 @@ export const SiteSettings: GlobalConfig = {
     {
       name: 'postsEyebrow',
       type: 'text',
+      localized: true,
       admin: {
         description: 'Optional eyebrow shown on the posts index page.',
       },
@@ -102,6 +107,7 @@ export const SiteSettings: GlobalConfig = {
           name: 'caption',
           type: 'text',
           required: true,
+          localized: true,
           admin: {
             description: 'Short label shown to the right of the post, for example “Architecture”.',
           },
@@ -123,11 +129,13 @@ export const SiteSettings: GlobalConfig = {
           name: 'title',
           type: 'text',
           required: true,
+          localized: true,
         },
         {
           name: 'description',
           type: 'textarea',
           required: true,
+          localized: true,
         },
       ],
     },
@@ -140,12 +148,14 @@ export const SiteSettings: GlobalConfig = {
           type: 'text',
           required: true,
           defaultValue: 'Askold Astakhov',
+          localized: true,
         },
         {
           name: 'defaultDescription',
           type: 'textarea',
           required: true,
           defaultValue: 'Personal site for Askold Astakhov.',
+          localized: true,
         },
         {
           name: 'defaultImage',

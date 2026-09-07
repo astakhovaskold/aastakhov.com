@@ -1,8 +1,6 @@
 import type { CollectionConfig } from 'payload'
 import { slugField } from 'payload'
 
-const postLanguages = ['en', 'ru', 'es'] as const
-
 export const Posts: CollectionConfig = {
   slug: 'posts',
   labels: {
@@ -11,7 +9,7 @@ export const Posts: CollectionConfig = {
   },
   admin: {
     useAsTitle: 'title',
-    defaultColumns: ['title', 'postCategory', 'language', 'publishedAt', 'featured', 'showOnHome'],
+    defaultColumns: ['title', 'postCategory', 'publishedAt', 'featured', 'showOnHome'],
     group: 'Content',
     description: 'Articles, notes, case notes, guides, and essays.',
   },
@@ -25,6 +23,7 @@ export const Posts: CollectionConfig = {
       type: 'text',
       required: true,
       index: true,
+      localized: true,
     },
     slugField({
       useAsSlug: 'title',
@@ -33,10 +32,12 @@ export const Posts: CollectionConfig = {
       name: 'description',
       type: 'textarea',
       required: true,
+      localized: true,
     },
     {
       name: 'eyebrow',
       type: 'text',
+      localized: true,
       admin: {
         description: 'Optional eyebrow shown on the post detail page.',
       },
@@ -44,6 +45,7 @@ export const Posts: CollectionConfig = {
     {
       name: 'content',
       type: 'richText',
+      localized: true,
     },
     {
       name: 'publishedAt',
@@ -52,13 +54,6 @@ export const Posts: CollectionConfig = {
       admin: {
         position: 'sidebar',
       },
-    },
-    {
-      name: 'language',
-      type: 'select',
-      defaultValue: 'en',
-      options: postLanguages.map((language) => ({ label: language, value: language })),
-      required: true,
     },
     {
       name: 'readingTime',
@@ -100,6 +95,7 @@ export const Posts: CollectionConfig = {
           name: 'tag',
           type: 'text',
           required: true,
+          localized: true,
         },
       ],
     },
@@ -144,10 +140,12 @@ export const Posts: CollectionConfig = {
         {
           name: 'title',
           type: 'text',
+          localized: true,
         },
         {
           name: 'description',
           type: 'textarea',
+          localized: true,
         },
         {
           name: 'image',
