@@ -1,0 +1,8 @@
+.claude
+docs
+output
+tasks
+test-results
+playwright-report
+blob-report
+coverage

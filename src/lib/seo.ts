@@ -3,26 +3,16 @@ import type { Metadata } from 'next'
 import type { PublicSiteSettings } from '@/lib/siteSettings'
 
 const FALLBACK_SITE_URL = 'http://localhost:3000'
-const FALLBACK_OG_IMAGE = '/askold-avatar.jpeg'
-
-type SeoFields = {
-  title?: null | string
-  description?: null | string
-  image?: unknown
-}
-
 export type SeoEntity = {
   title?: null | string
   description?: null | string
   publishedAt?: null | string
-  seo?: SeoFields
 }
 
 type CreateSeoMetadataOptions = {
   canonicalPath: string
   description?: null | string
   entity?: SeoEntity | null
-  image?: unknown
   locale: 'ru' | 'en'
   noindex?: boolean
   publishedTime?: null | string
@@ -79,51 +69,22 @@ export function absoluteSiteUrl(value: string): string {
   }
 }
 
-function getMediaUrl(value: unknown): string | undefined {
-  if (typeof value === 'string' && value.trim()) {
-    return absoluteSiteUrl(value.trim())
-  }
-
-  if (typeof value === 'object' && value !== null && 'url' in value) {
-    const mediaUrl = value.url
-
-    if (typeof mediaUrl === 'string' && mediaUrl.trim()) {
-      return absoluteSiteUrl(mediaUrl.trim())
-    }
-  }
-
-  return undefined
-}
-
-function getSeoImage(options: CreateSeoMetadataOptions): string {
-  return (
-    getMediaUrl(options.entity?.seo?.image) ||
-    getMediaUrl(options.image) ||
-    getMediaUrl(options.settings.seo.defaultImage) ||
-    absoluteSiteUrl(FALLBACK_OG_IMAGE)
-  )
-}
-
 export function createSeoMetadata(options: CreateSeoMetadataOptions): Metadata {
   const title =
     firstText(
-      options.entity?.seo?.title,
       options.title,
       options.entity?.title,
       options.settings.seo.defaultTitle,
     ) || 'Askold Astakhov'
   const description =
     firstText(
-      options.entity?.seo?.description,
       options.description,
       options.entity?.description,
       options.settings.seo.defaultDescription,
     ) || 'Personal site for Askold Astakhov.'
-  const image = getSeoImage(options)
   const canonicalUrl = absoluteSiteUrl(`/${options.locale}${options.canonicalPath}`)
   const openGraph = {
     description,
-    images: [{ alt: title, url: image }],
     siteName: options.settings.name,
     title,
     type: options.type || ('website' as const),
@@ -151,9 +112,14 @@ export function createSeoMetadata(options: CreateSeoMetadataOptions): Metadata {
         }
       : {
           follow: true,
-          index: true,
-        },
+        index: true,
+      },
     title,
+    twitter: {
+      card: 'summary_large_image',
+      description,
+      title,
+    },
   }
 }
 

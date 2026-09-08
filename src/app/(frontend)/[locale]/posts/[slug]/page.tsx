@@ -4,6 +4,7 @@ import { getTranslations, setRequestLocale } from 'next-intl/server'
 import { notFound } from 'next/navigation'
 
 import { ContactLinks } from '@/components/site/contact-links'
+import { StructuredData } from '@/components/site/structured-data'
 import {
   PostDetailContent,
   PostDetailCover,
@@ -19,6 +20,7 @@ import {
   isPubliclyIndexableEntity,
 } from '@/lib/seo'
 import { getSiteSettings } from '@/lib/siteSettings'
+import { createArticleSchema, createBreadcrumbSchema } from '@/lib/structured-data'
 
 type PostDetailPageProps = {
   params: Promise<{
@@ -84,6 +86,22 @@ export default async function PostDetailPage({ params }: PostDetailPageProps) {
 
   return (
     <>
+      <StructuredData
+        data={[
+          createArticleSchema({
+            description: post.description,
+            locale: locale as 'en' | 'ru',
+            path: `/posts/${post.slug}`,
+            publishedAt: post.publishedAt,
+            title: post.title,
+          }),
+          createBreadcrumbSchema(locale as 'en' | 'ru', [
+            { name: settings.name, path: '/' },
+            { name: common('allPosts'), path: '/posts' },
+            { name: post.title, path: `/posts/${post.slug}` },
+          ]),
+        ]}
+      />
       <section className="hero">
         <div className="post-detail-shell">
           {post.eyebrow ? <p className="eyebrow">{post.eyebrow}</p> : null}

@@ -4,11 +4,13 @@ import { getTranslations, setRequestLocale } from 'next-intl/server'
 import { notFound } from 'next/navigation'
 
 import { ArrowLink } from '@/components/site/arrow-link'
+import { StructuredData } from '@/components/site/structured-data'
 import { routing } from '@/i18n/routing'
 import { analyticsEventNames, getContactLinkEvent } from '@/lib/analytics'
 import { getCV } from '@/lib/cv'
 import { createSeoMetadata } from '@/lib/seo'
 import { getSiteSettings } from '@/lib/siteSettings'
+import { createBreadcrumbSchema, createProfilePageSchema } from '@/lib/structured-data'
 
 type CVPageProps = {
   params: Promise<{ locale: string }>
@@ -290,6 +292,20 @@ export default async function CVPage({ params }: CVPageProps) {
 
   return (
     <>
+      <StructuredData
+        data={[
+          createProfilePageSchema({
+            description: cv?.summary || t('defaultDescription'),
+            locale: locale as 'en' | 'ru',
+            path: '/cv',
+            title: cv?.name || t('cvFallback'),
+          }),
+          createBreadcrumbSchema(locale as 'en' | 'ru', [
+            { name: siteSettings.name, path: '/' },
+            { name: cv?.name || t('cvFallback'), path: '/cv' },
+          ]),
+        ]}
+      />
       <header className="cv-header">
         {hasText(cv?.eyebrow) ? <p className="eyebrow">{cv.eyebrow}</p> : null}
         <h1 className="cv-title">

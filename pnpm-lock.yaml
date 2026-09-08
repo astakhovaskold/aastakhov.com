@@ -29,6 +29,9 @@ importers:
       graphql:
         specifier: ^16.8.1
         version: 16.14.2
+      ld-generator:
+        specifier: ^1.3.0
+        version: 1.3.0
       next:
         specifier: 16.3.0
         version: 16.3.0(@babel/core@7.29.7)(@playwright/test@1.58.2)(@types/node@22.19.9)(react-dom@19.2.6(react@19.2.6))(react@19.2.6)(sass@1.77.4)
@@ -3252,6 +3255,9 @@ packages:
   language-tags@1.0.9:
     resolution: {integrity: sha512-MbjN408fEndfiQXbFQ1vnd+1NoLDsnQW41410oQBXiyXDMYH5z505juWa4KUE1LqxRC7DgOgZDbKLxHIwm27hA==}
     engines: {node: '>=0.10'}
+
+  ld-generator@1.3.0:
+    resolution: {integrity: sha512-jvt/OMuDm+a3k31YB9Yy/12m4llLzx17D6j4Pej/Ed9gEeqvtWirnr3d6n2GWUqN2lGXPk8Ap6lWwwmlqYee1w==}
 
   levn@0.4.1:
     resolution: {integrity: sha512-+bT2uH4E5LGE7h/n3evcS/sQlJXCpIp6ym8OWJ5eV6+67Dsql/LaaT7qJBAt2rzfoa/5QBGBhxDix1dMt2kQKQ==}
@@ -7693,6 +7699,8 @@ snapshots:
   language-tags@1.0.9:
     dependencies:
       language-subtag-registry: 0.3.23
+
+  ld-generator@1.3.0: {}
 
   levn@0.4.1:
     dependencies:

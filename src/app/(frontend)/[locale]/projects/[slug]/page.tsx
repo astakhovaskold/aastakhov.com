@@ -10,6 +10,7 @@ import {
   ProjectDetailMeta,
   ProjectDetailRelatedPosts,
 } from '@/components/site/project-detail-content'
+import { StructuredData } from '@/components/site/structured-data'
 import { routing } from '@/i18n/routing'
 import { getProjectDetailBySlug } from '@/lib/project-detail'
 import {
@@ -18,6 +19,7 @@ import {
   isPubliclyIndexableEntity,
 } from '@/lib/seo'
 import { getSiteSettings } from '@/lib/siteSettings'
+import { createBreadcrumbSchema, createCreativeWorkSchema } from '@/lib/structured-data'
 
 type ProjectDetailPageProps = {
   params: Promise<{
@@ -82,6 +84,22 @@ export default async function ProjectDetailPage({ params }: ProjectDetailPagePro
 
   return (
     <>
+      <StructuredData
+        data={[
+          createCreativeWorkSchema({
+            description: project.description,
+            locale: locale as 'en' | 'ru',
+            path: `/projects/${project.slug}`,
+            publishedAt: project.startedAt,
+            title: project.title,
+          }),
+          createBreadcrumbSchema(locale as 'en' | 'ru', [
+            { name: settings.name, path: '/' },
+            { name: locale === 'ru' ? 'Проекты' : 'Projects', path: '/projects' },
+            { name: project.title, path: `/projects/${project.slug}` },
+          ]),
+        ]}
+      />
       <article className="project-detail">
         <header className="project-detail-header">
           {project.eyebrow ? <p className="eyebrow">{project.eyebrow}</p> : null}

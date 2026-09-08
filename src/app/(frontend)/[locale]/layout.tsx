@@ -6,12 +6,14 @@ import { notFound } from 'next/navigation'
 import React from 'react'
 
 import { AnalyticsPageView } from '@/components/site/analytics-page-view'
+import { StructuredData } from '@/components/site/structured-data'
 import { Link } from '@/i18n/navigation'
 import { routing } from '@/i18n/routing'
 import { getUmamiConfig } from '@/lib/analytics'
 import { createSeoMetadata, getSiteUrl } from '@/lib/seo'
 import { FEATURES } from '@/lib/feature-flags'
 import { getSiteSettings } from '@/lib/siteSettings'
+import { createPersonSchema, createWebsiteSchema } from '@/lib/structured-data'
 import './styles.css'
 
 export const dynamic = 'force-dynamic'
@@ -67,6 +69,7 @@ export default async function RootLayout(props: LocaleLayoutProps) {
   return (
     <html lang={locale}>
       <body>
+        <StructuredData data={[createPersonSchema(settings), createWebsiteSchema(settings, locale)]} />
         <NextIntlClientProvider>
           {umamiConfig ? (
             <Script
