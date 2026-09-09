@@ -358,7 +358,10 @@ export interface PostCategory {
 export interface OpenSource {
   id: number;
   name: string;
-  description: string;
+  /**
+   * Optional summary shown under the repository name on the home page.
+   */
+  description?: string | null;
   /**
    * GitHub repository URL.
    */

@@ -28,8 +28,10 @@ export const OpenSource: CollectionConfig = {
     {
       name: 'description',
       type: 'textarea',
-      required: true,
       localized: true,
+      admin: {
+        description: 'Optional summary shown under the repository name on the home page.',
+      },
     },
     {
       name: 'githubUrl',
