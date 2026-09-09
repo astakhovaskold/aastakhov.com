@@ -24,17 +24,14 @@ type ProjectsPageProps = {
 
 export async function generateMetadata({ params }: ProjectsPageProps): Promise<Metadata> {
   const { locale } = await params
-  const [settings, t] = await Promise.all([
-    getSiteSettings(locale),
-    getTranslations({ locale, namespace: 'projects' }),
-  ])
+  const settings = await getSiteSettings(locale)
 
   return createSeoMetadata({
     canonicalPath: '/projects',
-    description: t('description'),
+    description: settings.projectsPage.description,
     locale: locale as 'ru' | 'en',
     settings,
-    title: t('title'),
+    title: settings.projectsPage.title,
   })
 }
 
@@ -115,10 +112,9 @@ export default async function ProjectsPage({ params }: ProjectsPageProps) {
 
   setRequestLocale(locale)
 
-  const [projects, settings, t, projectT, common] = await Promise.all([
+  const [projects, settings, projectT, common] = await Promise.all([
     getProjects(locale),
     getSiteSettings(locale),
-    getTranslations('projects'),
     getTranslations('project'),
     getTranslations('common'),
   ])
@@ -130,14 +126,14 @@ export default async function ProjectsPage({ params }: ProjectsPageProps) {
     <>
       <section className="hero">
         {settings.projectsEyebrow ? <p className="eyebrow">{settings.projectsEyebrow}</p> : null}
-        <h1>{t('title')}</h1>
-        <p className="lede">{t('description')}</p>
+        <h1>{settings.projectsPage.title}</h1>
+        <p className="lede">{settings.projectsPage.description}</p>
       </section>
 
       <section className="section" id="projects-list">
         <SectionHeader
           action={<span className="section-link">{projectT('archivedAndFuture')}</span>}
-          title={t('title')}
+          title={settings.projectsPage.title}
         />
 
         {projects.length > 0 ? (

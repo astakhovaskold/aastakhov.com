@@ -116,7 +116,6 @@ export default async function HomePage({
     getTranslations('common'),
   ])
   const content = await getHomeContent(settings, locale)
-  const heroTags = t.raw('heroTags') as string[]
   const contactLinks = [
     settings.telegram ? { href: settings.telegram, label: 'Telegram' } : null,
     { href: `mailto:${settings.email}`, label: 'Email' },
@@ -135,13 +134,13 @@ export default async function HomePage({
               {settings.location} · {settings.availability}
             </p>
             <h1>
-              {t('heroTitleLine1')}
+              {settings.homePage.heroTitleLine1}
               <br />
-              {t('heroTitleLine2')}
+              {settings.homePage.heroTitleLine2}
             </h1>
-            <p className="lede">{t('heroDescription')}</p>
+            <p className="lede">{settings.homePage.heroDescription}</p>
             <div className="topic-links" aria-label={common('topics')}>
-              {heroTags.map((tag) => (
+              {settings.homePage.heroTags.map((tag) => (
                 <span key={tag}>{tag}</span>
               ))}
             </div>

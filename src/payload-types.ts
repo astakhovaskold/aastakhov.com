@@ -677,6 +677,34 @@ export interface SiteSetting {
    * Optional eyebrow shown on the posts index page.
    */
   postsEyebrow?: string | null;
+  /**
+   * Editable hero copy for the home page.
+   */
+  homePage?: {
+    heroTitleLine1?: string | null;
+    heroTitleLine2?: string | null;
+    heroDescription?: string | null;
+    heroTags?:
+      | {
+          title: string;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  /**
+   * Editable hero copy for the blog index page.
+   */
+  blogPage?: {
+    title?: string | null;
+    description?: string | null;
+  };
+  /**
+   * Editable hero copy for the projects index page.
+   */
+  projectsPage?: {
+    title?: string | null;
+    description?: string | null;
+  };
   bookingUrl?: string | null;
   /**
    * Posts selected and ordered manually for the home page. Caption is a free-text label, not a post category.
@@ -843,6 +871,31 @@ export interface SiteSettingsSelect<T extends boolean = true> {
   homeEyebrow?: T;
   projectsEyebrow?: T;
   postsEyebrow?: T;
+  homePage?:
+    | T
+    | {
+        heroTitleLine1?: T;
+        heroTitleLine2?: T;
+        heroDescription?: T;
+        heroTags?:
+          | T
+          | {
+              title?: T;
+              id?: T;
+            };
+      };
+  blogPage?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+      };
+  projectsPage?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+      };
   bookingUrl?: T;
   selectedWork?:
     | T

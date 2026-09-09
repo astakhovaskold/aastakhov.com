@@ -1,6 +1,5 @@
-import { getTranslations } from 'next-intl/server'
-
 import { createOgImage, ogContentType, ogSize } from '@/lib/og'
+import { getSiteSettings } from '@/lib/siteSettings'
 
 export const alt = 'Askold Astakhov writing'
 export const contentType = ogContentType
@@ -12,12 +11,12 @@ export default async function OpenGraphImage({
   params: Promise<{ locale: 'en' | 'ru' }>
 }) {
   const { locale } = await params
-  const t = await getTranslations({ locale, namespace: 'posts' })
+  const settings = await getSiteSettings(locale)
 
   return createOgImage({
-    description: t('description'),
+    description: settings.blogPage.description,
     kind: 'writing',
     locale,
-    title: t('title'),
+    title: settings.blogPage.title,
   })
 }

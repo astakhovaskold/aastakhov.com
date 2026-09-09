@@ -3,7 +3,7 @@
     "siteName": "Askold Astakhov",
     "mainNavigation": "Main navigation",
     "projects": "Projects",
-    "posts": "Posts",
+    "posts": "Blog",
     "cv": "CV"
   },
   "footer": {
@@ -71,13 +71,9 @@
     "projectNotFound": "Project not found"
   },
   "home": {
-    "heroTitleLine1": "Independent",
-    "heroTitleLine2": "IT expert",
-    "heroDescription": "Technical partner for complex projects — architecture, audits, consulting and development. Enterprise background, pragmatic approach.",
-    "heroTags": ["Architecture", "Audits", "Technical consulting", "Full-stack dev", "Team lead"],
     "selectedWork": "Selected work",
     "services": "Services",
-    "fromTheBlog": "From the blog",
+    "fromTheBlog": "Blog",
     "openSource": "Open source"
   },
   "cv": {
@@ -100,12 +96,8 @@
     "defaultDescription": "Professional profile and CV."
   },
   "posts": {
-    "title": "Posts",
-    "description": "Writing, notes, case studies, and practical material on building digital products."
   },
   "projects": {
-    "title": "Projects",
-    "description": "Products, companies, websites, concepts, experiments, and future initiatives. This is an index of projects, not a client portfolio."
   },
   "projectDetail": {
     "relatedWriting": "Related writing",

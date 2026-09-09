@@ -22,7 +22,7 @@ const labels: Record<OgKind, Record<'en' | 'ru', string>> = {
   project: { en: 'Project', ru: 'Проект' },
   site: { en: 'Independent builder', ru: 'Независимый создатель' },
   topic: { en: 'Topic', ru: 'Тема' },
-  writing: { en: 'Writing', ru: 'Публикации' },
+  writing: { en: 'Blog', ru: 'Блог' },
 }
 
 function truncate(value: null | string | undefined, limit: number): string | undefined {

@@ -19,17 +19,14 @@ type PostsPageProps = {
 
 export async function generateMetadata({ params }: PostsPageProps): Promise<Metadata> {
   const { locale } = await params
-  const [settings, t] = await Promise.all([
-    getSiteSettings(locale),
-    getTranslations({ locale, namespace: 'posts' }),
-  ])
+  const settings = await getSiteSettings(locale)
 
   return createSeoMetadata({
     canonicalPath: '/posts',
-    description: t('description'),
+    description: settings.blogPage.description,
     locale: locale as 'ru' | 'en',
     settings,
-    title: t('title'),
+    title: settings.blogPage.title,
   })
 }
 
@@ -42,10 +39,9 @@ export default async function PostsPage({ params }: PostsPageProps) {
 
   setRequestLocale(locale)
 
-  const [{ categoryLinks, featuredPost, posts }, settings, t, common, postT] = await Promise.all([
+  const [{ categoryLinks, featuredPost, posts }, settings, common, postT] = await Promise.all([
     getPostsIndexPageData(locale),
     getSiteSettings(locale),
-    getTranslations('posts'),
     getTranslations('common'),
     getTranslations('post'),
   ])
@@ -63,8 +59,8 @@ export default async function PostsPage({ params }: PostsPageProps) {
     <>
       <section className="hero">
         {settings.postsEyebrow ? <p className="eyebrow">{settings.postsEyebrow}</p> : null}
-        <h1>{t('title')}</h1>
-        <p className="lede">{t('description')}</p>
+        <h1>{settings.blogPage.title}</h1>
+        <p className="lede">{settings.blogPage.description}</p>
       </section>
 
       {featuredPost ? (

@@ -463,6 +463,28 @@ const siteSettingsSeed = {
   linkedin: 'https://www.linkedin.com/in/askold-astakhov/',
   location: 'Madrid',
   name: 'Askold Astakhov',
+  homePage: {
+    heroDescription:
+      'Technical partner for complex projects — architecture, audits, consulting and development. Enterprise background, pragmatic approach.',
+    heroTags: [
+      { title: 'Architecture' },
+      { title: 'Audits' },
+      { title: 'Technical consulting' },
+      { title: 'Full-stack dev' },
+      { title: 'Team lead' },
+    ],
+    heroTitleLine1: 'Independent',
+    heroTitleLine2: 'IT expert',
+  },
+  blogPage: {
+    description: 'Writing, notes, case studies, and practical material on building digital products.',
+    title: 'Blog',
+  },
+  projectsPage: {
+    description:
+      'Products, companies, websites, concepts, experiments, and future initiatives. This is an index of projects, not a client portfolio.',
+    title: 'Projects',
+  },
   postsEyebrow: 'Writing and notes',
   projectsEyebrow: 'Projects index',
   seo: {

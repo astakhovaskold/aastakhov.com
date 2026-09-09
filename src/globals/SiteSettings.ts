@@ -82,6 +82,46 @@ export const SiteSettings: GlobalConfig = {
       },
     },
     {
+      name: 'homePage',
+      type: 'group',
+      admin: {
+        description: 'Editable hero copy for the home page.',
+      },
+      fields: [
+        { name: 'heroTitleLine1', type: 'text', localized: true },
+        { name: 'heroTitleLine2', type: 'text', localized: true },
+        { name: 'heroDescription', type: 'textarea', localized: true },
+        {
+          name: 'heroTags',
+          type: 'array',
+          labels: { singular: 'Hero tag', plural: 'Hero tags' },
+          fields: [{ name: 'title', type: 'text', required: true, localized: true }],
+        },
+      ],
+    },
+    {
+      name: 'blogPage',
+      type: 'group',
+      admin: {
+        description: 'Editable hero copy for the blog index page.',
+      },
+      fields: [
+        { name: 'title', type: 'text', localized: true },
+        { name: 'description', type: 'textarea', localized: true },
+      ],
+    },
+    {
+      name: 'projectsPage',
+      type: 'group',
+      admin: {
+        description: 'Editable hero copy for the projects index page.',
+      },
+      fields: [
+        { name: 'title', type: 'text', localized: true },
+        { name: 'description', type: 'textarea', localized: true },
+      ],
+    },
+    {
       name: 'bookingUrl',
       type: 'text',
     },

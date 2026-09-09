@@ -3,7 +3,7 @@
     "siteName": "Askold Astakhov",
     "mainNavigation": "Главная навигация",
     "projects": "Проекты",
-    "posts": "Публикации",
+    "posts": "Блог",
     "cv": "Резюме"
   },
   "footer": {
@@ -11,24 +11,24 @@
     "tagline": "Личный сайт"
   },
   "common": {
-    "allPosts": "Все публикации",
+    "allPosts": "Все посты",
     "more": "Далее",
     "contacts": "Контакты",
     "readMore": "Читать далее",
-    "backToPosts": "Назад к публикациям",
+    "backToPosts": "Назад к блогу",
     "backToProjects": "Назад к проектам",
     "topics": "Темы",
     "all": "Все",
     "noPostsPublished": "Пока нет опубликованных материалов.",
     "noProjectsPublished": "Пока нет опубликованных проектов.",
-    "previousPost": "Предыдущая публикация",
-    "nextPost": "Следующая публикация"
+    "previousPost": "Предыдущий пост",
+    "nextPost": "Следующий пост"
   },
   "post": {
     "publishedOn": "Опубликовано {date}",
     "readingTime": "{minutes} мин чтения",
-    "featuredPost": "Рекомендуемая публикация",
-    "postPagination": "Навигация по публикациям"
+    "featuredPost": "Рекомендуемый пост",
+    "postPagination": "Навигация по постам"
   },
   "project": {
     "status": "Статус",
@@ -66,18 +66,14 @@
     "website": "Сайт"
   },
   "notFound": {
-    "postNotFound": "Публикация не найдена",
+    "postNotFound": "Пост не найден",
     "categoryNotFound": "Категория не найдена",
     "projectNotFound": "Проект не найден"
   },
   "home": {
-    "heroTitleLine1": "Независимый",
-    "heroTitleLine2": "IT-эксперт",
-    "heroDescription": "Технический партнёр для сложных проектов — архитектура, аудиты, консалтинг и разработка. Опыт в enterprise, прагматичный подход.",
-    "heroTags": ["Архитектура", "Аудиты", "Технический консалтинг", "Full-stack разработка", "Team lead"],
     "selectedWork": "Избранные работы",
     "services": "Услуги",
-    "fromTheBlog": "Из блога",
+    "fromTheBlog": "Блог",
     "openSource": "Open source"
   },
   "cv": {
@@ -100,15 +96,11 @@
     "defaultDescription": "Профессиональный профиль и резюме."
   },
   "posts": {
-    "title": "Публикации",
-    "description": "Статьи, заметки, кейсы и практические материалы о разработке цифровых продуктов."
   },
   "projects": {
-    "title": "Проекты",
-    "description": "Продукты, компании, сайты, концепты, эксперименты и будущие инициативы. Это список проектов, а не клиентское портфолио."
   },
   "projectDetail": {
-    "relatedWriting": "Связанные публикации",
+    "relatedWriting": "Связанные посты",
     "nextStep": "Если направление проекта релевантно вашей компании, простой следующий шаг — короткий разговор о системе, рисках и текущих технических узких местах."
   },
   "seo": {
