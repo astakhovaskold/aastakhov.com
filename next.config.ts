@@ -6,6 +6,7 @@ import { fileURLToPath } from 'url'
 
 const __filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(__filename)
+const blobStoreID = process.env.BLOB_READ_WRITE_TOKEN?.match(/^vercel_blob_rw_([a-z\d]+)_/i)?.[1]
 
 const nextConfig: NextConfig = {
   images: {
@@ -17,6 +18,16 @@ const nextConfig: NextConfig = {
         pathname: '/askold-avatar.jpeg',
       },
     ],
+    ...(blobStoreID
+      ? {
+          remotePatterns: [
+            {
+              hostname: `${blobStoreID}.public.blob.vercel-storage.com`,
+              protocol: 'https' as const,
+            },
+          ],
+        }
+      : {}),
   },
   webpack: (webpackConfig) => {
     webpackConfig.resolve.extensionAlias = {
