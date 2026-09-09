@@ -113,8 +113,8 @@ p {
 }
 
 .hero {
-  margin-bottom: 88px;
-  padding-top: 72px;
+  margin-bottom: 56px;
+  padding-top: 48px;
 }
 
 .hero-grid {
@@ -495,7 +495,7 @@ p {
 
 .project-cover {
   width: 100%;
-  margin: 0 0 62px;
+  margin: 0 0 48px;
 }
 
 .project-cover img {
@@ -563,7 +563,7 @@ p {
 }
 
 .content-renderer blockquote {
-  margin: 42px 0;
+  margin: 32px 0;
   font-size: 24px;
   line-height: 1.35;
   font-weight: 600;
@@ -577,7 +577,7 @@ p {
 }
 
 .content-renderer pre {
-  margin: 36px 0;
+  margin: 28px 0;
   overflow-x: auto;
   font-size: 13px;
   line-height: 1.55;
@@ -597,7 +597,7 @@ p {
 }
 
 .content-renderer figure {
-  margin: 42px 0;
+  margin: 32px 0;
 }
 
 .content-renderer figure img {
@@ -614,19 +614,19 @@ p {
 }
 
 .content-renderer hr {
-  margin: 48px 0;
+  margin: 36px 0;
   border: none;
   border-top: 1px solid rgba(17, 17, 17, 0.15);
 }
 
 .project-detail-section {
   max-width: 650px;
-  margin-bottom: 76px;
+  margin-bottom: 56px;
 }
 
 .project-next-step {
   max-width: 650px;
-  margin-bottom: 80px;
+  margin-bottom: 56px;
 }
 
 .project-next-step p {
@@ -639,17 +639,21 @@ p {
 .post-detail-shell {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 0;
   max-width: 680px;
 }
 
 .post-detail-header {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+}
+
+.post-detail-header h1 {
+  margin-bottom: 24px;
 }
 
 .post-detail-label {
+  margin-bottom: 18px;
   font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.08em;
@@ -658,6 +662,7 @@ p {
 
 .post-detail-cover {
   width: min(100%, 650px);
+  margin-bottom: 56px;
 }
 
 .post-detail-cover img {

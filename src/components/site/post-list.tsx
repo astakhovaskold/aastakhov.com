@@ -1,3 +1,4 @@
+import { getLocale } from 'next-intl/server'
 import Image from 'next/image'
 
 import { Link } from '@/i18n/navigation'
@@ -44,16 +45,17 @@ function getPostImage(image: PostListEntry['previewImage']): null | ReadyPostIma
 
 type PostListPresentation = 'compact' | 'default'
 
-export function PostListItem<T extends PostListEntry>(props: {
+export async function PostListItem<T extends PostListEntry>(props: {
   item: T
   presentation?: PostListPresentation
   showImages?: boolean
 }) {
   const { item, presentation = 'default', showImages = true } = props
   const image = showImages ? getPostImage(item.previewImage) : null
+  const locale = await getLocale()
 
   if (presentation === 'compact') {
-    const date = formatPostDate(item.publishedAt)
+    const date = formatPostDate(item.publishedAt, locale)
 
     return (
       <Link className="post-item post-item--compact" href={`/posts/${item.slug}`}>
@@ -63,7 +65,7 @@ export function PostListItem<T extends PostListEntry>(props: {
     )
   }
 
-  const cardMeta = getPostCardMeta(item)
+  const cardMeta = getPostCardMeta(item, locale)
 
   return (
     <Link className="post-item" href={`/posts/${item.slug}`}>
@@ -110,3 +112,4 @@ export function PostList<T extends PostListEntry>(props: {
     </div>
   )
 }
+

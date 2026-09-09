@@ -1,4 +1,4 @@
-import { getTranslations } from 'next-intl/server'
+import { getLocale, getTranslations } from 'next-intl/server'
 
 import { ArrowLink } from '@/components/site/arrow-link'
 import { ContentRenderer } from '@/components/site/content-renderer'
@@ -11,29 +11,34 @@ function isMedia(value: number | Media | null | undefined): value is Media {
   return typeof value === 'object' && value !== null
 }
 
-function formatProjectDate(project: Project): string | null {
+function formatProjectDate(project: Project, locale: string): string | null {
   if (project.year) return String(project.year)
   if (!project.startedAt) return null
   const date = new Date(project.startedAt)
   if (Number.isNaN(date.valueOf())) return null
-  return new Intl.DateTimeFormat('en', { month: 'short', year: 'numeric' }).format(date)
+  return new Intl.DateTimeFormat(locale, { month: 'short', year: 'numeric' }).format(date)
 }
 
-function formatPostMeta(post: Post): string {
+function formatPostMeta(
+  post: Post,
+  locale: string,
+  readingTimeLabel: (minutes: number) => string,
+): string {
   const parts: string[] = [getPostCategoryLabel(post.postCategory)].filter(Boolean)
   if (post.publishedAt) {
     const date = new Date(post.publishedAt)
     if (!Number.isNaN(date.valueOf())) {
-      parts.push(new Intl.DateTimeFormat('en', { month: 'short', year: 'numeric' }).format(date))
+      parts.push(new Intl.DateTimeFormat(locale, { month: 'short', year: 'numeric' }).format(date))
     }
   }
-  if (post.readingTime) parts.push(`${post.readingTime} min`)
+  if (post.readingTime) parts.push(readingTimeLabel(post.readingTime))
   return parts.join(' / ')
 }
 
 export async function ProjectDetailMeta(props: { project: Project }) {
   const { project } = props
-  const date = formatProjectDate(project)
+  const locale = await getLocale()
+  const date = formatProjectDate(project, locale)
   const t = await getTranslations('project')
   const statusLabel = project.status
     ? (t as unknown as (key: string) => string)(`statusValues.${project.status}`)
@@ -82,7 +87,12 @@ export async function ProjectDetailRelatedPosts(props: { posts: Post[]; title: s
   const { posts, title } = props
   if (posts.length === 0) return null
   const headingId = title.toLowerCase().replace(/\s+/g, '-')
-  const common = await getTranslations('common')
+  const [common, postT, locale] = await Promise.all([
+    getTranslations('common'),
+    getTranslations('post'),
+    getLocale(),
+  ])
+  const readingTimeLabel = (minutes: number) => postT('readingTime', { minutes })
 
   return (
     <section className="project-detail-section" aria-labelledby={headingId}>
@@ -101,7 +111,7 @@ export async function ProjectDetailRelatedPosts(props: { posts: Post[]; title: s
               <span className="row-title">{post.title}</span>
               <span className="row-desc">{post.description}</span>
             </span>
-            <span className="row-meta">{formatPostMeta(post)}</span>
+            <span className="row-meta">{formatPostMeta(post, locale, readingTimeLabel)}</span>
           </Link>
         ))}
       </div>

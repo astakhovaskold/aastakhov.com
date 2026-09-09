@@ -93,7 +93,7 @@ function getContactItems(
     }))
 }
 
-function formatMonthYear(value: null | string | undefined): string | null {
+function formatMonthYear(value: null | string | undefined, locale: string): string | null {
   if (!hasText(value)) {
     return null
   }
@@ -104,7 +104,7 @@ function formatMonthYear(value: null | string | undefined): string | null {
     return null
   }
 
-  return new Intl.DateTimeFormat('en', {
+  return new Intl.DateTimeFormat(locale, {
     month: 'short',
     year: 'numeric',
   }).format(date)
@@ -115,9 +115,10 @@ function formatExperienceRange(
   endDate: null | string | undefined,
   current: boolean | null | undefined,
   presentLabel: string,
+  locale: string,
 ): string | null {
-  const start = formatMonthYear(startDate)
-  const end = current ? presentLabel : formatMonthYear(endDate)
+  const start = formatMonthYear(startDate, locale)
+  const end = current ? presentLabel : formatMonthYear(endDate, locale)
 
   if (start && end) {
     return `${start} - ${end}`
@@ -389,6 +390,7 @@ export default async function CVPage({ params }: CVPageProps) {
                 item.endDate,
                 item.current,
                 t('present'),
+                locale,
               )
 
               return (

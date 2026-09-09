@@ -1,4 +1,4 @@
-import { getTranslations } from 'next-intl/server'
+import { getLocale, getTranslations } from 'next-intl/server'
 import React from 'react'
 
 import { ContentRenderer } from '@/components/site/content-renderer'
@@ -10,19 +10,21 @@ function isMedia(value: unknown): value is Media {
   return typeof value === 'object' && value !== null && 'url' in value
 }
 
-function formatPostDate(publishedAt?: string | null): string | null {
+function formatPostDate(publishedAt: string | null | undefined, locale: string): string | null {
   if (!publishedAt) return null
   const date = new Date(publishedAt)
   if (Number.isNaN(date.valueOf())) return null
-  return new Intl.DateTimeFormat('en', { day: 'numeric', month: 'long', year: 'numeric' }).format(date)
+  return new Intl.DateTimeFormat(locale, { day: 'numeric', month: 'long', year: 'numeric' }).format(date)
 }
 
-export function PostDetailHeader(props: { post: Post }) {
+export async function PostDetailHeader(props: { post: Post }) {
   const { post } = props
+  const t = await getTranslations('post')
+  const locale = await getLocale()
   const metaLine = [
     getPostCategoryLabel(post.postCategory),
-    formatPostDate(post.publishedAt),
-    post.readingTime ? `${post.readingTime} min read` : null,
+    formatPostDate(post.publishedAt, locale),
+    post.readingTime ? t('readingTime', { minutes: post.readingTime }) : null,
   ]
     .filter(Boolean)
     .join(' · ')

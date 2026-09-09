@@ -1,3 +1,4 @@
+import { getLocale } from 'next-intl/server'
 import Image from 'next/image'
 
 import { Link } from '@/i18n/navigation'
@@ -15,11 +16,12 @@ export type FeaturedPostEntry = {
   title: Post['title']
 }
 
-export function FeaturedPost(props: { post: FeaturedPostEntry }) {
+export async function FeaturedPost(props: { post: FeaturedPostEntry }) {
   const { post } = props
   const image = post.coverImage || post.previewImage
   const category = getPostCategoryLabel(post.postCategory)
-  const date = formatPostDate(post.publishedAt)
+  const locale = await getLocale()
+  const date = formatPostDate(post.publishedAt, locale)
 
   return (
     <Link className="featured" href={`/posts/${post.slug}`}>

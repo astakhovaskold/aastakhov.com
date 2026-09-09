@@ -65,7 +65,7 @@ export function getPostCategoryLabel(category: null | Post['postCategory']): str
   return category.singularLabel || category.title
 }
 
-export function formatPostDate(value: string | null | undefined): string | null {
+export function formatPostDate(value: string | null | undefined, locale: string): string | null {
   if (!value) {
     return null
   }
@@ -76,19 +76,22 @@ export function formatPostDate(value: string | null | undefined): string | null 
     return null
   }
 
-  return new Intl.DateTimeFormat('en', {
+  return new Intl.DateTimeFormat(locale, {
     month: 'short',
     year: 'numeric',
   }).format(date)
 }
 
-export function getPostCardMeta(post: {
-  postCategory: null | Post['postCategory'] | undefined
-  publishedAt?: null | string
-}): { category: string; date: string | null } {
+export function getPostCardMeta(
+  post: {
+    postCategory: null | Post['postCategory'] | undefined
+    publishedAt?: null | string
+  },
+  locale: string,
+): { category: string; date: string | null } {
   return {
     category: getPostCategoryLabel(post.postCategory || null),
-    date: formatPostDate(post.publishedAt),
+    date: formatPostDate(post.publishedAt, locale),
   }
 }
 
