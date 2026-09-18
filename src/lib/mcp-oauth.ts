@@ -71,6 +71,6 @@ export const oauthCapabilities = (user: TypedUser): MCPAccessSettings => ({
 
 export const oauthScopes = 'content:read content:write'
 export const isChatGPTClient = (clientID: string, redirectURI: string) =>
-  clientID === 'https://chatgpt.com/oauth/client.json' &&
+  clientID === 'aastakhov-payloadcms' &&
   (redirectURI === 'https://chatgpt.com/connector_platform_oauth_redirect' ||
     redirectURI.startsWith('https://chatgpt.com/connector/'))
