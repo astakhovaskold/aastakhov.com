@@ -15,6 +15,8 @@ import { Posts } from './collections/Posts'
 import { OpenSource } from './collections/OpenSource'
 import { SiteSettings } from './globals/SiteSettings'
 import { CV } from './globals/CV'
+import { oauthCapabilities, verifyOAuthToken } from './lib/mcp-oauth'
+import { McpOAuthCodes } from './collections/McpOAuthCodes'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -58,7 +60,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Media, Projects, PostCategories, Posts, OpenSource],
+  collections: [Users, Media, Projects, PostCategories, Posts, OpenSource, McpOAuthCodes],
   globals: [SiteSettings, CV],
   localization: {
     locales: ['ru', 'en'],
@@ -78,6 +80,22 @@ export default buildConfig({
   sharp,
   plugins: [
     mcpPlugin({
+      overrideAuth: async (req, getDefaultMcpAccessSettings) => {
+        const bearer = req.headers.get('Authorization')?.replace(/^Bearer\s+/i, '')
+        const claims = bearer ? verifyOAuthToken(bearer, 'access') : null
+
+        if (!claims) {
+          return getDefaultMcpAccessSettings()
+        }
+
+        const user = await req.payload.findByID({
+          collection: 'users',
+          id: claims.sub,
+          overrideAccess: false,
+        })
+
+        return oauthCapabilities(user)
+      },
       collections: {
         posts: {
           description:
