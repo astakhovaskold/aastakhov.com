@@ -74,6 +74,7 @@ export interface Config {
     'post-categories': PostCategory;
     posts: Post;
     'open-source': OpenSource;
+    'mcp-oauth-codes': McpOauthCode;
     'payload-mcp-api-keys': PayloadMcpApiKey;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
@@ -88,6 +89,7 @@ export interface Config {
     'post-categories': PostCategoriesSelect<false> | PostCategoriesSelect<true>;
     posts: PostsSelect<false> | PostsSelect<true>;
     'open-source': OpenSourceSelect<false> | OpenSourceSelect<true>;
+    'mcp-oauth-codes': McpOauthCodesSelect<false> | McpOauthCodesSelect<true>;
     'payload-mcp-api-keys': PayloadMcpApiKeysSelect<false> | PayloadMcpApiKeysSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
@@ -398,6 +400,23 @@ export interface OpenSource {
   createdAt: string;
 }
 /**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "mcp-oauth-codes".
+ */
+export interface McpOauthCode {
+  id: number;
+  codeHash: string;
+  user: number | User;
+  clientID: string;
+  redirectURI: string;
+  codeChallenge: string;
+  scope: string;
+  expiresAt: string;
+  usedAt?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * API keys control which collections, resources, tools, and prompts MCP clients can access
  *
  * This interface was referenced by `Config`'s JSON-Schema
@@ -541,6 +560,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'open-source';
         value: number | OpenSource;
+      } | null)
+    | ({
+        relationTo: 'mcp-oauth-codes';
+        value: number | McpOauthCode;
       } | null)
     | ({
         relationTo: 'payload-mcp-api-keys';
@@ -743,6 +766,22 @@ export interface OpenSourceSelect<T extends boolean = true> {
   stars?: T;
   featured?: T;
   order?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "mcp-oauth-codes_select".
+ */
+export interface McpOauthCodesSelect<T extends boolean = true> {
+  codeHash?: T;
+  user?: T;
+  clientID?: T;
+  redirectURI?: T;
+  codeChallenge?: T;
+  scope?: T;
+  expiresAt?: T;
+  usedAt?: T;
   updatedAt?: T;
   createdAt?: T;
 }
