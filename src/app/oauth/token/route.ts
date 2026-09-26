@@ -27,6 +27,9 @@ export async function POST(request: Request) {
     sha256base64url(String(body.get('code_verifier') || '')) !== code.codeChallenge
   ) return oauthError('invalid_grant', 'Authorization code does not match this PKCE request.')
 
+  const userID = typeof code.user === 'object' && code.user ? code.user.id : code.user
+  if (!userID) return oauthError('invalid_grant', 'Authorization code has no associated user.')
+
   await payload.update({ collection: 'mcp-oauth-codes', id: code.id, data: { usedAt: new Date().toISOString() }, overrideAccess: true } as any)
 
   const accessToken = signOAuthToken({
@@ -35,7 +38,7 @@ export async function POST(request: Request) {
     exp: Math.floor(Date.now() / 1000) + 900,
     iss: mcpOrigin(),
     scope: oauthScopes,
-    sub: code.sub,
+    sub: String(userID),
     type: 'access',
   })
   return Response.json({ access_token: accessToken, token_type: 'Bearer', expires_in: 900, scope: oauthScopes })
