@@ -12,7 +12,7 @@ import { Link } from '@/i18n/navigation'
 import { routing } from '@/i18n/routing'
 import { getUmamiConfig } from '@/lib/analytics'
 import { getSiteUrl } from '@/lib/seo'
-import { FEATURES } from '@/lib/feature-flags'
+import { buildNavItems, getNavigationCounts } from '@/lib/navigation'
 import { getSiteSettings } from '@/lib/siteSettings'
 import { createSiteGraph } from '@/lib/structured-data'
 import './styles.css'
@@ -92,7 +92,12 @@ export default async function RootLayout(props: LocaleLayoutProps) {
 
   setRequestLocale(locale)
 
-  const [settings, t] = await Promise.all([getSiteSettings(locale), getTranslations('nav')])
+  const [settings, t, navCounts] = await Promise.all([
+    getSiteSettings(locale),
+    getTranslations('nav'),
+    getNavigationCounts(locale),
+  ])
+  const navItems = buildNavItems(navCounts)
   const footerT = await getTranslations('footer')
   const umamiConfig = getUmamiConfig()
 
@@ -128,9 +133,11 @@ export default async function RootLayout(props: LocaleLayoutProps) {
                 data-toolname="site_navigation"
                 data-tooldescription="Site section navigation for posts, projects, and CV"
               >
-                {FEATURES.projects ? <Link href="/projects">{t('projects')}</Link> : null}
-                <Link href="/posts">{t('posts')}</Link>
-                <Link href="/cv">{t('cv')}</Link>
+                {navItems.map((item) => (
+                  <Link href={item.href} key={item.key}>
+                    {t(item.key)}
+                  </Link>
+                ))}
               </nav>
             </header>
 

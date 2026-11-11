@@ -103,6 +103,9 @@ p {
 }
 
 .site-nav a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
   color: var(--text);
   font-size: 14px;
   text-decoration: none;
