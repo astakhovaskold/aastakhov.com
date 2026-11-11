@@ -11,7 +11,7 @@ import { WebMcpProvider } from '@/components/webmcp/WebMcpProvider'
 import { Link } from '@/i18n/navigation'
 import { routing } from '@/i18n/routing'
 import { getUmamiConfig } from '@/lib/analytics'
-import { createSeoMetadata, getSiteUrl } from '@/lib/seo'
+import { getSiteUrl } from '@/lib/seo'
 import { FEATURES } from '@/lib/feature-flags'
 import { getSiteSettings } from '@/lib/siteSettings'
 import { createPersonSchema, createWebsiteSchema } from '@/lib/structured-data'
@@ -46,14 +46,12 @@ export async function generateMetadata({
   const settings = await getSiteSettings(locale)
 
   return {
-    ...createSeoMetadata({
-      canonicalPath: '/',
-      description: settings.seo.defaultDescription,
-      locale: locale as 'ru' | 'en',
-      settings,
-      title: settings.seo.defaultTitle,
-    }),
     metadataBase: getSiteUrl(),
+    title: {
+      default: settings.seo.defaultTitle || settings.name,
+      template: `%s — ${settings.name}`,
+    },
+    description: settings.seo.defaultDescription,
     manifest: '/favicon/manifest.json',
     icons: {
       icon: [

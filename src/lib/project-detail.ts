@@ -1,7 +1,7 @@
 import config from '@payload-config'
 import { getPayload } from 'payload'
 
-import { isProjectPublic } from '@/lib/projects'
+import { isProjectPubliclyVisible } from '@/lib/projects'
 import type { Post, Project } from '@/payload-types'
 
 type ProjectDetailData = {
@@ -41,7 +41,7 @@ export async function getProjectDetailBySlug(
       },
     })
 
-    const project = projects.docs.find((entry) => isProjectPublic(entry)) ?? null
+    const project = projects.docs.find((entry) => isProjectPubliclyVisible(entry)) ?? null
 
     if (!project) {
       return {

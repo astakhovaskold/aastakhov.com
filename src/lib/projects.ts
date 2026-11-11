@@ -38,6 +38,29 @@ export function isProjectPublic(
   return true
 }
 
+export function isProjectPubliclyVisible(
+  project: ProjectPublicationFields,
+  now: Date = new Date(),
+): boolean {
+  if (!isProjectPublic(project, now)) {
+    return false
+  }
+
+  if (typeof project === 'object' && project !== null && 'publishedAt' in project) {
+    if (typeof project.publishedAt !== 'string' || !project.publishedAt) {
+      return false
+    }
+
+    const publishedAt = new Date(project.publishedAt)
+
+    if (Number.isNaN(publishedAt.valueOf()) || publishedAt > now) {
+      return false
+    }
+  }
+
+  return true
+}
+
 export async function getPublishedProjects(
   locale: string,
   options?: {
@@ -62,7 +85,7 @@ export async function getPublishedProjects(
       sort: options?.sort ?? ['order', '-year', '-startedAt', '-updatedAt'],
     })
 
-    const publishedProjects = projects.docs.filter((project) => isProjectPublic(project))
+    const publishedProjects = projects.docs.filter((project) => isProjectPubliclyVisible(project))
 
     return typeof options?.limit === 'number'
       ? publishedProjects.slice(0, options.limit)

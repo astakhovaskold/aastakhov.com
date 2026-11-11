@@ -66,6 +66,8 @@
     "website": "Сайт"
   },
   "notFound": {
+    "title": "Страница не найдена",
+    "description": "Запрошенная страница не существует.",
     "postNotFound": "Пост не найден",
     "categoryNotFound": "Категория не найдена",
     "projectNotFound": "Проект не найден"

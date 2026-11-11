@@ -10,7 +10,11 @@ import { PostCategoryNav } from '@/components/site/post-index-list'
 import { SectionHeader } from '@/components/site/section-header'
 import { routing } from '@/i18n/routing'
 import { createSeoMetadata } from '@/lib/seo'
-import { getLatestPostsLastModifiedDate, getPostsIndexPageData } from '@/lib/posts-index'
+import {
+  getLatestPostsLastModifiedDate,
+  getPostsIndexPageData,
+  getPublishedPosts,
+} from '@/lib/posts-index'
 import { getSiteSettings } from '@/lib/siteSettings'
 
 type PostsPageProps = {
@@ -19,9 +23,10 @@ type PostsPageProps = {
 
 export async function generateMetadata({ params }: PostsPageProps): Promise<Metadata> {
   const { locale } = await params
-  const [settings, latestModified] = await Promise.all([
+  const [settings, latestModified, posts] = await Promise.all([
     getSiteSettings(locale),
     getLatestPostsLastModifiedDate(locale),
+    getPublishedPosts(locale),
   ])
 
   return createSeoMetadata({
@@ -29,6 +34,7 @@ export async function generateMetadata({ params }: PostsPageProps): Promise<Meta
     description: settings.blogPage.description,
     locale: locale as 'ru' | 'en',
     modifiedTime: latestModified?.toISOString(),
+    noindex: posts.length === 0,
     settings,
     title: settings.blogPage.title,
   })

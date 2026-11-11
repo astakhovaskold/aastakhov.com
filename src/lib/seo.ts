@@ -23,10 +23,10 @@ type CreateSeoMetadataOptions = {
 }
 
 type NotFoundMetadataOptions = {
-  canonicalPath: string
-  locale: 'ru' | 'en'
-  resource: string
-  settings: PublicSiteSettings
+  canonicalPath?: string
+  locale?: 'ru' | 'en'
+  resource?: string
+  settings?: PublicSiteSettings
 }
 
 function firstText(...values: Array<null | string | undefined>): string | undefined {
@@ -70,6 +70,12 @@ export function absoluteSiteUrl(value: string): string {
   }
 }
 
+export function pageUrl(locale: string, path: string = ''): string {
+  const cleanPath = path.replace(/^\/+|\/+$/g, '')
+  const localizedPath = cleanPath.length > 0 ? `/${locale}/${cleanPath}` : `/${locale}`
+  return absoluteSiteUrl(localizedPath)
+}
+
 export function createSeoMetadata(options: CreateSeoMetadataOptions): Metadata {
   const title =
     firstText(
@@ -83,7 +89,7 @@ export function createSeoMetadata(options: CreateSeoMetadataOptions): Metadata {
       options.entity?.description,
       options.settings.seo.defaultDescription,
     ) || 'Personal site for Askold Astakhov.'
-  const canonicalUrl = absoluteSiteUrl(`/${options.locale}${options.canonicalPath}`)
+  const canonicalUrl = pageUrl(options.locale, options.canonicalPath)
   const openGraph = {
     description,
     siteName: options.settings.name,
@@ -110,9 +116,9 @@ export function createSeoMetadata(options: CreateSeoMetadataOptions): Metadata {
     alternates: {
       canonical: canonicalUrl,
       languages: {
-        ru: absoluteSiteUrl(`/ru${options.canonicalPath}`),
-        en: absoluteSiteUrl(`/en${options.canonicalPath}`),
-        'x-default': absoluteSiteUrl(`/ru${options.canonicalPath}`),
+        ru: pageUrl('ru', options.canonicalPath),
+        en: pageUrl('en', options.canonicalPath),
+        'x-default': pageUrl('ru', options.canonicalPath),
       },
     },
     description,
@@ -136,14 +142,14 @@ export function createSeoMetadata(options: CreateSeoMetadataOptions): Metadata {
   }
 }
 
-export function createNotFoundMetadata(options: NotFoundMetadataOptions): Metadata {
-  return createSeoMetadata({
-    canonicalPath: options.canonicalPath,
-    locale: options.locale,
-    noindex: true,
-    settings: options.settings,
-    title: `${options.resource} not found`,
-  })
+export function createNotFoundMetadata(options?: NotFoundMetadataOptions): Metadata {
+  return {
+    robots: {
+      follow: false,
+      index: false,
+    },
+    title: options?.resource ? `${options.resource} not found` : 'Not Found',
+  }
 }
 
 export function isPubliclyIndexableEntity(value: unknown): boolean {

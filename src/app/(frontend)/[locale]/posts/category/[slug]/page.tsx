@@ -25,19 +25,17 @@ type PostCategoryPageProps = {
 
 export async function generateMetadata({ params }: PostCategoryPageProps): Promise<Metadata> {
   const { locale, slug } = await params
-  const [allCategoryLinks, settings] = await Promise.all([
+  const [allCategoryLinks, settings, posts] = await Promise.all([
     getPostCategoryLinks(locale, { includeHidden: true }),
     getSiteSettings(locale),
+    getPublishedPosts(locale, { categorySlug: slug }),
   ])
   const category = getPostCategoryBySlug(allCategoryLinks, slug)
   const canonicalPath = `/posts/category/${slug}`
 
   if (!category) {
     return createNotFoundMetadata({
-      canonicalPath,
-      locale: locale as 'ru' | 'en',
       resource: 'Category',
-      settings,
     })
   }
 
@@ -45,6 +43,7 @@ export async function generateMetadata({ params }: PostCategoryPageProps): Promi
     canonicalPath,
     description: category.description || `${category.label} by Askold Astakhov.`,
     locale: locale as 'ru' | 'en',
+    noindex: posts.length === 0,
     settings,
     title: category.label,
   })

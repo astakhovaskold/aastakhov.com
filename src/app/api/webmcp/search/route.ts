@@ -1,6 +1,7 @@
 import { getPayload } from 'payload'
 import config from '@/payload.config'
 import { handleCorsPreflight, withCors } from '@/lib/cors'
+import { isProjectPubliclyVisible } from '@/lib/projects'
 
 export const dynamic = 'force-dynamic'
 
@@ -130,13 +131,15 @@ export async function GET(request: Request) {
           },
         })
         .then((res) => {
-          results.projects = res.docs.map((d: any) => ({
-            id: d.id,
-            title: d.title || '',
-            description: d.description || '',
-            slug: d.slug || '',
-            url: `/${locale}/projects/${d.slug || ''}`,
-          }))
+          results.projects = res.docs
+            .filter((d: any) => isProjectPubliclyVisible(d))
+            .map((d: any) => ({
+              id: d.id,
+              title: d.title || '',
+              description: d.description || '',
+              slug: d.slug || '',
+              url: `/${locale}/projects/${d.slug || ''}`,
+            }))
         })
         .catch(() => {}),
     )

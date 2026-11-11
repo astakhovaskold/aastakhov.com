@@ -24,12 +24,16 @@ type ProjectsPageProps = {
 
 export async function generateMetadata({ params }: ProjectsPageProps): Promise<Metadata> {
   const { locale } = await params
-  const settings = await getSiteSettings(locale)
+  const [settings, projects] = await Promise.all([
+    getSiteSettings(locale),
+    getPublishedProjects(locale),
+  ])
 
   return createSeoMetadata({
     canonicalPath: '/projects',
     description: settings.projectsPage.description,
     locale: locale as 'ru' | 'en',
+    noindex: projects.length === 0,
     settings,
     title: settings.projectsPage.title,
   })

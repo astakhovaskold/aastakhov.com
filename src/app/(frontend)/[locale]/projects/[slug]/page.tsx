@@ -13,10 +13,10 @@ import {
 import { StructuredData } from '@/components/site/structured-data'
 import { routing } from '@/i18n/routing'
 import { getProjectDetailBySlug } from '@/lib/project-detail'
+import { isProjectPubliclyVisible } from '@/lib/projects'
 import {
   createNotFoundMetadata,
   createSeoMetadata,
-  isPubliclyIndexableEntity,
 } from '@/lib/seo'
 import { getSiteSettings } from '@/lib/siteSettings'
 import { createBreadcrumbSchema, createCreativeWorkSchema } from '@/lib/structured-data'
@@ -36,7 +36,7 @@ export async function generateMetadata({ params }: ProjectDetailPageProps): Prom
   ])
   const canonicalPath = `/projects/${slug}`
 
-  if (!project || !isPubliclyIndexableEntity(project)) {
+  if (!project || !isProjectPubliclyVisible(project)) {
     return createNotFoundMetadata({
       canonicalPath,
       locale: locale as 'ru' | 'en',
@@ -69,7 +69,7 @@ export default async function ProjectDetailPage({ params }: ProjectDetailPagePro
       getTranslations('projectDetail'),
     ])
 
-  if (!project || !isPubliclyIndexableEntity(project)) {
+  if (!project || !isProjectPubliclyVisible(project)) {
     notFound()
   }
 

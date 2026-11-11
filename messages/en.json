@@ -66,6 +66,8 @@
     "website": "Website"
   },
   "notFound": {
+    "title": "Page not found",
+    "description": "The requested page does not exist.",
     "postNotFound": "Post not found",
     "categoryNotFound": "Category not found",
     "projectNotFound": "Project not found"

@@ -1,6 +1,6 @@
 import { breadcrumbList, listItem, person } from 'ld-generator'
 
-import { absoluteSiteUrl } from '@/lib/seo'
+import { pageUrl } from '@/lib/seo'
 import type { PublicSiteSettings } from '@/lib/siteSettings'
 
 export type JsonLd = Record<string, unknown>
@@ -33,7 +33,7 @@ export function createPersonSchema(settings: PublicSiteSettings): JsonLd {
     ...person({ name: settings.name }),
     email: `mailto:${settings.email}`,
     sameAs: profiles.length ? profiles : undefined,
-    url: absoluteSiteUrl('/'),
+    url: pageUrl('ru', '/'),
   }
 }
 
@@ -44,7 +44,7 @@ export function createWebsiteSchema(settings: PublicSiteSettings, locale: Locale
     description: settings.seo.defaultDescription,
     inLanguage: locale,
     name: settings.name,
-    url: absoluteSiteUrl(`/${locale}`),
+    url: pageUrl(locale, '/'),
   }
 }
 
@@ -54,7 +54,7 @@ export function createBreadcrumbSchema(locale: Locale, items: BreadcrumbItem[]):
     itemListElement: items.map((item, index) =>
       listItem({
         item: {
-          '@id': absoluteSiteUrl(`/${locale}${item.path}`),
+          '@id': pageUrl(locale, item.path),
           name: item.name,
         },
         position: index + 1,
@@ -76,7 +76,7 @@ export function createArticleSchema(input: ContentSchemaInput): JsonLd {
     description: input.description,
     headline: input.title,
     inLanguage: input.locale,
-    mainEntityOfPage: absoluteSiteUrl(`/${input.locale}${input.path}`),
+    mainEntityOfPage: pageUrl(input.locale, input.path),
   }
 }
 
@@ -92,7 +92,7 @@ export function createCreativeWorkSchema(input: ContentSchemaInput): JsonLd {
     description: input.description,
     inLanguage: input.locale,
     name: input.title,
-    url: absoluteSiteUrl(`/${input.locale}${input.path}`),
+    url: pageUrl(input.locale, input.path),
   }
 }
 
@@ -106,6 +106,6 @@ export function createProfilePageSchema(input: ContentSchemaInput): JsonLd {
       '@type': 'Person',
       name: input.title,
     },
-    url: absoluteSiteUrl(`/${input.locale}${input.path}`),
+    url: pageUrl(input.locale, input.path),
   }
 }

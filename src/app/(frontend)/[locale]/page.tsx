@@ -1,4 +1,5 @@
 import config from '@payload-config'
+import type { Metadata } from 'next'
 import Image from 'next/image'
 import { hasLocale } from 'next-intl'
 import { getTranslations, setRequestLocale } from 'next-intl/server'
@@ -12,8 +13,31 @@ import { PostList } from '@/components/site/post-list'
 import { SelectedWorkList } from '@/components/site/selected-work-list'
 import { SectionHeader } from '@/components/site/section-header'
 import { routing } from '@/i18n/routing'
+import { createSeoMetadata } from '@/lib/seo'
 import { getSiteSettings, type PublicSiteSettings } from '@/lib/siteSettings'
 import type { OpenSource, Post } from '@/payload-types'
+
+type HomePageProps = {
+  params: Promise<{ locale: string }>
+}
+
+export async function generateMetadata({ params }: HomePageProps): Promise<Metadata> {
+  const { locale } = await params
+
+  if (!hasLocale(routing.locales, locale)) {
+    notFound()
+  }
+
+  const settings = await getSiteSettings(locale)
+
+  return createSeoMetadata({
+    canonicalPath: '/',
+    description: settings.seo.defaultDescription,
+    locale: locale as 'ru' | 'en',
+    settings,
+    title: settings.seo.defaultTitle,
+  })
+}
 
 type HomeContent = {
   openSource: OpenSource[]
