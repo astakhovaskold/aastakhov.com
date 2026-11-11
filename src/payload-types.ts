@@ -917,6 +917,39 @@ export interface SiteSetting {
   telegram?: string | null;
   linkedin?: string | null;
   github?: string | null;
+  /**
+   * dev.to profile URL. Used in JSON-LD sameAs.
+   */
+  devto?: string | null;
+  /**
+   * Role title used in the Person JSON-LD.
+   */
+  jobTitle?: string | null;
+  /**
+   * Name in the other script, for example the Cyrillic form.
+   */
+  alternateName?: string | null;
+  /**
+   * Short bio used in the Person JSON-LD.
+   */
+  description?: string | null;
+  /**
+   * Portrait used in the Person JSON-LD.
+   */
+  image?: (number | null) | Media;
+  /**
+   * Topics of expertise for the Person JSON-LD.
+   */
+  knowsAbout?:
+    | {
+        title: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Place name used as Person homeLocation in JSON-LD.
+   */
+  homeLocation?: string | null;
   location?: string | null;
   availability?: string | null;
   /**
@@ -1120,6 +1153,18 @@ export interface SiteSettingsSelect<T extends boolean = true> {
   telegram?: T;
   linkedin?: T;
   github?: T;
+  devto?: T;
+  jobTitle?: T;
+  alternateName?: T;
+  description?: T;
+  image?: T;
+  knowsAbout?:
+    | T
+    | {
+        title?: T;
+        id?: T;
+      };
+  homeLocation?: T;
   location?: T;
   availability?: T;
   homeEyebrow?: T;

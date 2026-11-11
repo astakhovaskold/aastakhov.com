@@ -8,6 +8,8 @@ import * as migration_20260916_121407_add_payload_mcp from './20260916_121407_ad
 import * as migration_20260918_091802_add_mcp_oauth_codes from './20260918_091802_add_mcp_oauth_codes';
 import * as migration_20261111_110539_add_mcp_refresh_tokens from './20261111_110539_add_mcp_refresh_tokens';
 import * as migration_20261111_190336_add_posts_last_modified from './20261111_190336_add_posts_last_modified';
+import * as migration_20261111_215928_seo_person_fields from './20261111_215928_seo_person_fields';
+import * as migration_20261112_100000_seo_default_metadata from './20261112_100000_seo_default_metadata';
 
 export const migrations = [
   {
@@ -58,6 +60,16 @@ export const migrations = [
   {
     up: migration_20261111_190336_add_posts_last_modified.up,
     down: migration_20261111_190336_add_posts_last_modified.down,
-    name: '20261111_190336_add_posts_last_modified'
+    name: '20261111_190336_add_posts_last_modified',
+  },
+  {
+    up: migration_20261111_215928_seo_person_fields.up,
+    down: migration_20261111_215928_seo_person_fields.down,
+    name: '20261111_215928_seo_person_fields',
+  },
+  {
+    up: migration_20261112_100000_seo_default_metadata.up,
+    down: migration_20261112_100000_seo_default_metadata.down,
+    name: '20261112_100000_seo_default_metadata'
   },
 ];

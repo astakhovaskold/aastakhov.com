@@ -507,8 +507,9 @@ const siteSettingsSeed = {
   postsEyebrow: 'Writing and notes',
   projectsEyebrow: 'Projects index',
   seo: {
-    defaultDescription: 'Personal site for Askold Astakhov.',
-    defaultTitle: 'Askold Astakhov',
+    defaultDescription:
+      'Askold Astakhov is a frontend architect and tech lead. Architecture, audits and consulting for complex React and Next.js products.',
+    defaultTitle: 'Askold Astakhov — Frontend Architect & Tech Lead',
   },
   telegram: 'https://t.me/askold_astakhov',
 }
@@ -930,8 +931,9 @@ const russianSiteSettingsSeed = {
   postsEyebrow: 'Статьи и заметки',
   projectsEyebrow: 'Индекс проектов',
   seo: {
-    defaultDescription: 'Персональный сайт Аскольда Астахова.',
-    defaultTitle: 'Аскольд Астахов',
+    defaultDescription:
+      'Аскольд Астахов — frontend-архитектор и технический лидер. Архитектура, аудиты и консалтинг для сложных продуктов на React и Next.js.',
+    defaultTitle: 'Аскольд Астахов — Frontend-архитектор и технический лидер',
   },
 }
 

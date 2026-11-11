@@ -47,6 +47,47 @@ export const SiteSettings: GlobalConfig = {
       type: 'text',
     },
     {
+      name: 'devto',
+      type: 'text',
+      admin: { description: 'dev.to profile URL. Used in JSON-LD sameAs.' },
+    },
+    {
+      name: 'jobTitle',
+      type: 'text',
+      localized: true,
+      admin: { description: 'Role title used in the Person JSON-LD.' },
+    },
+    {
+      name: 'alternateName',
+      type: 'text',
+      admin: { description: 'Name in the other script, for example the Cyrillic form.' },
+    },
+    {
+      name: 'description',
+      type: 'textarea',
+      localized: true,
+      admin: { description: 'Short bio used in the Person JSON-LD.' },
+    },
+    {
+      name: 'image',
+      type: 'upload',
+      relationTo: 'media',
+      admin: { description: 'Portrait used in the Person JSON-LD.' },
+    },
+    {
+      name: 'knowsAbout',
+      type: 'array',
+      labels: { singular: 'Topic', plural: 'Knows about' },
+      admin: { description: 'Topics of expertise for the Person JSON-LD.' },
+      fields: [{ name: 'title', type: 'text', required: true }],
+    },
+    {
+      name: 'homeLocation',
+      type: 'text',
+      localized: true,
+      admin: { description: 'Place name used as Person homeLocation in JSON-LD.' },
+    },
+    {
       name: 'location',
       type: 'text',
       localized: true,
