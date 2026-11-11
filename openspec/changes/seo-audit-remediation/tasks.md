@@ -30,7 +30,7 @@ Finding IDs (F-xx) are in `audit-findings.md`. Decision IDs (D-x) are in `design
 - [x] 3.5 Make `createProfilePageSchema`, `createCreativeWorkSchema` and the new `createBlogPostingSchema` (replacing `createArticleSchema`) reference the Person by `@id`; include `dateModified` and an image when present. Verify with int tests for the `/cv` ProfilePage `mainEntity` and a post with `lastModified`.
 - [x] 3.6 Fix `createBreadcrumbSchema` (string `item`, no nested `@context`, descriptive crumb names including "CV"). Check whether `ld-generator` has any remaining use after 3.4-3.6 and remove it from `package.json` if not. Verify with an updated `tests/int/structured-data.int.spec.ts` and `pnpm build` passing.
 - [x] 3.7 Add visible published and modified dates to the post detail page and `Blog`/`CollectionPage` + `ItemList` schema to the posts and projects indexes. Verify with a component test that the date renders and an int test that the `ItemList` matches the items.
-- [ ] 3.8 Validate the output of `/ru`, `/en/cv` and a post with a structured-data validator (Rich Results Test or schema.org validator). Verify by recording zero errors in `docs/seo-checks.md`.
+- [ ] 3.8 Validate the output of `/ru`, `/en/cv` and a post with a structured-data validator (Rich Results Test or schema.org validator). Verify by recording zero errors in `docs/seo-checks.md`. (Local structural check recorded 2026-11-11; the external validators need a public URL, so run them after deploy.)
 
 ## 4. Home page and navigation (spec `homepage-and-navigation`)
 
