@@ -1,4 +1,5 @@
 import type { Access, GlobalConfig } from 'payload'
+import { revalidateGlobalAfterChange } from '@/hooks/revalidate'
 
 const authenticatedOnly: Access = ({ req: { user } }) => {
   return Boolean(user)
@@ -15,6 +16,9 @@ export const CV: GlobalConfig = {
     read: () => true,
     update: authenticatedOnly,
     readVersions: authenticatedOnly,
+  },
+  hooks: {
+    afterChange: [revalidateGlobalAfterChange('cv')],
   },
   fields: [
     {

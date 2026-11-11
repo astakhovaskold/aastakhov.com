@@ -1,5 +1,6 @@
 import type { CollectionConfig } from 'payload'
 import { slugField } from 'payload'
+import { revalidateAfterChange, revalidateAfterDelete } from '@/hooks/revalidate'
 
 const projectTypes = [
   'company',
@@ -29,6 +30,10 @@ export const Projects: CollectionConfig = {
     read: () => true,
   },
   defaultSort: ['order', '-year', '-updatedAt'],
+  hooks: {
+    afterChange: [revalidateAfterChange('project')],
+    afterDelete: [revalidateAfterDelete('project')],
+  },
   fields: [
     {
       name: 'title',
