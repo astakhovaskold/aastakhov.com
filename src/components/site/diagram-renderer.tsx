@@ -20,9 +20,33 @@ export function DiagramRenderer({ caption, chart }: DiagramProps) {
         const mermaid = (await import('mermaid')).default
         mermaid.initialize({
           startOnLoad: false,
-          theme: 'neutral',
-          fontFamily: 'Inter, ui-sans-serif, sans-serif',
+          theme: 'base',
           securityLevel: 'loose',
+          fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+          themeVariables: {
+            fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+            fontSize: '13px',
+            primaryColor: '#ffffff',
+            primaryBorderColor: '#e2e8f0',
+            primaryTextColor: '#0f172a',
+            lineColor: '#94a3b8',
+            arrowheadColor: '#64748b',
+            clusterBkg: '#f8fafc',
+            clusterBorder: '#e2e8f0',
+            titleColor: '#334155',
+            edgeLabelBackground: '#ffffff',
+            tertiaryColor: '#f1f5f9',
+            mainBkg: '#ffffff',
+            nodeBorder: '#e2e8f0',
+          },
+          flowchart: {
+            curve: 'basis',
+            htmlLabels: true,
+            padding: 16,
+            nodeSpacing: 40,
+            rankSpacing: 48,
+            subGraphTitleMargin: { top: 14, bottom: 14 },
+          },
         })
 
         const uniqueId = `mermaid-${id}`

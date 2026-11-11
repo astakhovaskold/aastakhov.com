@@ -724,11 +724,11 @@ p {
 
 /* Diagram (Mermaid) */
 .diagram-container {
-  margin: 20px 0 24px;
-  padding: 20px;
-  background: #fafafa;
+  margin: 28px 0 32px;
+  padding: 24px 20px;
+  background: #fbfbfc;
   border: 1px solid rgba(17, 17, 17, 0.08);
-  border-radius: 8px;
+  border-radius: 12px;
   text-align: center;
   overflow-x: auto;
 }
@@ -737,6 +737,48 @@ p {
   max-width: 100%;
   height: auto;
   margin: 0 auto;
+}
+
+/* Remove rasterized drop-shadow filter artefacts from Mermaid */
+.diagram-svg svg filter {
+  display: none !important;
+}
+
+.diagram-svg svg .node rect,
+.diagram-svg svg .node circle,
+.diagram-svg svg .node polygon {
+  rx: 8px !important;
+  ry: 8px !important;
+  stroke: #e2e8f0 !important;
+  stroke-width: 1.5px !important;
+  fill: #ffffff !important;
+}
+
+.diagram-svg svg .cluster rect {
+  rx: 10px !important;
+  ry: 10px !important;
+  stroke: #e2e8f0 !important;
+  stroke-width: 1px !important;
+  fill: #f8fafc !important;
+}
+
+.diagram-svg svg .cluster-label span,
+.diagram-svg svg .cluster-label text,
+.diagram-svg svg .cluster text {
+  font-weight: 600 !important;
+  font-size: 12px !important;
+  color: #475569 !important;
+  fill: #475569 !important;
+}
+
+.diagram-svg svg .edgePath path.path {
+  stroke: #94a3b8 !important;
+  stroke-width: 1.5px !important;
+}
+
+.diagram-svg svg .marker {
+  fill: #94a3b8 !important;
+  stroke: #94a3b8 !important;
 }
 
 .diagram-loading {
