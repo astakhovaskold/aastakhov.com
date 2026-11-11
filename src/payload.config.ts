@@ -9,7 +9,7 @@ import {
 } from '@payloadcms/richtext-lexical'
 import { vercelBlobStorage } from '@payloadcms/storage-vercel-blob'
 import path from 'path'
-import { buildConfig, type CollectionConfig } from 'payload'
+import { buildConfig, type CollectionConfig, UnauthorizedError } from 'payload'
 import { fileURLToPath } from 'url'
 import sharp from 'sharp'
 
@@ -21,7 +21,7 @@ import { Posts } from './collections/Posts'
 import { OpenSource } from './collections/OpenSource'
 import { SiteSettings } from './globals/SiteSettings'
 import { CV } from './globals/CV'
-import { oauthCapabilities, verifyOAuthToken } from './lib/mcp-oauth'
+import { mcpOrigin, oauthCapabilities, publicReadCapabilities, verifyOAuthToken } from './lib/mcp-oauth'
 import { McpOAuthCodes } from './collections/McpOAuthCodes'
 import { CalloutBlock } from './collections/blocks/CalloutBlock'
 import { MediaBlock } from './collections/blocks/MediaBlock'
@@ -117,24 +117,63 @@ export default buildConfig({
       connectionString: process.env.DATABASE_URL || '',
     },
   }),
+  endpoints: [
+    {
+      path: '/mcp',
+      method: 'options',
+      handler: async (req) => {
+        const origin = req.headers.get('origin') || '*'
+        return new Response(null, {
+          status: 204,
+          headers: {
+            'Access-Control-Allow-Origin': origin,
+            'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+            'Access-Control-Allow-Headers': 'Authorization, Content-Type, Accept, MCP-Session-Id, x-requested-with',
+            'Access-Control-Max-Age': '86400',
+            Vary: 'Origin',
+          },
+        })
+      },
+    },
+  ],
   sharp,
   plugins: [
     mcpPlugin({
       overrideAuth: async (req, getDefaultMcpAccessSettings) => {
-        const bearer = req.headers.get('Authorization')?.replace(/^Bearer\s+/i, '')
-        const claims = bearer ? verifyOAuthToken(bearer, 'access') : null
+        const authHeader = req.headers.get('Authorization')
+        const bearer = authHeader?.replace(/^Bearer\s+/i, '').trim()
+        const origin = mcpOrigin(req)
+        const claims = bearer ? verifyOAuthToken(bearer, 'access', { expectedOrigin: origin }) : null
 
-        if (!claims) {
-          return getDefaultMcpAccessSettings()
+        if (claims) {
+          try {
+            const user = await req.payload.findByID({
+              collection: 'users',
+              id: claims.sub,
+              overrideAccess: false,
+            })
+
+            if (user) {
+              return oauthCapabilities(user)
+            }
+          } catch {
+            // User not found or invalid
+          }
         }
 
-        const user = await req.payload.findByID({
-          collection: 'users',
-          id: claims.sub,
-          overrideAccess: false,
-        })
+        // If a bearer token was provided, try Payload's default MCP API key authentication
+        if (bearer) {
+          try {
+            return await getDefaultMcpAccessSettings()
+          } catch {
+            // Provided bearer was neither a valid OAuth token nor a valid API key.
+            // Throw UnauthorizedError so client knows its credentials failed rather than failing open.
+            throw new UnauthorizedError()
+          }
+        }
 
-        return oauthCapabilities(user)
+        // Only genuinely unauthenticated public requests receive read-only capabilities for published content
+        return publicReadCapabilities()
       },
       collections: {
         posts: {

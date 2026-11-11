@@ -413,6 +413,9 @@ export interface McpOauthCode {
   scope: string;
   expiresAt: string;
   usedAt?: string | null;
+  refreshTokenHash?: string | null;
+  refreshTokenExpiresAt?: string | null;
+  refreshTokenUsedAt?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -782,6 +785,9 @@ export interface McpOauthCodesSelect<T extends boolean = true> {
   scope?: T;
   expiresAt?: T;
   usedAt?: T;
+  refreshTokenHash?: T;
+  refreshTokenExpiresAt?: T;
+  refreshTokenUsedAt?: T;
   updatedAt?: T;
   createdAt?: T;
 }

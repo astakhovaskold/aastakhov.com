@@ -22,5 +22,8 @@ export const McpOAuthCodes: CollectionConfig = {
     { name: 'scope', type: 'text', required: true },
     { name: 'expiresAt', type: 'date', required: true, index: true },
     { name: 'usedAt', type: 'date' },
+    { name: 'refreshTokenHash', type: 'text', index: true },
+    { name: 'refreshTokenExpiresAt', type: 'date', index: true },
+    { name: 'refreshTokenUsedAt', type: 'date' },
   ],
 }

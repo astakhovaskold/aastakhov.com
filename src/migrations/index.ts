@@ -6,6 +6,7 @@ import * as migration_20260909_120000_page_copy_content from './20260909_120000_
 import * as migration_20260909_130000_optional_open_source_description from './20260909_130000_optional_open_source_description';
 import * as migration_20260916_121407_add_payload_mcp from './20260916_121407_add_payload_mcp';
 import * as migration_20260918_091802_add_mcp_oauth_codes from './20260918_091802_add_mcp_oauth_codes';
+import * as migration_20261111_110539_add_mcp_refresh_tokens from './20261111_110539_add_mcp_refresh_tokens';
 
 export const migrations = [
   {
@@ -46,6 +47,11 @@ export const migrations = [
   {
     up: migration_20260918_091802_add_mcp_oauth_codes.up,
     down: migration_20260918_091802_add_mcp_oauth_codes.down,
-    name: '20260918_091802_add_mcp_oauth_codes'
+    name: '20260918_091802_add_mcp_oauth_codes',
+  },
+  {
+    up: migration_20261111_110539_add_mcp_refresh_tokens.up,
+    down: migration_20261111_110539_add_mcp_refresh_tokens.down,
+    name: '20261111_110539_add_mcp_refresh_tokens'
   },
 ];

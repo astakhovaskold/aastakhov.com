@@ -7,6 +7,7 @@ import React from 'react'
 
 import { AnalyticsPageView } from '@/components/site/analytics-page-view'
 import { StructuredData } from '@/components/site/structured-data'
+import { WebMcpProvider } from '@/components/webmcp/WebMcpProvider'
 import { Link } from '@/i18n/navigation'
 import { routing } from '@/i18n/routing'
 import { getUmamiConfig } from '@/lib/analytics'
@@ -77,6 +78,8 @@ export async function generateMetadata({
     other: {
       'msapplication-TileColor': '#ffffff',
       'msapplication-TileImage': '/favicon/ms-icon-144x144.png',
+      'model-context': '/api/mcp',
+      'webmcp-endpoint': '/api/webmcp/search',
     },
   }
 }
@@ -97,7 +100,12 @@ export default async function RootLayout(props: LocaleLayoutProps) {
 
   return (
     <html lang={locale}>
+      <head>
+        <link rel="model-context" href="/api/mcp" />
+        <link rel="webmcp" href="/api/webmcp/search" />
+      </head>
       <body>
+        <WebMcpProvider locale={locale} />
         <StructuredData data={[createPersonSchema(settings), createWebsiteSchema(settings, locale)]} />
         <NextIntlClientProvider>
           {umamiConfig ? (
@@ -116,7 +124,12 @@ export default async function RootLayout(props: LocaleLayoutProps) {
                 {settings.name}
               </Link>
 
-              <nav className="site-nav" aria-label={t('mainNavigation')}>
+              <nav
+                className="site-nav"
+                aria-label={t('mainNavigation')}
+                data-toolname="site_navigation"
+                data-tooldescription="Site section navigation for posts, projects, and CV"
+              >
                 {FEATURES.projects ? <Link href="/projects">{t('projects')}</Link> : null}
                 <Link href="/posts">{t('posts')}</Link>
                 <Link href="/cv">{t('cv')}</Link>
