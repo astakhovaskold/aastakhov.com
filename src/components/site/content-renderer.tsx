@@ -158,8 +158,21 @@ function renderNode(node: RichTextNode, key: React.Key): React.ReactNode {
       const Tag = node.tag ?? 'h2'
       return <Tag key={key}>{renderChildren(node.children)}</Tag>
     }
-    case 'paragraph':
+    case 'paragraph': {
+      const text = extractText(node).trim()
+      // Skip empty paragraphs (e.g. from Enter keys in rich-text) to avoid artificial gaps
+      const hasMeaningfulContent =
+        text.length > 0 ||
+        node.children?.some(
+          (c) => c.type !== 'text' || (c.text && c.text.trim().length > 0),
+        )
+
+      if (!hasMeaningfulContent) {
+        return null
+      }
+
       return <p key={key}>{renderChildren(node.children)}</p>
+    }
     case 'quote':
       return <blockquote key={key}>{renderChildren(node.children)}</blockquote>
     case 'list': {

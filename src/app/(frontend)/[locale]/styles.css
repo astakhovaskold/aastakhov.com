@@ -522,7 +522,11 @@ p {
 }
 
 .content-renderer p {
-  margin-bottom: 24px;
+  margin-bottom: 14px;
+}
+
+.content-renderer p:empty {
+  display: none;
 }
 
 .content-renderer h1,
@@ -537,7 +541,7 @@ p {
 
 .content-renderer h1,
 .content-renderer h2 {
-  margin: 44px 0 16px;
+  margin: 36px 0 8px;
   font-size: 24px;
   line-height: 1.25;
   letter-spacing: -0.025em;
@@ -547,7 +551,7 @@ p {
 .content-renderer h4,
 .content-renderer h5,
 .content-renderer h6 {
-  margin: 32px 0 10px;
+  margin: 24px 0 6px;
   font-size: 19px;
   line-height: 1.3;
   letter-spacing: -0.015em;
@@ -555,16 +559,16 @@ p {
 
 .content-renderer ul,
 .content-renderer ol {
-  margin: 0 0 24px 22px;
+  margin: 4px 0 16px 20px;
 }
 
 .content-renderer li + li {
-  margin-top: 8px;
+  margin-top: 4px;
 }
 
 .content-renderer blockquote {
-  margin: 36px 0;
-  padding-left: 20px;
+  margin: 24px 0;
+  padding-left: 18px;
   border-left: 2px solid var(--text);
   font-size: 20px;
   line-height: 1.45;
@@ -596,7 +600,7 @@ p {
 
 /* Code Block with Shiki */
 .code-block-wrapper {
-  margin: 28px 0 32px;
+  margin: 14px 0 22px;
   background-color: #0d1117;
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 8px;
@@ -666,8 +670,8 @@ p {
 
 /* Callout */
 .callout {
-  margin: 32px 0;
-  padding: 18px 22px;
+  margin: 18px 0 22px;
+  padding: 16px 20px;
   border-left: 3px solid var(--text);
   background: rgba(17, 17, 17, 0.03);
   border-radius: 0 6px 6px 0;
@@ -720,8 +724,8 @@ p {
 
 /* Diagram (Mermaid) */
 .diagram-container {
-  margin: 36px 0;
-  padding: 24px;
+  margin: 20px 0 24px;
+  padding: 20px;
   background: #fafafa;
   border: 1px solid rgba(17, 17, 17, 0.08);
   border-radius: 8px;
