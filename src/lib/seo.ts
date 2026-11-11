@@ -77,18 +77,24 @@ export function pageUrl(locale: string, path: string = ''): string {
 }
 
 export function createSeoMetadata(options: CreateSeoMetadataOptions): Metadata {
+  const isRu = options.locale === 'ru'
+  const fallbackTitle = isRu ? 'Аскольд Астахов' : 'Askold Astakhov'
+  const fallbackDescription = isRu
+    ? 'Личный сайт Аскольда Астахова.'
+    : 'Personal site for Askold Astakhov.'
+
   const title =
     firstText(
       options.title,
       options.entity?.title,
       options.settings.seo.defaultTitle,
-    ) || 'Askold Astakhov'
+    ) || fallbackTitle
   const description =
     firstText(
       options.description,
       options.entity?.description,
       options.settings.seo.defaultDescription,
-    ) || 'Personal site for Askold Astakhov.'
+    ) || fallbackDescription
   const canonicalUrl = pageUrl(options.locale, options.canonicalPath)
   const openGraph = {
     description,

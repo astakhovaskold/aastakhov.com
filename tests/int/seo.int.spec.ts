@@ -104,4 +104,37 @@ describe('pageUrl helper', () => {
       index: true,
     })
   })
+
+  it('uses locale-appropriate fallbacks without English text on Russian locale', () => {
+    const emptySettings: PublicSiteSettings = {
+      ...mockSettings,
+      name: 'Аскольд Астахов',
+      seo: {
+        defaultDescription: '',
+        defaultTitle: '',
+      },
+    }
+
+    const ruMetadata = createSeoMetadata({
+      canonicalPath: '/',
+      locale: 'ru',
+      settings: emptySettings,
+    })
+
+    expect(ruMetadata.title).toBe('Аскольд Астахов')
+    expect(ruMetadata.description).toBe('Личный сайт Аскольда Астахова.')
+    expect(ruMetadata.description).not.toContain('Personal site')
+
+    const enMetadata = createSeoMetadata({
+      canonicalPath: '/',
+      locale: 'en',
+      settings: {
+        ...mockSettings,
+        seo: { defaultDescription: '', defaultTitle: '' },
+      },
+    })
+
+    expect(enMetadata.title).toBe('Askold Astakhov')
+    expect(enMetadata.description).toBe('Personal site for Askold Astakhov.')
+  })
 })
