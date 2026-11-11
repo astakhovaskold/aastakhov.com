@@ -3,6 +3,8 @@
 This project uses the Payload CMS skill at `.agents/skills/payload/`.
 Start with `.agents/skills/payload/SKILL.md` for a quick reference, then see `.agents/skills/payload/reference/` for detailed docs.
 
+When drafting, writing, or editing blog articles, case studies, or social media posts (LinkedIn, Threads, X.com), you MUST read and follow [POSTS.md](file:///Users/developer/Documents/Projects/aastakhov-com/POSTS.md) for Tone of Voice, strict anti-AI rules, and per-platform formatting standards.
+
 <!-- BEGIN:nextjs-agent-rules -->
 
 # This is NOT the Next.js you know
