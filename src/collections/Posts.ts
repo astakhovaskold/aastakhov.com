@@ -100,6 +100,26 @@ export const Posts: CollectionConfig = {
       required: true,
     },
     {
+      name: 'topic',
+      type: 'relationship',
+      relationTo: 'topics',
+      index: true,
+      admin: {
+        description: 'Subject hub this post belongs to. Separate from the format category.',
+        position: 'sidebar',
+      },
+    },
+    {
+      name: 'relatedPosts',
+      type: 'relationship',
+      hasMany: true,
+      relationTo: 'posts',
+      filterOptions: ({ id }) => (id ? { id: { not_equals: id } } : true),
+      admin: {
+        description: 'Posts to show first in "More" on the public page. Only published posts are shown.',
+      },
+    },
+    {
       name: 'tags',
       type: 'array',
       fields: [

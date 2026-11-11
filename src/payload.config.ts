@@ -17,6 +17,7 @@ import { Users } from './collections/Users'
 import { Media } from './collections/Media'
 import { Projects } from './collections/Projects'
 import { PostCategories } from './collections/PostCategories'
+import { Topics } from './collections/Topics'
 import { Posts } from './collections/Posts'
 import { OpenSource } from './collections/OpenSource'
 import { SiteSettings } from './globals/SiteSettings'
@@ -69,7 +70,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Media, Projects, PostCategories, Posts, OpenSource, McpOAuthCodes],
+  collections: [Users, Media, Projects, PostCategories, Topics, Posts, OpenSource, McpOAuthCodes],
   globals: [SiteSettings, CV],
   localization: {
     locales: ['ru', 'en'],
@@ -193,6 +194,10 @@ export default buildConfig({
         },
         'post-categories': {
           description: 'Post taxonomy. Read-only reference data for assigning a post category.',
+          enabled: { create: false, delete: false, find: true, update: false },
+        },
+        topics: {
+          description: 'Topic hubs. Read-only reference data for assigning a post topic.',
           enabled: { create: false, delete: false, find: true, update: false },
         },
         media: {

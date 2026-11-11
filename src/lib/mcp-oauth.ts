@@ -150,6 +150,7 @@ export const publicReadCapabilities = (): MCPAccessSettings => ({
   projects: { find: true, create: false, update: false, delete: false },
   openSource: { find: true, create: false, update: false, delete: false },
   postCategories: { find: true, create: false, update: false, delete: false },
+  topics: { find: true, create: false, update: false, delete: false },
   media: { find: true, create: false, update: false, delete: false },
   cv: { find: true, update: false },
   siteSettings: { find: true, update: false },

@@ -9,9 +9,10 @@ import {
   PostDetailContent,
   PostDetailCover,
   PostDetailHeader,
-  PostDetailPagination,
 } from '@/components/site/post-detail-content'
+import { PostList } from '@/components/site/post-list'
 import { SectionHeader } from '@/components/site/section-header'
+import { Link } from '@/i18n/navigation'
 import { routing } from '@/i18n/routing'
 import { getPostDetailBySlug } from '@/lib/post-detail'
 import { getPostLastModifiedDate } from '@/lib/post-dates'
@@ -21,6 +22,7 @@ import {
   isPubliclyIndexableEntity,
 } from '@/lib/seo'
 import { getSiteSettings } from '@/lib/siteSettings'
+import { getPostMoreData } from '@/lib/topics'
 import { breadcrumbName, createBlogPostingSchema, createBreadcrumbSchema } from '@/lib/structured-data'
 
 type PostDetailPageProps = {
@@ -69,15 +71,18 @@ export default async function PostDetailPage({ params }: PostDetailPageProps) {
 
   setRequestLocale(locale)
 
-  const [{ nextPost, post, previousPost }, settings, common] = await Promise.all([
+  const [{ post }, settings, common, topicT] = await Promise.all([
     getPostDetailBySlug(slug, locale),
     getSiteSettings(locale),
     getTranslations('common'),
+    getTranslations('topic'),
   ])
 
   if (!post || !isPubliclyIndexableEntity(post)) {
     notFound()
   }
+
+  const moreData = await getPostMoreData(post, locale)
 
   const contactLinks = [
     settings.telegram ? { href: settings.telegram, label: 'Telegram' } : null,
@@ -129,7 +134,20 @@ export default async function PostDetailPage({ params }: PostDetailPageProps) {
       <section className="section" id="post-more">
         <div className="post-detail-shell">
           <SectionHeader action={{ href: '/posts', label: common('allPosts') }} title={common('more')} />
-          <PostDetailPagination nextPost={nextPost} previousPost={previousPost} />
+          {moreData.topic ? (
+            <p className="post-topic-link">
+              {topicT('partOf')}:{' '}
+              <Link href={`/topics/${moreData.topic.slug}`}>{moreData.topic.title}</Link>
+              {moreData.pillar ? (
+                <>
+                  {' · '}
+                  {topicT('startHere')}:{' '}
+                  <Link href={`/posts/${moreData.pillar.slug}`}>{moreData.pillar.title}</Link>
+                </>
+              ) : null}
+            </p>
+          ) : null}
+          {moreData.more.length > 0 ? <PostList items={moreData.more} /> : null}
         </div>
       </section>
 

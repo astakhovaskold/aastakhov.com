@@ -12,9 +12,11 @@ import { OpenSourceList } from '@/components/site/open-source-list'
 import { PostList } from '@/components/site/post-list'
 import { SelectedWorkList } from '@/components/site/selected-work-list'
 import { SectionHeader } from '@/components/site/section-header'
+import { Link } from '@/i18n/navigation'
 import { routing } from '@/i18n/routing'
 import { createSeoMetadata } from '@/lib/seo'
 import { getSiteSettings, type PublicSiteSettings } from '@/lib/siteSettings'
+import { getTopicsWithPosts } from '@/lib/topics'
 import type { OpenSource, Post } from '@/payload-types'
 
 type HomePageProps = {
@@ -139,7 +141,10 @@ export default async function HomePage({
     getTranslations('home'),
     getTranslations('common'),
   ])
-  const content = await getHomeContent(settings, locale)
+  const [content, topics] = await Promise.all([
+    getHomeContent(settings, locale),
+    getTopicsWithPosts(locale),
+  ])
   const contactLinks = [
     settings.telegram ? { href: settings.telegram, label: 'Telegram' } : null,
     { href: `mailto:${settings.email}`, label: 'Email' },
@@ -207,6 +212,19 @@ export default async function HomePage({
                 <h3>{service.title}</h3>
                 <p>{service.description}</p>
               </article>
+            ))}
+          </div>
+        </section>
+      ) : null}
+
+      {topics.length > 0 ? (
+        <section className="section" id="topics">
+          <SectionHeader title={common('topics')} />
+          <div className="topic-links" aria-label={common('topics')}>
+            {topics.map((topic) => (
+              <Link href={`/topics/${topic.slug}`} key={topic.id}>
+                {topic.title}
+              </Link>
             ))}
           </div>
         </section>

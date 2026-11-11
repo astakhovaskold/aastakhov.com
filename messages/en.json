@@ -98,15 +98,19 @@
     "noContent": "Formal CV details will appear here once they are added in Payload.",
     "defaultDescription": "Professional profile and CV."
   },
-  "posts": {
-  },
-  "projects": {
-  },
+  "posts": {},
+  "projects": {},
   "projectDetail": {
     "relatedWriting": "Related writing",
     "nextStep": "If the project direction is relevant to your company, the simplest next step is a short conversation about the system, risks, and current technical bottlenecks."
   },
   "seo": {
     "personalSite": "Personal site for Askold Astakhov."
+  },
+  "topic": {
+    "startHere": "Start here",
+    "morePosts": "More in this topic",
+    "partOf": "Part of the topic",
+    "topicHub": "Topic"
   }
 }

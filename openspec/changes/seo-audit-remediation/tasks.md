@@ -60,11 +60,11 @@ Finding IDs (F-xx) are in `audit-findings.md`. Decision IDs (D-x) are in `design
 
 ## 7. Topic taxonomy (spec `blog-topic-taxonomy`)
 
-- [ ] 7.1 Add the `topics` collection (localized title and description, slug, optional pillar) and `Posts.topic` and `Posts.relatedPosts`; register in `payload.config.ts`; add the migration with a working `down`; run `pnpm generate:types`. Verify by running the migration up and down on a local database and creating a topic and a post in the admin.
-- [ ] 7.2 Add `/[locale]/topics/[slug]` (pillar first, 404 when no public posts, `CollectionPage` schema, metadata) and include non-empty topics in the sitemap. Verify with int tests for hub with posts (200, pillar first), empty topic (404, not in sitemap).
-- [ ] 7.3 Replace the post page "More" block with same-topic ordering and pillar/spoke links (spec order: related, same topic, latest; exclude current). Verify with component tests for ordering and for the spoke-to-pillar link.
-- [ ] 7.4 Link topic hubs from the home page. Verify with a test that `/ru` links to each non-empty hub and to none that is empty.
-- [ ] 7.5 Add the MCP/WebMCP read tools' topic fields only if the existing tools expose posts (check `src/app/api/webmcp` and the Payload MCP plugin config). Verify that existing MCP and WebMCP int tests still pass and a post query returns its topic.
+- [x] 7.1 Add the `topics` collection (localized title and description, slug, optional pillar) and `Posts.topic` and `Posts.relatedPosts`; register in `payload.config.ts`; add the migration with a working `down`; run `pnpm generate:types`. Verify by running the migration up and down on a local database and creating a topic and a post in the admin.
+- [x] 7.2 Add `/[locale]/topics/[slug]` (pillar first, 404 when no public posts, `CollectionPage` schema, metadata) and include non-empty topics in the sitemap. Verify with int tests for hub with posts (200, pillar first), empty topic (404, not in sitemap).
+- [x] 7.3 Replace the post page "More" block with same-topic ordering and pillar/spoke links (spec order: related, same topic, latest; exclude current). Verify with component tests for ordering and for the spoke-to-pillar link.
+- [x] 7.4 Link topic hubs from the home page. Verify with a test that `/ru` links to each non-empty hub and to none that is empty.
+- [x] 7.5 Add the MCP/WebMCP read tools' topic fields only if the existing tools expose posts (check `src/app/api/webmcp` and the Payload MCP plugin config). Verify that existing MCP and WebMCP int tests still pass and a post query returns its topic.
 
 ## 8. Content and owner actions (tracked, not coded here)
 

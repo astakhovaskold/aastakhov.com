@@ -6,6 +6,7 @@ import { getPostLastModifiedDate } from '@/lib/post-dates'
 import { getPostCategoryLinks, getPublishedPosts } from '@/lib/posts-index'
 import { isProjectPubliclyVisible, getPublishedProjects } from '@/lib/projects'
 import { getSiteUrl as getCanonicalSiteUrl, pageUrl } from '@/lib/seo'
+import { getTopicsWithPosts } from '@/lib/topics'
 
 export type SitemapEntry = {
   path: string
@@ -16,6 +17,7 @@ export type LocaleSitemapData = {
   posts: Array<{ slug: string; lastModified?: Date }>
   projects: Array<{ slug: string; lastModified?: Date }>
   categories: Array<{ slug: string; count: number }>
+  topics?: Array<{ slug: string }>
 }
 
 export type MultiLocaleSitemapInput = {
@@ -92,6 +94,11 @@ export function buildLocalizedSitemapEntries(input: MultiLocaleSitemapInput): Me
       if (cat.count > 0) {
         paths.set(`/posts/category/${cat.slug}`, undefined)
       }
+    }
+
+    // 5b. Topic hubs (the caller passes only topics that have public posts)
+    for (const topic of data.topics ?? []) {
+      paths.set(`/topics/${topic.slug}`, undefined)
     }
 
     // 6. Projects detail
@@ -215,10 +222,15 @@ export async function getPublicSitemap(): Promise<MetadataRoute.Sitemap> {
         count: publicPosts.filter((p) => p.categoryId === c.id).length,
       }))
 
+    const topics = (await getTopicsWithPosts(locale, { fallbackLocale: false })).map((topic) => ({
+      slug: topic.slug,
+    }))
+
     return {
       posts: publicPosts.map((p) => ({ slug: p.slug, lastModified: p.lastModified })),
       projects: publicProjects,
       categories,
+      topics,
     }
   }
 

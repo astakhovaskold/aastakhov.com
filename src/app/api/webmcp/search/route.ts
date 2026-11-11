@@ -16,6 +16,11 @@ export async function GET(request: Request) {
   const type = (url.searchParams.get('type') || 'all').toLowerCase()
   const slug = (url.searchParams.get('slug') || '').trim()
 
+  const topicOf = (value: any) =>
+    value && typeof value === 'object' && value.slug
+      ? { slug: value.slug as string, title: (value.title as string) || '', url: `/${locale}/topics/${value.slug}` }
+      : null
+
   const payload = await getPayload({ config })
   const nowIso = new Date().toISOString()
 
@@ -51,13 +56,14 @@ export async function GET(request: Request) {
         publishedAt: post.publishedAt || null,
         url: `/${locale}/posts/${post.slug || ''}`,
         content: post.content || null,
+        topic: topicOf(post.topic),
       }),
       request,
     )
   }
 
   const results: {
-    posts: Array<{ id: number; title: string; description: string; slug: string; url: string; publishedAt: string | null }>
+    posts: Array<{ id: number; title: string; description: string; slug: string; url: string; publishedAt: string | null; topic: { slug: string; title: string; url: string } | null }>
     projects: Array<{ id: number; title: string; description: string; slug: string; url: string }>
     openSource: Array<{ id: number; name: string; description: string; url: string }>
     cv?: Record<string, unknown>
@@ -101,6 +107,7 @@ export async function GET(request: Request) {
             slug: d.slug || '',
             url: `/${locale}/posts/${d.slug || ''}`,
             publishedAt: d.publishedAt || null,
+            topic: topicOf(d.topic),
           }))
         })
         .catch(() => {}),

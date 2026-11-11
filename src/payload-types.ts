@@ -72,6 +72,7 @@ export interface Config {
     media: Media;
     projects: Project;
     'post-categories': PostCategory;
+    topics: Topic;
     posts: Post;
     'open-source': OpenSource;
     'mcp-oauth-codes': McpOauthCode;
@@ -87,6 +88,7 @@ export interface Config {
     media: MediaSelect<false> | MediaSelect<true>;
     projects: ProjectsSelect<false> | ProjectsSelect<true>;
     'post-categories': PostCategoriesSelect<false> | PostCategoriesSelect<true>;
+    topics: TopicsSelect<false> | TopicsSelect<true>;
     posts: PostsSelect<false> | PostsSelect<true>;
     'open-source': OpenSourceSelect<false> | OpenSourceSelect<true>;
     'mcp-oauth-codes': McpOauthCodesSelect<false> | McpOauthCodesSelect<true>;
@@ -326,6 +328,14 @@ export interface Post {
   readingTime?: number | null;
   category?: ('article' | 'case' | 'note' | 'guide' | 'essay') | null;
   postCategory: number | PostCategory;
+  /**
+   * Subject hub this post belongs to. Separate from the format category.
+   */
+  topic?: (number | null) | Topic;
+  /**
+   * Posts to show first in "More" on the public page. Only published posts are shown.
+   */
+  relatedPosts?: (number | Post)[] | null;
   tags?:
     | {
         tag: string;
@@ -376,6 +386,31 @@ export interface PostCategory {
    * Controls whether this category appears in the /posts navigation.
    */
   showInPostsNavigation?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Subjects that group posts into hubs. Separate from the format category of a post.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "topics".
+ */
+export interface Topic {
+  id: number;
+  title: string;
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  slug: string;
+  /**
+   * Introduction shown at the top of the topic hub page.
+   */
+  description?: string | null;
+  /**
+   * Optional pillar post. It is listed first on the hub and linked from every post in the topic.
+   */
+  pillar?: (number | null) | Post;
   updatedAt: string;
   createdAt: string;
 }
@@ -494,6 +529,12 @@ export interface PayloadMcpApiKey {
      */
     find?: boolean | null;
   };
+  topics?: {
+    /**
+     * Allow clients to find topics.
+     */
+    find?: boolean | null;
+  };
   media?: {
     /**
      * Allow clients to find media.
@@ -570,6 +611,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'post-categories';
         value: number | PostCategory;
+      } | null)
+    | ({
+        relationTo: 'topics';
+        value: number | Topic;
       } | null)
     | ({
         relationTo: 'posts';
@@ -738,6 +783,19 @@ export interface PostCategoriesSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "topics_select".
+ */
+export interface TopicsSelect<T extends boolean = true> {
+  title?: T;
+  generateSlug?: T;
+  slug?: T;
+  description?: T;
+  pillar?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "posts_select".
  */
 export interface PostsSelect<T extends boolean = true> {
@@ -752,6 +810,8 @@ export interface PostsSelect<T extends boolean = true> {
   readingTime?: T;
   category?: T;
   postCategory?: T;
+  topic?: T;
+  relatedPosts?: T;
   tags?:
     | T
     | {
@@ -837,6 +897,11 @@ export interface PayloadMcpApiKeysSelect<T extends boolean = true> {
         update?: T;
       };
   postCategories?:
+    | T
+    | {
+        find?: T;
+      };
+  topics?:
     | T
     | {
         find?: T;

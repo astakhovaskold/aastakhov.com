@@ -250,6 +250,22 @@ export async function getPublishedPosts(
   }
 }
 
+export function toPostListItem(post: Post): PostListItem {
+  return {
+    id: post.id,
+    title: post.title,
+    slug: post.slug,
+    description: post.description,
+    postCategory: isPostCategory(post.postCategory) ? post.postCategory : null,
+    publishedAt: post.publishedAt,
+    lastModified: post.lastModified,
+    updatedAt: post.updatedAt,
+    readingTime: post.readingTime,
+    previewImage: isMedia(post.previewImage) ? post.previewImage : null,
+    coverImage: isMedia(post.coverImage) ? post.coverImage : null,
+  }
+}
+
 export async function getLatestPostsLastModifiedDate(locale: string): Promise<Date | null> {
   const posts = await getPublishedPosts(locale)
   if (posts.length === 0) {
