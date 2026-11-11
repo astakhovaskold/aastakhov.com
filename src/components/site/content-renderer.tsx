@@ -2,23 +2,36 @@ import React from 'react'
 
 import { Link } from '@/i18n/navigation'
 import type { Media } from '@/payload-types'
+import { CodeBlockRenderer } from './code-block-renderer'
+import { CalloutRenderer } from './callout-renderer'
+import { DiagramRenderer } from './diagram-renderer'
 
 export type RichTextNode = {
   children?: RichTextNode[]
   fields?: {
+    blockType?: string
     caption?: string | null
+    chart?: string
+    code?: string
     doc?: Media | null
+    isLoopingVideo?: boolean
+    language?: string
     linkType?: 'custom' | 'internal'
+    media?: Media | { alt?: string | null; caption?: string | null; url?: string | null } | null
     newTab?: boolean
+    text?: string
+    title?: string | null
+    type?: 'note' | 'quote' | 'tip' | 'warning'
     url?: string
-  }
+  } & Record<string, unknown>
   format?: number | string
+  language?: string
   listType?: 'bullet' | 'check' | 'number'
   tag?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6'
   text?: string
   type: string
   url?: string
-  value?: Media | { alt?: string | null; caption?: string | null; url?: string | null } | null
+  value?: Media | { alt?: string | null; caption?: string | null; mimeType?: string | null; url?: string | null } | null
 } & Record<string, unknown>
 
 export type RichTextDocument = {
@@ -37,7 +50,7 @@ function formatText(node: RichTextNode, children: React.ReactNode): React.ReactN
 
   if (format & 1) content = <strong>{content}</strong>
   if (format & 2) content = <em>{content}</em>
-  if (format & 8) content = <code>{content}</code>
+  if (format & 8) content = <code className="inline-code">{content}</code>
   if (format & 16) content = <sub>{content}</sub>
   if (format & 32) content = <sup>{content}</sup>
   if (format & 64) content = <span style={{ textDecoration: 'underline' }}>{content}</span>
@@ -55,6 +68,7 @@ function extractText(node?: RichTextNode): string {
 function extractMedia(node: RichTextNode): Media | null {
   if (isMedia(node.value)) return node.value
   if (isMedia(node.fields?.doc)) return node.fields.doc
+  if (isMedia(node.fields?.media)) return node.fields.media
 
   const { doc } = node as unknown as { doc?: unknown }
   return isMedia(doc) ? doc : null
@@ -68,14 +82,78 @@ function renderLink(node: RichTextNode, key: React.Key): React.ReactNode {
   if (href.startsWith('/')) return <Link href={href} key={key}>{content}</Link>
 
   return (
-    <a href={href} key={key} rel={node.fields?.newTab ? 'noreferrer' : undefined} target={node.fields?.newTab ? '_blank' : undefined}>
+    <a
+      href={href}
+      key={key}
+      rel={node.fields?.newTab ? 'noreferrer' : undefined}
+      target={node.fields?.newTab ? '_blank' : undefined}
+    >
       {content}
     </a>
   )
 }
 
+function isVideoUrlOrMime(url?: string | null, mimeType?: string | null): boolean {
+  if (mimeType?.startsWith('video/')) return true
+  if (url && /\.(mp4|webm|ogg|mov)(\?.*)?$/i.test(url)) return true
+  return false
+}
+
+function renderBlock(node: RichTextNode, key: React.Key): React.ReactNode {
+  const fields = node.fields
+  if (!fields) return null
+
+  switch (fields.blockType) {
+    case 'Code': {
+      const code = fields.code || ''
+      const language = fields.language || 'typescript'
+      return <CodeBlockRenderer code={code} key={key} language={language} />
+    }
+    case 'callout': {
+      const text = fields.text || ''
+      const title = fields.title || null
+      const type = fields.type || 'note'
+      return <CalloutRenderer key={key} text={text} title={title} type={type} />
+    }
+    case 'diagram': {
+      const chart = fields.chart || ''
+      const caption = fields.caption || null
+      return <DiagramRenderer caption={caption} chart={chart} key={key} />
+    }
+    case 'mediaBlock': {
+      const media = extractMedia(node)
+      if (!media?.url) return null
+      const caption = fields.caption || media.alt || null
+      const isVideo = fields.isLoopingVideo || isVideoUrlOrMime(media.url, media.mimeType)
+
+      return (
+        <figure className="article-media-figure" key={key}>
+          {isVideo ? (
+            <video
+              autoPlay
+              className="article-media-video"
+              loop
+              muted
+              playsInline
+              src={media.url}
+            />
+          ) : (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img alt={media.alt || ''} className="article-media-img" src={media.url} />
+          )}
+          {caption ? <figcaption>{caption}</figcaption> : null}
+        </figure>
+      )
+    }
+    default:
+      return null
+  }
+}
+
 function renderNode(node: RichTextNode, key: React.Key): React.ReactNode {
   switch (node.type) {
+    case 'block':
+      return renderBlock(node, key)
     case 'heading': {
       const Tag = node.tag ?? 'h2'
       return <Tag key={key}>{renderChildren(node.children)}</Tag>
@@ -100,18 +178,33 @@ function renderNode(node: RichTextNode, key: React.Key): React.ReactNode {
       if (!media?.url) return null
       const value = typeof node.value === 'object' && node.value !== null ? node.value : null
       const caption = node.fields?.caption || (value && 'caption' in value ? value.caption : null)
+      const isVideo = isVideoUrlOrMime(media.url, media.mimeType)
 
       return (
-        <figure key={key}>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img alt={media.alt || ''} src={media.url} />
+        <figure className="article-media-figure" key={key}>
+          {isVideo ? (
+            <video
+              autoPlay
+              className="article-media-video"
+              loop
+              muted
+              playsInline
+              src={media.url}
+            />
+          ) : (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img alt={media.alt || ''} className="article-media-img" src={media.url} />
+          )}
           {caption ? <figcaption>{caption}</figcaption> : null}
         </figure>
       )
     }
     case 'code':
-    case 'codeblock':
-      return <pre key={key}><code>{extractText(node)}</code></pre>
+    case 'codeblock': {
+      const code = extractText(node)
+      const language = (node.language as string) || 'plaintext'
+      return <CodeBlockRenderer code={code} key={key} language={language} />
+    }
     case 'linebreak':
       return <br key={key} />
     case 'text':

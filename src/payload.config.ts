@@ -1,6 +1,12 @@
 import { postgresAdapter } from '@payloadcms/db-postgres'
 import { mcpPlugin } from '@payloadcms/plugin-mcp'
-import { lexicalEditor } from '@payloadcms/richtext-lexical'
+import {
+  BlocksFeature,
+  CodeBlock,
+  FixedToolbarFeature,
+  InlineToolbarFeature,
+  lexicalEditor,
+} from '@payloadcms/richtext-lexical'
 import { vercelBlobStorage } from '@payloadcms/storage-vercel-blob'
 import path from 'path'
 import { buildConfig, type CollectionConfig } from 'payload'
@@ -17,6 +23,9 @@ import { SiteSettings } from './globals/SiteSettings'
 import { CV } from './globals/CV'
 import { oauthCapabilities, verifyOAuthToken } from './lib/mcp-oauth'
 import { McpOAuthCodes } from './collections/McpOAuthCodes'
+import { CalloutBlock } from './collections/blocks/CalloutBlock'
+import { MediaBlock } from './collections/blocks/MediaBlock'
+import { DiagramBlock } from './collections/blocks/DiagramBlock'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -67,7 +76,38 @@ export default buildConfig({
     defaultLocale: 'ru',
     fallback: true,
   },
-  editor: lexicalEditor(),
+  editor: lexicalEditor({
+    features: ({ defaultFeatures }) => [
+      ...defaultFeatures,
+      FixedToolbarFeature(),
+      InlineToolbarFeature(),
+      BlocksFeature({
+        blocks: [
+          CodeBlock({
+            defaultLanguage: 'typescript',
+            languages: {
+              typescript: 'TypeScript',
+              javascript: 'JavaScript',
+              tsx: 'TSX',
+              jsx: 'JSX',
+              html: 'HTML',
+              css: 'CSS',
+              json: 'JSON',
+              shell: 'Bash / Shell',
+              python: 'Python',
+              rust: 'Rust',
+              sql: 'SQL',
+              markdown: 'Markdown',
+              yaml: 'YAML',
+            },
+          }),
+          CalloutBlock,
+          MediaBlock,
+          DiagramBlock,
+        ],
+      }),
+    ],
+  }),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),
