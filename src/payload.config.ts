@@ -196,8 +196,8 @@ export default buildConfig({
           enabled: { create: false, delete: false, find: true, update: false },
         },
         media: {
-          description: 'Media library. Read-only reference data for selecting existing assets.',
-          enabled: { create: false, delete: false, find: true, update: false },
+          description: 'Media library. Manage and upload assets.',
+          enabled: { create: true, delete: false, find: true, update: true },
         },
       },
       globals: {
