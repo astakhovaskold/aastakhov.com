@@ -225,6 +225,30 @@ export const SiteSettings: GlobalConfig = {
       ],
     },
     {
+      name: 'proof',
+      type: 'array',
+      labels: {
+        singular: 'Proof point',
+        plural: 'Proof points',
+      },
+      admin: {
+        description: 'Verifiable results shown on the home page, for example a metric from a project.',
+      },
+      fields: [
+        {
+          name: 'title',
+          type: 'text',
+          required: true,
+          localized: true,
+        },
+        {
+          name: 'description',
+          type: 'textarea',
+          localized: true,
+        },
+      ],
+    },
+    {
       name: 'seo',
       type: 'group',
       fields: [

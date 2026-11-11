@@ -77,7 +77,10 @@
     "selectedWork": "Избранные работы",
     "services": "Услуги",
     "fromTheBlog": "Блог",
-    "openSource": "Open source"
+    "openSource": "Open source",
+    "primaryBooking": "Записаться на звонок",
+    "primaryTelegram": "Написать в Telegram",
+    "proof": "Результаты"
   },
   "cv": {
     "cvFallback": "Резюме",

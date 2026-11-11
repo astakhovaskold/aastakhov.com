@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { hasLocale } from 'next-intl'
 import { getTranslations, setRequestLocale } from 'next-intl/server'
+import { Fragment } from 'react'
 import { notFound } from 'next/navigation'
 
 import { ArrowLink } from '@/components/site/arrow-link'
@@ -311,10 +312,10 @@ export default async function CVPage({ params }: CVPageProps) {
         {hasText(cv?.eyebrow) ? <p className="eyebrow">{cv.eyebrow}</p> : null}
         <h1 className="cv-title">
           {splitName(cv?.name, t('cvFallback')).map((part, index) => (
-            <span key={`${part}-${index}`}>
-              {index > 0 ? <br /> : null}
-              {part}
-            </span>
+            <Fragment key={`${part}-${index}`}>
+              {index > 0 ? ' ' : null}
+              <span className="hero-line">{part}</span>
+            </Fragment>
           ))}
         </h1>
         {hasText(cv?.summary) ? <p className="cv-subtitle">{cv.summary}</p> : null}

@@ -77,7 +77,10 @@
     "selectedWork": "Selected work",
     "services": "Services",
     "fromTheBlog": "Blog",
-    "openSource": "Open source"
+    "openSource": "Open source",
+    "primaryBooking": "Book a call",
+    "primaryTelegram": "Message me on Telegram",
+    "proof": "Proof"
   },
   "cv": {
     "cvFallback": "CV",

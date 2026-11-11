@@ -1081,6 +1081,16 @@ export interface SiteSetting {
         id?: string | null;
       }[]
     | null;
+  /**
+   * Verifiable results shown on the home page, for example a metric from a project.
+   */
+  proof?:
+    | {
+        title: string;
+        description?: string | null;
+        id?: string | null;
+      }[]
+    | null;
   seo: {
     defaultTitle: string;
     defaultDescription: string;
@@ -1269,6 +1279,13 @@ export interface SiteSettingsSelect<T extends boolean = true> {
         id?: T;
       };
   services?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        id?: T;
+      };
+  proof?:
     | T
     | {
         title?: T;

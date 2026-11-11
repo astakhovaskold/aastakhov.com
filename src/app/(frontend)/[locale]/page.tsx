@@ -10,10 +10,12 @@ import { getPayload } from 'payload'
 import { ContactLinks } from '@/components/site/contact-links'
 import { OpenSourceList } from '@/components/site/open-source-list'
 import { PostList } from '@/components/site/post-list'
+import { PrimaryContactButton } from '@/components/site/primary-contact-button'
 import { SelectedWorkList } from '@/components/site/selected-work-list'
 import { SectionHeader } from '@/components/site/section-header'
 import { Link } from '@/i18n/navigation'
 import { routing } from '@/i18n/routing'
+import { getPrimaryContact } from '@/lib/contact'
 import { createSeoMetadata } from '@/lib/seo'
 import { getSiteSettings, type PublicSiteSettings } from '@/lib/siteSettings'
 import { getTopicsWithPosts } from '@/lib/topics'
@@ -145,6 +147,7 @@ export default async function HomePage({
     getHomeContent(settings, locale),
     getTopicsWithPosts(locale),
   ])
+  const primaryContact = getPrimaryContact(settings)
   const contactLinks = [
     settings.telegram ? { href: settings.telegram, label: 'Telegram' } : null,
     { href: `mailto:${settings.email}`, label: 'Email' },
@@ -160,14 +163,19 @@ export default async function HomePage({
         <div className="hero-grid">
           <div>
             <p className="eyebrow">
-              {settings.location} · {settings.availability}
+              {settings.homeEyebrow || `${settings.location} · ${settings.availability}`}
             </p>
             <h1>
-              {settings.homePage.heroTitleLine1}
-              <br />
-              {settings.homePage.heroTitleLine2}
+              <span className="hero-line">{settings.homePage.heroTitleLine1}</span>{' '}
+              <span className="hero-line">{settings.homePage.heroTitleLine2}</span>
             </h1>
             <p className="lede">{settings.homePage.heroDescription}</p>
+            {primaryContact ? (
+              <PrimaryContactButton
+                contact={primaryContact}
+                label={t(primaryContact.kind === 'booking' ? 'primaryBooking' : 'primaryTelegram')}
+              />
+            ) : null}
             <div className="topic-links" aria-label={common('topics')}>
               {settings.homePage.heroTags.map((tag) => (
                 <span key={tag}>{tag}</span>
@@ -211,6 +219,20 @@ export default async function HomePage({
               <article className="expertise-item" key={service.title}>
                 <h3>{service.title}</h3>
                 <p>{service.description}</p>
+              </article>
+            ))}
+          </div>
+        </section>
+      ) : null}
+
+      {settings.proof.length > 0 ? (
+        <section className="section" id="proof">
+          <SectionHeader title={t('proof')} />
+          <div className="expertise-grid">
+            {settings.proof.map((item) => (
+              <article className="expertise-item" key={item.title}>
+                <h3>{item.title}</h3>
+                {item.description ? <p>{item.description}</p> : null}
               </article>
             ))}
           </div>

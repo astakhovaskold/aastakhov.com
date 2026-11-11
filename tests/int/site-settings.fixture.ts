@@ -13,6 +13,7 @@ export const mockSettings: PublicSiteSettings = {
     heroTitleLine2: 'Line 2',
   },
   knowsAbout: [],
+  proof: [],
   linkedin: 'https://linkedin.com/in/test',
   location: 'Madrid',
   name: 'Askold Astakhov',

@@ -13,6 +13,11 @@ export type HomeService = {
   title: string
 }
 
+export type HomeProof = {
+  description?: string
+  title: string
+}
+
 export type HomePageCopy = {
   heroDescription: string
   heroTags: string[]
@@ -50,6 +55,7 @@ export type PublicSiteSettings = {
   bookingUrl?: string
   selectedWork: HomeSelectedWork[]
   services: HomeService[]
+  proof: HomeProof[]
   seo: {
     defaultTitle: string
     defaultDescription: string
@@ -106,6 +112,7 @@ function fallbackSiteSettings(locale: string): PublicSiteSettings {
       },
     selectedWork: [],
     services: [],
+    proof: [],
     seo: {
       defaultTitle: 'Askold Astakhov',
       defaultDescription: 'Personal site for Askold Astakhov.',
@@ -181,6 +188,9 @@ export async function getSiteSettings(locale: string): Promise<PublicSiteSetting
         service.title && service.description
           ? [{ description: service.description, title: service.title }]
           : [],
+      ),
+      proof: (settings.proof || []).flatMap((item) =>
+        item.title ? [{ description: optionalString(item.description), title: item.title }] : [],
       ),
       seo: {
         ...fallback.seo,
