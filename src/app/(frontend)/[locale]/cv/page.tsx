@@ -10,7 +10,7 @@ import { analyticsEventNames, getContactLinkEvent } from '@/lib/analytics'
 import { getCV } from '@/lib/cv'
 import { createSeoMetadata } from '@/lib/seo'
 import { getSiteSettings } from '@/lib/siteSettings'
-import { createBreadcrumbSchema, createProfilePageSchema } from '@/lib/structured-data'
+import { breadcrumbName, createBreadcrumbSchema, createProfilePageSchema } from '@/lib/structured-data'
 
 type CVPageProps = {
   params: Promise<{ locale: string }>
@@ -302,8 +302,8 @@ export default async function CVPage({ params }: CVPageProps) {
             title: cv?.name || t('cvFallback'),
           }),
           createBreadcrumbSchema(locale as 'en' | 'ru', [
-            { name: siteSettings.name, path: '/' },
-            { name: cv?.name || t('cvFallback'), path: '/cv' },
+            { name: breadcrumbName(locale as 'en' | 'ru', 'home'), path: '/' },
+            { name: breadcrumbName(locale as 'en' | 'ru', 'cv'), path: '/cv' },
           ]),
         ]}
       />

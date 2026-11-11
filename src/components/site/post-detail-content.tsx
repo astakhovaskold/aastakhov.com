@@ -2,19 +2,14 @@ import { getLocale, getTranslations } from 'next-intl/server'
 import React from 'react'
 
 import { ContentRenderer } from '@/components/site/content-renderer'
+import { PostDates } from '@/components/site/post-dates'
 import { Link } from '@/i18n/navigation'
+import { getPostLastModifiedDate } from '@/lib/post-dates'
 import { getPostCategoryLabel } from '@/lib/posts-index'
 import type { Media, Post } from '@/payload-types'
 
 function isMedia(value: unknown): value is Media {
   return typeof value === 'object' && value !== null && 'url' in value
-}
-
-function formatPostDate(publishedAt: string | null | undefined, locale: string): string | null {
-  if (!publishedAt) return null
-  const date = new Date(publishedAt)
-  if (Number.isNaN(date.valueOf())) return null
-  return new Intl.DateTimeFormat(locale, { day: 'numeric', month: 'long', year: 'numeric' }).format(date)
 }
 
 export async function PostDetailHeader(props: { post: Post }) {
@@ -23,7 +18,6 @@ export async function PostDetailHeader(props: { post: Post }) {
   const locale = await getLocale()
   const metaLine = [
     getPostCategoryLabel(post.postCategory),
-    formatPostDate(post.publishedAt, locale),
     post.readingTime ? t('readingTime', { minutes: post.readingTime }) : null,
   ]
     .filter(Boolean)
@@ -34,6 +28,13 @@ export async function PostDetailHeader(props: { post: Post }) {
       {metaLine ? <p className="post-detail-label">{metaLine}</p> : null}
       <h1>{post.title}</h1>
       <p className="lede">{post.description}</p>
+      <PostDates
+        locale={locale}
+        modifiedAt={getPostLastModifiedDate(post).toISOString()}
+        publishedAt={post.publishedAt}
+        publishedText={(date) => t('publishedOn', { date })}
+        updatedText={(date) => t('updatedOn', { date })}
+      />
     </header>
   )
 }

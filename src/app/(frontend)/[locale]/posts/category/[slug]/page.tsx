@@ -25,10 +25,9 @@ type PostCategoryPageProps = {
 
 export async function generateMetadata({ params }: PostCategoryPageProps): Promise<Metadata> {
   const { locale, slug } = await params
-  const [allCategoryLinks, settings, posts] = await Promise.all([
+  const [allCategoryLinks, settings] = await Promise.all([
     getPostCategoryLinks(locale, { includeHidden: true }),
     getSiteSettings(locale),
-    getPublishedPosts(locale, { categorySlug: slug }),
   ])
   const category = getPostCategoryBySlug(allCategoryLinks, slug)
   const canonicalPath = `/posts/category/${slug}`
@@ -38,6 +37,8 @@ export async function generateMetadata({ params }: PostCategoryPageProps): Promi
       resource: 'Category',
     })
   }
+
+  const posts = await getPublishedPosts(locale, category.id)
 
   return createSeoMetadata({
     canonicalPath,

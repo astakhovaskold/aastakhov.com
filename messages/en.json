@@ -26,6 +26,7 @@
   },
   "post": {
     "publishedOn": "Published on {date}",
+    "updatedOn": "Updated on {date}",
     "readingTime": "{minutes} min read",
     "featuredPost": "Featured post",
     "postPagination": "Post pagination"

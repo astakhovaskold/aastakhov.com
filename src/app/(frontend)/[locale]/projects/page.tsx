@@ -4,10 +4,12 @@ import { getTranslations, setRequestLocale } from 'next-intl/server'
 import { notFound } from 'next/navigation'
 
 import { ProjectList } from '@/components/site/project-list'
+import { StructuredData } from '@/components/site/structured-data'
 import { SectionHeader } from '@/components/site/section-header'
 import { routing } from '@/i18n/routing'
 import { getPublishedProjects } from '@/lib/projects'
 import { createSeoMetadata } from '@/lib/seo'
+import { breadcrumbName, createBreadcrumbSchema, createCollectionPageSchema } from '@/lib/structured-data'
 import { getSiteSettings } from '@/lib/siteSettings'
 import type { Media, Project } from '@/payload-types'
 
@@ -128,6 +130,21 @@ export default async function ProjectsPage({ params }: ProjectsPageProps) {
 
   return (
     <>
+      <StructuredData
+        data={[
+          createCollectionPageSchema({
+            description: settings.projectsPage.description,
+            items: projects.map((project) => ({ name: project.title, path: `/projects/${project.slug}` })),
+            locale: locale as 'en' | 'ru',
+            path: '/projects',
+            title: settings.projectsPage.title,
+          }),
+          createBreadcrumbSchema(locale as 'en' | 'ru', [
+            { name: breadcrumbName(locale as 'en' | 'ru', 'home'), path: '/' },
+            { name: settings.projectsPage.title, path: '/projects' },
+          ]),
+        ]}
+      />
       <section className="hero">
         {settings.projectsEyebrow ? <p className="eyebrow">{settings.projectsEyebrow}</p> : null}
         <h1>{settings.projectsPage.title}</h1>

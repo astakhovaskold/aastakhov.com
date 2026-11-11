@@ -5,11 +5,13 @@ import { notFound } from 'next/navigation'
 
 import { ContactLinks } from '@/components/site/contact-links'
 import { FeaturedPost } from '@/components/site/featured-post'
+import { StructuredData } from '@/components/site/structured-data'
 import { PostList } from '@/components/site/post-list'
 import { PostCategoryNav } from '@/components/site/post-index-list'
 import { SectionHeader } from '@/components/site/section-header'
 import { routing } from '@/i18n/routing'
 import { createSeoMetadata } from '@/lib/seo'
+import { breadcrumbName, createBreadcrumbSchema, createCollectionPageSchema } from '@/lib/structured-data'
 import {
   getLatestPostsLastModifiedDate,
   getPostsIndexPageData,
@@ -67,6 +69,22 @@ export default async function PostsPage({ params }: PostsPageProps) {
 
   return (
     <>
+      <StructuredData
+        data={[
+          createCollectionPageSchema({
+            description: settings.blogPage.description,
+            items: posts.map((post) => ({ name: post.title, path: `/posts/${post.slug}` })),
+            locale: locale as 'en' | 'ru',
+            path: '/posts',
+            title: settings.blogPage.title,
+            type: 'Blog',
+          }),
+          createBreadcrumbSchema(locale as 'en' | 'ru', [
+            { name: breadcrumbName(locale as 'en' | 'ru', 'home'), path: '/' },
+            { name: settings.blogPage.title, path: '/posts' },
+          ]),
+        ]}
+      />
       <section className="hero">
         {settings.postsEyebrow ? <p className="eyebrow">{settings.postsEyebrow}</p> : null}
         <h1>{settings.blogPage.title}</h1>

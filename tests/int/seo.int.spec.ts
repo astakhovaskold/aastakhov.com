@@ -1,7 +1,8 @@
 import { afterEach, describe, expect, it } from 'vitest'
 
 import { createNotFoundMetadata, createSeoMetadata, pageUrl } from '@/lib/seo'
-import type { PublicSiteSettings } from '@/lib/siteSettings'
+
+import { mockSettings } from './site-settings.fixture'
 
 const originalSiteUrl = process.env.NEXT_PUBLIC_SITE_URL
 
@@ -12,28 +13,6 @@ afterEach(() => {
     process.env.NEXT_PUBLIC_SITE_URL = originalSiteUrl
   }
 })
-
-const mockSettings: PublicSiteSettings = {
-  about: '',
-  availability: 'Available',
-  contacts: [],
-  cvUrl: '',
-  description: 'Site description',
-  email: 'test@example.com',
-  github: 'https://github.com/test',
-  homeEyebrow: 'Eyebrow',
-  linkedin: 'https://linkedin.com/in/test',
-  location: 'Madrid',
-  name: 'Askold Astakhov',
-  postsPage: { description: 'Posts description', title: 'Posts' },
-  projectsPage: { description: 'Projects description', title: 'Projects' },
-  seo: {
-    defaultDescription: 'Default description',
-    defaultTitle: 'Default title',
-  },
-  services: [],
-  telegram: 'https://t.me/test',
-}
 
 describe('pageUrl helper', () => {
   it('formats root path as bare locale with no trailing slash', () => {
@@ -92,7 +71,7 @@ describe('pageUrl helper', () => {
       index: false,
     })
 
-    const populatedCount = 1
+    const populatedCount: number = 1
     const populatedMetadata = createSeoMetadata({
       canonicalPath: '/posts',
       locale: 'ru',
@@ -106,7 +85,7 @@ describe('pageUrl helper', () => {
   })
 
   it('uses locale-appropriate fallbacks without English text on Russian locale', () => {
-    const emptySettings: PublicSiteSettings = {
+    const emptySettings: typeof mockSettings = {
       ...mockSettings,
       name: 'Аскольд Астахов',
       seo: {

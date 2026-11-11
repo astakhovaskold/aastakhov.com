@@ -32,6 +32,13 @@ export type PublicSiteSettings = {
   telegram?: string
   linkedin?: string
   github?: string
+  devto?: string
+  jobTitle?: string
+  alternateName?: string
+  description?: string
+  imageUrl?: string
+  knowsAbout: string[]
+  homeLocation?: string
   location: string
   availability: string
   homeEyebrow?: string
@@ -59,6 +66,7 @@ function fallbackSiteSettings(locale: string): PublicSiteSettings {
     phone: undefined,
     telegram: 'https://t.me/askold_astakhov',
     linkedin: 'https://www.linkedin.com/in/askold-astakhov/',
+    knowsAbout: [],
     location: 'Madrid',
     availability: 'Available for selected projects',
     homePage: isRussian
@@ -137,6 +145,13 @@ export async function getSiteSettings(locale: string): Promise<PublicSiteSetting
       telegram: optionalString(settings.telegram) || fallback.telegram,
       linkedin: optionalString(settings.linkedin) || fallback.linkedin,
       github: optionalString(settings.github),
+      devto: optionalString(settings.devto),
+      jobTitle: optionalString(settings.jobTitle),
+      alternateName: optionalString(settings.alternateName),
+      description: optionalString(settings.description),
+      imageUrl: typeof settings.image === 'object' ? optionalString(settings.image?.url) : undefined,
+      knowsAbout: (settings.knowsAbout || []).flatMap((topic) => (topic.title ? [topic.title] : [])),
+      homeLocation: optionalString(settings.homeLocation),
       location: settings.location || fallback.location,
       availability: settings.availability || fallback.availability,
       homeEyebrow: optionalString(settings.homeEyebrow),

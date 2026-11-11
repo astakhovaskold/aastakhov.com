@@ -38,9 +38,6 @@ importers:
       graphql:
         specifier: ^16.8.1
         version: 16.14.2
-      ld-generator:
-        specifier: ^1.3.0
-        version: 1.3.0
       mermaid:
         specifier: ^12.3.0
         version: 12.3.0
@@ -3913,9 +3910,6 @@ packages:
 
   layout-base@2.0.1:
     resolution: {integrity: sha512-dp3s92+uNI1hWIpPGH3jK2kxE2lMjdXdr+DH8ynZHpd6PUlH6x6cbuXnoMmiNumznqaNO31xu9e79F0uuZ0JFg==}
-
-  ld-generator@1.3.0:
-    resolution: {integrity: sha512-jvt/OMuDm+a3k31YB9Yy/12m4llLzx17D6j4Pej/Ed9gEeqvtWirnr3d6n2GWUqN2lGXPk8Ap6lWwwmlqYee1w==}
 
   levn@0.4.1:
     resolution: {integrity: sha512-+bT2uH4E5LGE7h/n3evcS/sQlJXCpIp6ym8OWJ5eV6+67Dsql/LaaT7qJBAt2rzfoa/5QBGBhxDix1dMt2kQKQ==}
@@ -9327,8 +9321,6 @@ snapshots:
   layout-base@1.0.2: {}
 
   layout-base@2.0.1: {}
-
-  ld-generator@1.3.0: {}
 
   levn@0.4.1:
     dependencies:

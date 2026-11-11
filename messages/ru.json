@@ -26,6 +26,7 @@
   },
   "post": {
     "publishedOn": "Опубликовано {date}",
+    "updatedOn": "Обновлено {date}",
     "readingTime": "{minutes} мин чтения",
     "featuredPost": "Рекомендуемый пост",
     "postPagination": "Навигация по постам"

@@ -21,7 +21,7 @@ import {
   isPubliclyIndexableEntity,
 } from '@/lib/seo'
 import { getSiteSettings } from '@/lib/siteSettings'
-import { createArticleSchema, createBreadcrumbSchema } from '@/lib/structured-data'
+import { breadcrumbName, createBlogPostingSchema, createBreadcrumbSchema } from '@/lib/structured-data'
 
 type PostDetailPageProps = {
   params: Promise<{
@@ -94,16 +94,17 @@ export default async function PostDetailPage({ params }: PostDetailPageProps) {
     <>
       <StructuredData
         data={[
-          createArticleSchema({
+          createBlogPostingSchema({
             dateModified: lastModified,
             description: post.description,
+            image: typeof post.coverImage === 'object' ? post.coverImage?.url : undefined,
             locale: locale as 'en' | 'ru',
             path: `/posts/${post.slug}`,
             publishedAt: post.publishedAt,
             title: post.title,
           }),
           createBreadcrumbSchema(locale as 'en' | 'ru', [
-            { name: settings.name, path: '/' },
+            { name: breadcrumbName(locale as 'en' | 'ru', 'home'), path: '/' },
             { name: common('allPosts'), path: '/posts' },
             { name: post.title, path: `/posts/${post.slug}` },
           ]),

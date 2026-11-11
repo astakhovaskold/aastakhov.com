@@ -19,7 +19,7 @@ import {
   createSeoMetadata,
 } from '@/lib/seo'
 import { getSiteSettings } from '@/lib/siteSettings'
-import { createBreadcrumbSchema, createCreativeWorkSchema } from '@/lib/structured-data'
+import { breadcrumbName, createBreadcrumbSchema, createCreativeWorkSchema } from '@/lib/structured-data'
 
 type ProjectDetailPageProps = {
   params: Promise<{
@@ -88,13 +88,14 @@ export default async function ProjectDetailPage({ params }: ProjectDetailPagePro
         data={[
           createCreativeWorkSchema({
             description: project.description,
+            image: typeof project.coverImage === 'object' ? project.coverImage?.url : undefined,
             locale: locale as 'en' | 'ru',
             path: `/projects/${project.slug}`,
             publishedAt: project.startedAt,
             title: project.title,
           }),
           createBreadcrumbSchema(locale as 'en' | 'ru', [
-            { name: settings.name, path: '/' },
+            { name: breadcrumbName(locale as 'en' | 'ru', 'home'), path: '/' },
             { name: locale === 'ru' ? 'Проекты' : 'Projects', path: '/projects' },
             { name: project.title, path: `/projects/${project.slug}` },
           ]),

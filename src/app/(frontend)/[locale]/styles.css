@@ -863,6 +863,12 @@ p {
   text-transform: uppercase;
 }
 
+.post-detail-dates {
+  margin-top: 18px;
+  font-size: 14px;
+  color: var(--muted, inherit);
+}
+
 .post-detail-cover {
   width: min(100%, 650px);
   margin-bottom: 56px;
