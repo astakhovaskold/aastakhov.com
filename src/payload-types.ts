@@ -312,7 +312,14 @@ export interface Post {
     };
     [k: string]: unknown;
   } | null;
+  /**
+   * Дата и время публикации. Если дата в будущем, статья отложена и скрыта от ботов и читателей (404 на сервере) до наступления этого момента.
+   */
   publishedAt?: string | null;
+  /**
+   * Ручная дата для HTTP-заголовка Last-Modified и SEO. Если не заполнено, берется системная дата обновления (updatedAt).
+   */
+  lastModified?: string | null;
   /**
    * Estimated reading time in minutes.
    */
@@ -741,6 +748,7 @@ export interface PostsSelect<T extends boolean = true> {
   eyebrow?: T;
   content?: T;
   publishedAt?: T;
+  lastModified?: T;
   readingTime?: T;
   category?: T;
   postCategory?: T;

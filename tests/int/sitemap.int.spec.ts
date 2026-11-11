@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, it } from 'vitest'
 
 import { isProjectPublic } from '@/lib/projects'
-import { buildPublicSitemapPaths, buildSitemapUrl } from '@/lib/sitemap'
+import { buildPublicSitemapEntries, buildPublicSitemapPaths, buildSitemapUrl } from '@/lib/sitemap'
 
 const originalSiteUrl = process.env.NEXT_PUBLIC_SITE_URL
 
@@ -55,5 +55,24 @@ describe('sitemap paths', () => {
     process.env.NEXT_PUBLIC_SITE_URL = 'https://example.com/'
 
     expect(buildSitemapUrl('/posts')).toBe('https://example.com/posts')
+  })
+
+  it('builds sitemap entries with lastModified date for posts', () => {
+    const postDate = new Date('2026-11-10T12:00:00.000Z')
+    const entries = buildPublicSitemapEntries({
+      categories: [{ slug: 'articles' }],
+      posts: [{ slug: 'public-post', lastModified: postDate }],
+      projects: [{ slug: 'public-project' }],
+    })
+
+    expect(entries).toEqual([
+      { path: '/' },
+      { path: '/projects' },
+      { path: '/projects/public-project' },
+      { path: '/posts' },
+      { path: '/posts/category/articles' },
+      { path: '/posts/public-post', lastModified: postDate },
+      { path: '/cv' },
+    ])
   })
 })

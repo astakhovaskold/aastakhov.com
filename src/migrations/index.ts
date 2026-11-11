@@ -7,6 +7,7 @@ import * as migration_20260909_130000_optional_open_source_description from './2
 import * as migration_20260916_121407_add_payload_mcp from './20260916_121407_add_payload_mcp';
 import * as migration_20260918_091802_add_mcp_oauth_codes from './20260918_091802_add_mcp_oauth_codes';
 import * as migration_20261111_110539_add_mcp_refresh_tokens from './20261111_110539_add_mcp_refresh_tokens';
+import * as migration_20261111_190336_add_posts_last_modified from './20261111_190336_add_posts_last_modified';
 
 export const migrations = [
   {
@@ -52,6 +53,11 @@ export const migrations = [
   {
     up: migration_20261111_110539_add_mcp_refresh_tokens.up,
     down: migration_20261111_110539_add_mcp_refresh_tokens.down,
-    name: '20261111_110539_add_mcp_refresh_tokens'
+    name: '20261111_110539_add_mcp_refresh_tokens',
+  },
+  {
+    up: migration_20261111_190336_add_posts_last_modified.up,
+    down: migration_20261111_190336_add_posts_last_modified.down,
+    name: '20261111_190336_add_posts_last_modified'
   },
 ];

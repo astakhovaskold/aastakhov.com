@@ -2,6 +2,7 @@ import config from '@payload-config'
 import { getPayload } from 'payload'
 
 import type { Media, Post, PostCategory } from '@/payload-types'
+import { getPostLastModifiedDate } from '@/lib/post-dates'
 
 export type PostCategoryLink = {
   description?: null | string
@@ -15,7 +16,14 @@ export type PostCategoryLink = {
 
 export type PostListItem = Pick<
   Post,
-  'id' | 'title' | 'slug' | 'description' | 'publishedAt' | 'readingTime'
+  | 'id'
+  | 'title'
+  | 'slug'
+  | 'description'
+  | 'publishedAt'
+  | 'readingTime'
+  | 'lastModified'
+  | 'updatedAt'
 > & {
   postCategory: PostCategory | null
   previewImage: Media | null
@@ -231,6 +239,8 @@ export async function getPublishedPosts(
       description: post.description,
       postCategory: isPostCategory(post.postCategory) ? post.postCategory : null,
       publishedAt: post.publishedAt,
+      lastModified: post.lastModified,
+      updatedAt: post.updatedAt,
       readingTime: post.readingTime,
       previewImage: isMedia(post.previewImage) ? post.previewImage : null,
       coverImage: isMedia(post.coverImage) ? post.coverImage : null,
@@ -238,6 +248,23 @@ export async function getPublishedPosts(
   } catch {
     return []
   }
+}
+
+export async function getLatestPostsLastModifiedDate(locale: string): Promise<Date | null> {
+  const posts = await getPublishedPosts(locale)
+  if (posts.length === 0) {
+    return null
+  }
+
+  let latestDate: Date | null = null
+  for (const post of posts) {
+    const postDate = getPostLastModifiedDate(post)
+    if (!latestDate || postDate.getTime() > latestDate.getTime()) {
+      latestDate = postDate
+    }
+  }
+
+  return latestDate
 }
 
 export async function getFeaturedPost(locale: string): Promise<PostListItem | null> {
@@ -288,6 +315,8 @@ export async function getFeaturedPost(locale: string): Promise<PostListItem | nu
       description: post.description,
       postCategory: isPostCategory(post.postCategory) ? post.postCategory : null,
       publishedAt: post.publishedAt,
+      lastModified: post.lastModified,
+      updatedAt: post.updatedAt,
       readingTime: post.readingTime,
       previewImage: isMedia(post.previewImage) ? post.previewImage : null,
       coverImage: isMedia(post.coverImage) ? post.coverImage : null,

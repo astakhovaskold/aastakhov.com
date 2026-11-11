@@ -16,6 +16,7 @@ type ContentSchemaInput = {
   locale: Locale
   path: string
   publishedAt?: null | string
+  dateModified?: null | string
   title: string
 }
 
@@ -71,6 +72,7 @@ export function createArticleSchema(input: ContentSchemaInput): JsonLd {
       name: 'Askold Astakhov',
     },
     datePublished: input.publishedAt || undefined,
+    dateModified: input.dateModified || input.publishedAt || undefined,
     description: input.description,
     headline: input.title,
     inLanguage: input.locale,

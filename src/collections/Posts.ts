@@ -52,6 +52,18 @@ export const Posts: CollectionConfig = {
       type: 'date',
       index: true,
       admin: {
+        description:
+          'Дата и время публикации. Если дата в будущем, статья отложена и скрыта от ботов и читателей (404 на сервере) до наступления этого момента.',
+        position: 'sidebar',
+      },
+    },
+    {
+      name: 'lastModified',
+      type: 'date',
+      index: true,
+      admin: {
+        description:
+          'Ручная дата для HTTP-заголовка Last-Modified и SEO. Если не заполнено, берется системная дата обновления (updatedAt).',
         position: 'sidebar',
       },
     },

@@ -14,6 +14,7 @@ import {
 import { SectionHeader } from '@/components/site/section-header'
 import { routing } from '@/i18n/routing'
 import { getPostDetailBySlug } from '@/lib/post-detail'
+import { getPostLastModifiedDate } from '@/lib/post-dates'
 import {
   createNotFoundMetadata,
   createSeoMetadata,
@@ -46,11 +47,14 @@ export async function generateMetadata({ params }: PostDetailPageProps): Promise
     })
   }
 
+  const lastModified = getPostLastModifiedDate(post).toISOString()
+
   return createSeoMetadata({
     canonicalPath,
     entity: post,
     locale: locale as 'ru' | 'en',
     publishedTime: post.publishedAt,
+    modifiedTime: lastModified,
     settings,
     type: 'article',
   })
@@ -84,11 +88,14 @@ export default async function PostDetailPage({ params }: PostDetailPageProps) {
     { href: '/cv', label: 'CV' },
   ].filter((link): link is { href: string; label: string } => Boolean(link))
 
+  const lastModified = getPostLastModifiedDate(post).toISOString()
+
   return (
     <>
       <StructuredData
         data={[
           createArticleSchema({
+            dateModified: lastModified,
             description: post.description,
             locale: locale as 'en' | 'ru',
             path: `/posts/${post.slug}`,

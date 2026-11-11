@@ -16,6 +16,7 @@ type CreateSeoMetadataOptions = {
   locale: 'ru' | 'en'
   noindex?: boolean
   publishedTime?: null | string
+  modifiedTime?: null | string
   settings: PublicSiteSettings
   title?: null | string
   type?: 'article' | 'website'
@@ -89,9 +90,20 @@ export function createSeoMetadata(options: CreateSeoMetadataOptions): Metadata {
     title,
     type: options.type || ('website' as const),
     url: canonicalUrl,
-    ...(options.type === 'article' && options.publishedTime
-      ? { publishedTime: options.publishedTime }
+    ...(options.type === 'article' && (options.publishedTime || options.modifiedTime)
+      ? {
+          ...(options.publishedTime ? { publishedTime: options.publishedTime } : {}),
+          ...(options.modifiedTime ? { modifiedTime: options.modifiedTime } : {}),
+        }
       : {}),
+  }
+
+  const otherMeta: Record<string, string> = {}
+  if (options.modifiedTime) {
+    const modDate = new Date(options.modifiedTime)
+    if (!Number.isNaN(modDate.valueOf())) {
+      otherMeta['Last-Modified'] = modDate.toUTCString()
+    }
   }
 
   return {
@@ -105,6 +117,7 @@ export function createSeoMetadata(options: CreateSeoMetadataOptions): Metadata {
     },
     description,
     openGraph,
+    ...(Object.keys(otherMeta).length > 0 ? { other: otherMeta } : {}),
     robots: options.noindex
       ? {
           follow: false,

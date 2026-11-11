@@ -2,6 +2,7 @@ import config from '@payload-config'
 import { getPayload } from 'payload'
 
 import type { Post } from '@/payload-types'
+import { getPostLastModifiedDate } from '@/lib/post-dates'
 
 type PostDetailData = {
   nextPost: Post | null
@@ -126,3 +127,57 @@ export async function getPostDetailBySlug(
     return emptyPostDetailData
   }
 }
+
+export async function getPostLastModifiedBySlug(
+  slug: string,
+  locale: string,
+): Promise<Date | null> {
+  if (process.env.NEXT_PHASE === 'phase-production-build') {
+    return null
+  }
+
+  try {
+    const payload = await getPayload({ config })
+    const posts = await payload.find({
+      collection: 'posts',
+      depth: 0,
+      limit: 1,
+      locale: locale as 'en' | 'ru',
+      fallbackLocale: 'ru',
+      select: {
+        lastModified: true,
+        updatedAt: true,
+        publishedAt: true,
+      },
+      where: {
+        and: [
+          {
+            slug: {
+              equals: slug,
+            },
+          },
+          {
+            publishedAt: {
+              exists: true,
+            },
+          },
+          {
+            publishedAt: {
+              less_than_equal: new Date().toISOString(),
+            },
+          },
+        ],
+      },
+    })
+
+    const post = posts.docs[0]
+    if (!post) {
+      return null
+    }
+
+    return getPostLastModifiedDate(post)
+  } catch {
+    return null
+  }
+}
+
