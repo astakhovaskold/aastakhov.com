@@ -10,6 +10,7 @@ import {
   PostDetailCover,
   PostDetailHeader,
 } from '@/components/site/post-detail-content'
+import { MarkdownExport } from '@/components/site/markdown-export'
 import { PostConsultationCta } from '@/components/site/post-consultation-cta'
 import { PostList } from '@/components/site/post-list'
 import { TableOfContents } from '@/components/site/table-of-contents'
@@ -131,7 +132,12 @@ export default async function PostDetailPage({ params }: PostDetailPageProps) {
         <section className="section">
           <div className="post-detail-shell">
             <PostDetailCover post={post} />
-            <TableOfContents headings={extractHeadingsFromLexical(post.content)} title={tocT('title')} />
+            <aside className="post-aside">
+              <div className="post-aside-inner">
+                <MarkdownExport kind="posts" slug={post.slug} />
+                <TableOfContents headings={extractHeadingsFromLexical(post.content)} title={tocT('title')} />
+              </div>
+            </aside>
             <PostDetailContent post={post} />
             <PostConsultationCta settings={settings} text={ctaT('text')} title={ctaT('title')} />
           </div>

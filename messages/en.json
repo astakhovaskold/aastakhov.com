@@ -121,8 +121,8 @@
     "text": "If you have a similar problem in your product, tell me what it is. I will reply with how I would approach it."
   },
   "markdownExport": {
-    "copyMarkdown": "Copy Markdown for LLM",
-    "copied": "Copied for LLM",
+    "copyMarkdown": "Copy Markdown",
+    "copied": "Copied",
     "copyError": "Could not copy"
   }
 }

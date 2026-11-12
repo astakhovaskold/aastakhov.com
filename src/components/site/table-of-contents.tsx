@@ -53,7 +53,6 @@ export function TableOfContents(props: { headings: ExtractedHeading[]; title: st
 
   return (
     <nav aria-label={title} className="toc">
-      <div className="toc-inner">
         <details ref={detailsRef}>
           <summary>{title}</summary>
           <ol>
@@ -66,7 +65,6 @@ export function TableOfContents(props: { headings: ExtractedHeading[]; title: st
           ))}
           </ol>
         </details>
-      </div>
     </nav>
   )
 }
