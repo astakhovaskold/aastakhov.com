@@ -118,5 +118,9 @@
   },
   "toc": {
     "title": "Contents"
+  },
+  "postCta": {
+    "title": "Working on something similar?",
+    "text": "If you have a similar problem in your product, tell me what it is. I will reply with how I would approach it."
   }
 }

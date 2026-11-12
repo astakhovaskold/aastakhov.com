@@ -1327,3 +1327,18 @@ p {
   font-weight: 700;
   text-decoration: underline;
 }
+
+.post-cta {
+  margin-top: 56px;
+  padding: 28px 0;
+  border-top: 1px solid var(--text);
+  border-bottom: 1px solid var(--text);
+}
+
+.post-cta h2 {
+  font-size: 24px;
+}
+
+.post-cta p {
+  margin: 12px 0 18px;
+}

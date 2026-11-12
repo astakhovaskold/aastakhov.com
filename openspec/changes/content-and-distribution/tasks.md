@@ -14,11 +14,11 @@
 
 ## 3. Conversion CTA & Related Content
 
-- [ ] 3.1 Implement `<PostConsultationCta />` in `src/components/site/post-consultation-cta.tsx` offering direct booking, Telegram, and email links configured in Site Settings
-- [ ] 3.2 Implement `getRelatedPosts(post, locale)` helper in `src/lib/posts-index.ts` returning up to 3 related articles from the same category or project references
-- [ ] 3.3 Integrate `<TableOfContents />`, `<PostConsultationCta />`, and related content cards into `src/app/(frontend)/[locale]/posts/[slug]/page.tsx`
+- [x] 3.1 Implement `<PostConsultationCta />` in `src/components/site/post-consultation-cta.tsx` offering direct booking, Telegram, and email links configured in Site Settings
+- [x] 3.2 (covered by `getPostMoreData` in `src/lib/topics.ts`: explicit related posts, then same topic, then latest; no second helper) Implement `getRelatedPosts(post, locale)` helper in `src/lib/posts-index.ts` returning up to 3 related articles from the same category or project references
+- [x] 3.3 Integrate `<TableOfContents />`, `<PostConsultationCta />`, and related content cards into `src/app/(frontend)/[locale]/posts/[slug]/page.tsx`
 
 ## 4. Integration Verification
 
-- [ ] 4.1 Run full integration test suite (`pnpm run test:int`) and verify all test suites pass
-- [ ] 4.2 Run production build (`pnpm run build`) and verify route generation and TypeScript types succeed
+- [x] 4.1 Run full integration test suite (`pnpm run test:int`) and verify all test suites pass
+- [x] 4.2 Run production build (`pnpm run build`) and verify route generation and TypeScript types succeed

@@ -10,6 +10,7 @@ import {
   PostDetailCover,
   PostDetailHeader,
 } from '@/components/site/post-detail-content'
+import { PostConsultationCta } from '@/components/site/post-consultation-cta'
 import { PostList } from '@/components/site/post-list'
 import { TableOfContents } from '@/components/site/table-of-contents'
 import { SectionHeader } from '@/components/site/section-header'
@@ -73,12 +74,13 @@ export default async function PostDetailPage({ params }: PostDetailPageProps) {
 
   setRequestLocale(locale)
 
-  const [{ post }, settings, common, topicT, tocT] = await Promise.all([
+  const [{ post }, settings, common, topicT, tocT, ctaT] = await Promise.all([
     getPostDetailBySlug(slug, locale),
     getSiteSettings(locale),
     getTranslations('common'),
     getTranslations('topic'),
     getTranslations('toc'),
+    getTranslations('postCta'),
   ])
 
   if (!post || !isPubliclyIndexableEntity(post)) {
@@ -131,6 +133,7 @@ export default async function PostDetailPage({ params }: PostDetailPageProps) {
             <PostDetailCover post={post} />
             <TableOfContents headings={extractHeadingsFromLexical(post.content)} title={tocT('title')} />
             <PostDetailContent post={post} />
+            <PostConsultationCta settings={settings} text={ctaT('text')} title={ctaT('title')} />
           </div>
         </section>
       ) : null}
