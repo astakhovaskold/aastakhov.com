@@ -19,7 +19,14 @@ import { getSiteSettings } from '@/lib/siteSettings'
 import { createSiteGraph } from '@/lib/structured-data'
 import './styles.css'
 
-export const dynamic = 'force-dynamic'
+// Cached after the first request and refreshed on demand by the CMS hooks (src/lib/revalidate.ts).
+// Empty generateStaticParams: pages render on first request, then are cached. Prerendering at build
+// would bake empty pages, because the build guards return empty data.
+export const revalidate = 300
+
+export function generateStaticParams() {
+  return []
+}
 
 export const viewport: Viewport = {
   themeColor: '#ffffff',
@@ -28,10 +35,6 @@ export const viewport: Viewport = {
 type LocaleLayoutProps = {
   children: React.ReactNode
   params: Promise<{ locale: string }>
-}
-
-export function generateStaticParams() {
-  return routing.locales.map((locale) => ({ locale }))
 }
 
 export async function generateMetadata({

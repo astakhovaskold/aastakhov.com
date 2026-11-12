@@ -23,6 +23,11 @@ type PostCategoryPageProps = {
   }>
 }
 
+// Render on first request, then cache; the CMS hooks revalidate on demand (no build-time prerender).
+export function generateStaticParams() {
+  return []
+}
+
 export async function generateMetadata({ params }: PostCategoryPageProps): Promise<Metadata> {
   const { locale, slug } = await params
   const [allCategoryLinks, settings] = await Promise.all([

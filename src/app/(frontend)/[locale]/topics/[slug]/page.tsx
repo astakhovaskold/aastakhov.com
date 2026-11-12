@@ -23,6 +23,11 @@ type TopicPageProps = {
   }>
 }
 
+// Render on first request, then cache; the CMS hooks revalidate on demand (no build-time prerender).
+export function generateStaticParams() {
+  return []
+}
+
 export async function generateMetadata({ params }: TopicPageProps): Promise<Metadata> {
   const { locale, slug } = await params
   const [data, settings] = await Promise.all([getTopicPageData(locale, slug), getSiteSettings(locale)])

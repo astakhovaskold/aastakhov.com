@@ -36,6 +36,11 @@ type PostDetailPageProps = {
   }>
 }
 
+// Render on first request, then cache; the CMS hooks revalidate on demand (no build-time prerender).
+export function generateStaticParams() {
+  return []
+}
+
 export async function generateMetadata({ params }: PostDetailPageProps): Promise<Metadata> {
   const { locale, slug } = await params
   const [{ post }, settings] = await Promise.all([

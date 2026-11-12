@@ -4,7 +4,7 @@
 
 - [x] 1.1 Implement revalidation helpers in `src/lib/revalidation.ts` wrapping Next.js `revalidatePath` and `revalidateTag` with migration safeguards (done as `src/lib/revalidate.ts`, see seo-audit-remediation 4.3)
 - [x] 1.2 Wire `afterChange` and `afterDelete` hooks in `src/collections/Posts.ts`, `src/collections/Projects.ts`, `src/globals/SiteSettings.ts`, and `src/globals/CV.ts` (done in seo-audit-remediation 4.3)
-- [ ] 1.3 Update route segment configs in `src/app/(frontend)/[locale]/layout.tsx`, `src/app/(frontend)/[locale]/posts/page.tsx`, and detail pages from blanket `force-dynamic` to ISR with on-demand invalidation
+- [x] 1.3 Update route segment configs in `src/app/(frontend)/[locale]/layout.tsx`, `src/app/(frontend)/[locale]/posts/page.tsx`, and detail pages from blanket `force-dynamic` to ISR with on-demand invalidation (done: layout `revalidate = 300` plus empty `generateStaticParams` on the layout and slug pages, no build prerender; local `next start` shows MISS then HIT with real content on `/ru`; live check on preview/production stays in seo-audit-remediation 5.1/5.2)
 
 ## 2. Command Palette Search (Cmd+K)
 
