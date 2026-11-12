@@ -40,7 +40,6 @@
     "year": "Year",
     "started": "Started",
     "projectLink": "Project link",
-    "archivedAndFuture": "Archived and future items stay in the list.",
     "statusValues": {
       "active": "active",
       "in-progress": "in progress",
@@ -79,8 +78,6 @@
     "services": "Services",
     "fromTheBlog": "Blog",
     "openSource": "Open source",
-    "primaryBooking": "Book a call",
-    "primaryTelegram": "Message me on Telegram",
     "proof": "Proof"
   },
   "cv": {

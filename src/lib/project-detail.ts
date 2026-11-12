@@ -7,7 +7,6 @@ import type { Post, Project } from '@/payload-types'
 type ProjectDetailData = {
   project: Project | null
   relatedWriting: Post[]
-  selectedCaseNotes: Post[]
 }
 
 function populatedPosts(value: Array<number | Post> | null | undefined): Post[] {
@@ -22,7 +21,6 @@ export async function getProjectDetailBySlug(
     return {
       project: null,
       relatedWriting: [],
-      selectedCaseNotes: [],
     }
   }
 
@@ -47,20 +45,17 @@ export async function getProjectDetailBySlug(
       return {
         project: null,
         relatedWriting: [],
-        selectedCaseNotes: [],
       }
     }
 
     return {
       project,
       relatedWriting: populatedPosts(project.relatedWriting),
-      selectedCaseNotes: populatedPosts(project.selectedCaseNotes),
     }
   } catch {
     return {
       project: null,
       relatedWriting: [],
-      selectedCaseNotes: [],
     }
   }
 }

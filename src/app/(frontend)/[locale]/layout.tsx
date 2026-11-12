@@ -10,7 +10,7 @@ import { StructuredData } from '@/components/site/structured-data'
 import { WebMcpProvider } from '@/components/webmcp/WebMcpProvider'
 import { Link } from '@/i18n/navigation'
 import { routing } from '@/i18n/routing'
-import { AnalyticsLink } from '@/components/site/analytics-link'
+import { ArrowLink } from '@/components/site/arrow-link'
 import { getContactLinkEvent, getUmamiConfig } from '@/lib/analytics'
 import { getPrimaryContact } from '@/lib/contact'
 import { getSiteUrl, pageUrl } from '@/lib/seo'
@@ -149,7 +149,8 @@ export default async function RootLayout(props: LocaleLayoutProps) {
                   </Link>
                 ))}
                 {primaryContact ? (
-                  <AnalyticsLink
+                  <ArrowLink
+                    className="nav-cta"
                     href={primaryContact.href}
                     trackingEvent={getContactLinkEvent(
                       primaryContact.kind === 'booking' ? 'Book a call' : 'Telegram',
@@ -157,7 +158,7 @@ export default async function RootLayout(props: LocaleLayoutProps) {
                     )}
                   >
                     {t('discussProject')}
-                  </AnalyticsLink>
+                  </ArrowLink>
                 ) : null}
               </nav>
             </header>

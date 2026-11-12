@@ -1,9 +1,8 @@
 import { getLocale, getTranslations } from 'next-intl/server'
 
-import { ArrowLink } from '@/components/site/arrow-link'
+import { SectionHeader } from '@/components/site/section-header'
 import { ContentRenderer } from '@/components/site/content-renderer'
 import { Link } from '@/i18n/navigation'
-import { getContactLinkEvent } from '@/lib/analytics'
 import { getPostCategoryLabel } from '@/lib/posts-index'
 import type { Media, Post, Project } from '@/payload-types'
 
@@ -44,13 +43,22 @@ export async function ProjectDetailMeta(props: { project: Project }) {
     ? (t as unknown as (key: string) => string)(`statusValues.${project.status}`)
     : null
   const projectLinkLabel = t('projectLink')
-  const items = [
+  const highlights = (project.highlights ?? [])
+    .filter((item) => item.label && item.value)
+    .map((item) => ({ label: item.label, value: item.value }))
+  const legacyItems = [
     statusLabel ? { label: t('status'), value: statusLabel } : null,
     project.role ? { label: t('role'), value: project.role } : null,
     date ? { label: project.year ? t('year') : t('started'), value: date } : null,
     project.focus ? { label: t('focus'), value: project.focus } : null,
     project.externalUrl ? { label: projectLinkLabel, value: project.externalUrl } : null,
   ].filter((item): item is { label: string; value: string } => Boolean(item))
+  // Per-project highlights win; the fixed fields are only a fallback for projects that have none yet.
+  const projectLink = project.externalUrl
+    ? { label: projectLinkLabel, value: project.externalUrl }
+    : null
+  const items =
+    highlights.length > 0 ? [...highlights, ...(projectLink ? [projectLink] : [])] : legacyItems
   if (items.length === 0) return null
 
   return (
@@ -72,7 +80,7 @@ export function ProjectDetailCover(props: { project: Project }) {
   const coverImage = isMedia(project.coverImage) ? project.coverImage : null
   if (!coverImage?.url) return null
   return (
-    <figure className="project-cover">
+    <figure className="project-cover post-detail-cover">
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img alt={coverImage.alt || project.title} src={coverImage.url} />
     </figure>
@@ -86,7 +94,6 @@ export function ProjectDetailContent(props: { project: Project }) {
 export async function ProjectDetailRelatedPosts(props: { posts: Post[]; title: string }) {
   const { posts, title } = props
   if (posts.length === 0) return null
-  const headingId = title.toLowerCase().replace(/\s+/g, '-')
   const [common, postT, locale] = await Promise.all([
     getTranslations('common'),
     getTranslations('post'),
@@ -95,47 +102,20 @@ export async function ProjectDetailRelatedPosts(props: { posts: Post[]; title: s
   const readingTimeLabel = (minutes: number) => postT('readingTime', { minutes })
 
   return (
-    <section className="project-detail-section" aria-labelledby={headingId}>
-      <div className="section-header">
-        <h2 className="section-title" id={headingId}>
-          {title}
-        </h2>
-        <ArrowLink className="section-link" href="/posts">
-          {common('allPosts')}
-        </ArrowLink>
-      </div>
-      <div className="rows">
-        {posts.map((post) => (
-          <Link className="row row-link" href={`/posts/${post.slug}`} key={post.id}>
-            <span>
-              <span className="row-title">{post.title}</span>
-              <span className="row-desc">{post.description}</span>
-            </span>
-            <span className="row-meta">{formatPostMeta(post, locale, readingTimeLabel)}</span>
-          </Link>
-        ))}
-      </div>
-    </section>
-  )
-}
-
-export async function ProjectDetailContacts(props: {
-  links: Array<{ href: string; label: string }>
-}) {
-  const { links } = props
-  if (links.length === 0) return null
-  return (
-    <section className="project-next-step" id="contact">
-      <div className="contact-links">
-        {links.map((link) => (
-          <ArrowLink
-            href={link.href}
-            key={link.label}
-            trackingEvent={getContactLinkEvent(link.label, link.href)}
-          >
-            {link.label}
-          </ArrowLink>
-        ))}
+    <section className="section">
+      <div className="post-detail-shell">
+        <SectionHeader action={{ href: '/posts', label: common('allPosts') }} title={title} />
+        <div className="rows">
+          {posts.map((post) => (
+            <Link className="row row-link" href={`/posts/${post.slug}`} key={post.id}>
+              <span>
+                <span className="row-title">{post.title}</span>
+                <span className="row-desc">{post.description}</span>
+              </span>
+              <span className="row-meta">{formatPostMeta(post, locale, readingTimeLabel)}</span>
+            </Link>
+          ))}
+        </div>
       </div>
     </section>
   )

@@ -111,6 +111,11 @@ p {
   text-decoration: none;
 }
 
+.site-nav a.nav-cta {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
 .site-main {
   min-height: 62vh;
 }
@@ -156,28 +161,8 @@ p {
   display: block;
 }
 
-.primary-action {
-  margin-top: 28px;
-}
 
-.button-primary {
-  display: inline-flex;
-  align-items: center;
-  min-height: 48px;
-  padding: 0 24px;
-  border: 1px solid var(--text);
-  background: var(--text);
-  color: var(--background);
-  font-size: 16px;
-  font-weight: 600;
-  text-decoration: none;
-}
 
-.button-primary:hover,
-.button-primary:focus-visible {
-  background: var(--background);
-  color: var(--text);
-}
 
 .hero-avatar {
   width: 160px;
@@ -475,29 +460,9 @@ p {
   font-size: 14px;
 }
 
-.project-detail {
-  max-width: 650px;
-  padding-top: 72px;
-}
 
-.project-detail-header {
-  margin-bottom: 48px;
-}
 
-.project-detail-title {
-  max-width: 650px;
-  margin-bottom: 24px;
-  font-size: clamp(48px, 7vw, 72px);
-  line-height: 0.96;
-  letter-spacing: -0.055em;
-}
 
-.project-detail-subtitle {
-  max-width: 650px;
-  font-size: 21px;
-  line-height: 1.48;
-  letter-spacing: -0.018em;
-}
 
 .project-meta-grid {
   display: grid;
@@ -523,16 +488,7 @@ p {
   min-width: 0;
 }
 
-.project-cover {
-  width: 100%;
-  margin: 0 0 48px;
-}
 
-.project-cover img {
-  width: 100%;
-  height: auto;
-  object-fit: cover;
-}
 
 .content-renderer {
   display: flex;
@@ -852,22 +808,8 @@ p {
   border-top: 1px solid rgba(17, 17, 17, 0.15);
 }
 
-.project-detail-section {
-  max-width: 650px;
-  margin-bottom: 56px;
-}
 
-.project-next-step {
-  max-width: 650px;
-  margin-bottom: 56px;
-}
 
-.project-next-step p {
-  margin-bottom: 22px;
-  font-size: 21px;
-  line-height: 1.48;
-  letter-spacing: -0.018em;
-}
 
 .post-detail-shell {
   display: flex;
@@ -1115,18 +1057,8 @@ p {
     font-size: 18px;
   }
 
-  .project-detail {
-    padding-top: 54px;
-  }
 
-  .project-detail-title {
-    font-size: clamp(48px, 15vw, 68px);
-  }
 
-  .project-detail-subtitle,
-  .project-next-step p {
-    font-size: 18px;
-  }
 
   .project-meta-grid {
     grid-template-columns: 1fr;

@@ -60,21 +60,8 @@ function formatProjectYear(project: Pick<Project, 'year' | 'startedAt' | 'update
   return String(date.getUTCFullYear())
 }
 
-function formatProjectMeta(
-  project: ProjectSummary,
-  statusValues: (key: string) => string,
-): string {
-  const parts: string[] = [project.type]
-
-  parts.push(statusValues(project.status))
-
-  const year = formatProjectYear(project)
-
-  if (year) {
-    parts.push(year)
-  }
-
-  return parts.join(' / ')
+function formatProjectMeta(project: ProjectSummary): null | string {
+  return formatProjectYear(project)
 }
 
 function formatProjectTitle(project: ProjectSummary, t: (key: string) => string): string {
@@ -152,14 +139,11 @@ export default async function ProjectsPage({ params }: ProjectsPageProps) {
       </section>
 
       <section className="section" id="projects-list">
-        <SectionHeader
-          action={<span className="section-link">{projectT('archivedAndFuture')}</span>}
-          title={settings.projectsPage.title}
-        />
+        <SectionHeader title={settings.projectsPage.title} />
 
         {projects.length > 0 ? (
           <ProjectList
-            getMeta={(project) => formatProjectMeta(project, statusValues)}
+            getMeta={formatProjectMeta}
             getTitle={(project) => formatProjectTitle(project, projectTAny)}
             items={projects}
           />

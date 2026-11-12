@@ -1126,8 +1126,7 @@ async function seedContent(payload: Payload): Promise<void> {
   await payload.update({
     collection: 'projects',
     data: {
-      relatedWriting: writingIds,
-      selectedCaseNotes: caseNoteIds,
+      relatedWriting: [...writingIds, ...caseNoteIds],
     },
     id: automatica,
     locale: 'en',
@@ -1358,7 +1357,6 @@ async function verifySeedLocale(payload: Payload, locale: 'en' | 'ru'): Promise<
     posts: posts.docs.length,
     projectRelations: {
       relatedWriting: automatica?.relatedWriting?.length ?? 0,
-      selectedCaseNotes: automatica?.selectedCaseNotes?.length ?? 0,
     },
     projects: projects.docs.length,
     siteSettings: {
@@ -1378,8 +1376,7 @@ async function verifySeedLocale(payload: Payload, locale: 'en' | 'ru'): Promise<
     checks.postCategoryCounts.articles === 2 &&
     checks.postCategoryCounts.cases === 2 &&
     checks.postCategoryCounts.notes === 1 &&
-    checks.projectRelations.relatedWriting === 3 &&
-    checks.projectRelations.selectedCaseNotes === 2 &&
+    checks.projectRelations.relatedWriting === 5 &&
     checks.projects === 2 &&
     checks.siteSettings.selectedWork === 2 &&
     checks.siteSettings.services === 4 &&

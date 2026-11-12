@@ -100,6 +100,19 @@ export const Projects: CollectionConfig = {
       },
     },
     {
+      name: 'highlights',
+      type: 'array',
+      labels: { singular: 'Highlight', plural: 'Highlights' },
+      admin: {
+        description:
+          'Free-form facts shown above the project body (status, role, stack, audience, metrics, anything). When empty, the legacy status/role/year/focus fields are shown instead.',
+      },
+      fields: [
+        { name: 'label', type: 'text', required: true, localized: true },
+        { name: 'value', type: 'textarea', required: true, localized: true },
+      ],
+    },
+    {
       name: 'startedAt',
       type: 'date',
       admin: {
@@ -168,21 +181,12 @@ export const Projects: CollectionConfig = {
       ],
     },
     {
-      name: 'selectedCaseNotes',
-      type: 'relationship',
-      relationTo: 'posts',
-      hasMany: true,
-      admin: {
-        description: 'Optional, manually selected posts for the Selected case notes section.',
-      },
-    },
-    {
       name: 'relatedWriting',
       type: 'relationship',
       relationTo: 'posts',
       hasMany: true,
       admin: {
-        description: 'Optional, manually selected posts for the Related writing section.',
+        description: 'Optional, manually selected posts shown under the project as Related posts.',
       },
     },
     {

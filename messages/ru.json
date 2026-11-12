@@ -40,7 +40,6 @@
     "year": "Год",
     "started": "Начало",
     "projectLink": "Ссылка на проект",
-    "archivedAndFuture": "Архивные и будущие проекты остаются в списке.",
     "statusValues": {
       "active": "активный",
       "in-progress": "в процессе",
@@ -79,8 +78,6 @@
     "services": "Услуги",
     "fromTheBlog": "Блог",
     "openSource": "Open source",
-    "primaryBooking": "Записаться на звонок",
-    "primaryTelegram": "Написать в Telegram",
     "proof": "Результаты"
   },
   "cv": {

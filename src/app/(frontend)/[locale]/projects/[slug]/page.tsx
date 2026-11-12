@@ -4,13 +4,14 @@ import { getTranslations, setRequestLocale } from 'next-intl/server'
 import { notFound } from 'next/navigation'
 
 import {
-  ProjectDetailContacts,
   ProjectDetailContent,
   ProjectDetailCover,
   ProjectDetailMeta,
   ProjectDetailRelatedPosts,
 } from '@/components/site/project-detail-content'
+import { ContactLinks } from '@/components/site/contact-links'
 import { MarkdownExport } from '@/components/site/markdown-export'
+import { SectionHeader } from '@/components/site/section-header'
 import { StructuredData } from '@/components/site/structured-data'
 import { routing } from '@/i18n/routing'
 import { getProjectDetailBySlug } from '@/lib/project-detail'
@@ -63,11 +64,12 @@ export default async function ProjectDetailPage({ params }: ProjectDetailPagePro
 
   setRequestLocale(locale)
 
-  const [{ project, relatedWriting, selectedCaseNotes }, settings, projectDetailT] =
+  const [{ project, relatedWriting }, settings, projectDetailT, common] =
     await Promise.all([
       getProjectDetailBySlug(slug, locale),
       getSiteSettings(locale),
       getTranslations('projectDetail'),
+      getTranslations('common'),
     ])
 
   if (!project || !isProjectPubliclyVisible(project)) {
@@ -102,30 +104,38 @@ export default async function ProjectDetailPage({ params }: ProjectDetailPagePro
           ]),
         ]}
       />
-      <article className="project-detail">
-        <header className="project-detail-header">
+      <section className="hero">
+        <div className="post-detail-shell">
           {project.eyebrow ? <p className="eyebrow">{project.eyebrow}</p> : null}
-          <h1 className="project-detail-title">{project.title}</h1>
-          <p className="project-detail-subtitle">{project.description}</p>
-          <ProjectDetailMeta project={project} />
-          {hasProjectBody ? <MarkdownExport kind="projects" slug={project.slug} /> : null}
-        </header>
+          <header className="post-detail-header">
+            <h1>{project.title}</h1>
+            <p className="lede">{project.description}</p>
+            <ProjectDetailMeta project={project} />
+            {hasProjectBody ? <MarkdownExport kind="projects" slug={project.slug} /> : null}
+          </header>
+        </div>
+      </section>
 
-        {hasProjectBody ? (
-          <>
+      {hasProjectBody ? (
+        <section className="section">
+          <div className="post-detail-shell">
             <ProjectDetailCover project={project} />
             <ProjectDetailContent project={project} />
-          </>
-        ) : null}
-      </article>
+          </div>
+        </section>
+      ) : null}
 
       <ProjectDetailRelatedPosts
-        posts={[...selectedCaseNotes, ...relatedWriting].filter(
-          (post, index, all) => all.findIndex((other) => other.id === post.id) === index,
-        )}
+        posts={relatedWriting}
         title={projectDetailT('relatedWriting')}
       />
-      <ProjectDetailContacts links={contactLinks} />
+
+      <section className="section" id="contact">
+        <div className="post-detail-shell">
+          <SectionHeader title={common('contacts')} />
+          <ContactLinks links={contactLinks} />
+        </div>
+      </section>
     </>
   )
 }

@@ -233,6 +233,16 @@ export interface Project {
    * Optional focus line shown in the project detail metadata.
    */
   focus?: string | null;
+  /**
+   * Free-form facts shown above the project body (status, role, stack, audience, metrics, anything). When empty, the legacy status/role/year/focus fields are shown instead.
+   */
+  highlights?:
+    | {
+        label: string;
+        value: string;
+        id?: string | null;
+      }[]
+    | null;
   startedAt?: string | null;
   year?: number | null;
   previewImage?: (number | null) | Media;
@@ -265,11 +275,7 @@ export interface Project {
       }[]
     | null;
   /**
-   * Optional, manually selected posts for the Selected case notes section.
-   */
-  selectedCaseNotes?: (number | Post)[] | null;
-  /**
-   * Optional, manually selected posts for the Related writing section.
+   * Optional, manually selected posts shown under the project as Related posts.
    */
   relatedWriting?: (number | Post)[] | null;
   seo?: {
@@ -739,6 +745,13 @@ export interface ProjectsSelect<T extends boolean = true> {
   type?: T;
   role?: T;
   focus?: T;
+  highlights?:
+    | T
+    | {
+        label?: T;
+        value?: T;
+        id?: T;
+      };
   startedAt?: T;
   year?: T;
   previewImage?: T;
@@ -753,7 +766,6 @@ export interface ProjectsSelect<T extends boolean = true> {
         slug?: T;
         id?: T;
       };
-  selectedCaseNotes?: T;
   relatedWriting?: T;
   seo?:
     | T
