@@ -218,20 +218,6 @@ export default async function HomePage({
         </section>
       ) : null}
 
-      {settings.proof.length > 0 ? (
-        <section className="section" id="proof">
-          <SectionHeader title={t('proof')} />
-          <div className="expertise-grid">
-            {settings.proof.map((item) => (
-              <article className="expertise-item" key={item.title}>
-                <h3>{item.title}</h3>
-                {item.description ? <p>{item.description}</p> : null}
-              </article>
-            ))}
-          </div>
-        </section>
-      ) : null}
-
       {topics.length > 0 ? (
         <section className="section" id="topics">
           <SectionHeader title={common('topics')} />
