@@ -105,8 +105,7 @@
   "posts": {},
   "projects": {},
   "projectDetail": {
-    "relatedWriting": "Related writing",
-    "nextStep": "If the project direction is relevant to your company, the simplest next step is a short conversation about the system, risks, and current technical bottlenecks."
+    "relatedWriting": "Related writing"
   },
   "seo": {
     "personalSite": "Personal site for Askold Astakhov."

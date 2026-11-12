@@ -119,8 +119,12 @@ export default async function ProjectDetailPage({ params }: ProjectDetailPagePro
         ) : null}
       </article>
 
-      <ProjectDetailRelatedPosts posts={selectedCaseNotes} title={projectDetailT('relatedWriting')} />
-      <ProjectDetailRelatedPosts posts={relatedWriting} title={projectDetailT('relatedWriting')} />
+      <ProjectDetailRelatedPosts
+        posts={[...selectedCaseNotes, ...relatedWriting].filter(
+          (post, index, all) => all.findIndex((other) => other.id === post.id) === index,
+        )}
+        title={projectDetailT('relatedWriting')}
+      />
       <ProjectDetailContacts links={contactLinks} />
     </>
   )

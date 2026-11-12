@@ -124,10 +124,8 @@ export async function ProjectDetailContacts(props: {
 }) {
   const { links } = props
   if (links.length === 0) return null
-  const projectDetailT = await getTranslations('projectDetail')
   return (
     <section className="project-next-step" id="contact">
-      <p>{projectDetailT('nextStep')}</p>
       <div className="contact-links">
         {links.map((link) => (
           <ArrowLink
