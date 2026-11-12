@@ -115,5 +115,8 @@
     "morePosts": "More in this topic",
     "partOf": "Part of the topic",
     "topicHub": "Topic"
+  },
+  "toc": {
+    "title": "Contents"
   }
 }

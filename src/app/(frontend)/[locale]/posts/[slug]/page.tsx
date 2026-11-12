@@ -11,10 +11,12 @@ import {
   PostDetailHeader,
 } from '@/components/site/post-detail-content'
 import { PostList } from '@/components/site/post-list'
+import { TableOfContents } from '@/components/site/table-of-contents'
 import { SectionHeader } from '@/components/site/section-header'
 import { Link } from '@/i18n/navigation'
 import { routing } from '@/i18n/routing'
 import { getPostDetailBySlug } from '@/lib/post-detail'
+import { extractHeadingsFromLexical } from '@/lib/lexical-headings'
 import { getPostLastModifiedDate } from '@/lib/post-dates'
 import {
   createNotFoundMetadata,
@@ -71,11 +73,12 @@ export default async function PostDetailPage({ params }: PostDetailPageProps) {
 
   setRequestLocale(locale)
 
-  const [{ post }, settings, common, topicT] = await Promise.all([
+  const [{ post }, settings, common, topicT, tocT] = await Promise.all([
     getPostDetailBySlug(slug, locale),
     getSiteSettings(locale),
     getTranslations('common'),
     getTranslations('topic'),
+    getTranslations('toc'),
   ])
 
   if (!post || !isPubliclyIndexableEntity(post)) {
@@ -126,6 +129,7 @@ export default async function PostDetailPage({ params }: PostDetailPageProps) {
         <section className="section">
           <div className="post-detail-shell">
             <PostDetailCover post={post} />
+            <TableOfContents headings={extractHeadingsFromLexical(post.content)} title={tocT('title')} />
             <PostDetailContent post={post} />
           </div>
         </section>

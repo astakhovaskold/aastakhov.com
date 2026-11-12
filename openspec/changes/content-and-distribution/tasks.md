@@ -8,9 +8,9 @@
 
 ## 2. Table of Contents & Heading Anchors
 
-- [ ] 2.1 Implement `extractHeadingsFromLexical` in `src/lib/lexical-headings.ts` and verify unit tests in `tests/int/lexical-headings.int.spec.ts` cover extraction, slugification, and duplicate handling
-- [ ] 2.2 Update `src/components/site/content-renderer.tsx` heading blocks to assign matching anchor `id`s and render copyable permalink anchors
-- [ ] 2.3 Implement `<TableOfContents />` client component in `src/components/site/table-of-contents.tsx` using `IntersectionObserver` for active scrollspy
+- [x] 2.1 Implement `extractHeadingsFromLexical` in `src/lib/lexical-headings.ts` and verify unit tests in `tests/int/lexical-headings.int.spec.ts` cover extraction, slugification, and duplicate handling
+- [x] 2.2 Update `src/components/site/content-renderer.tsx` heading blocks to assign matching anchor `id`s and render copyable permalink anchors
+- [x] 2.3 Implement `<TableOfContents />` client component in `src/components/site/table-of-contents.tsx` using `IntersectionObserver` for active scrollspy
 
 ## 3. Conversion CTA & Related Content
 

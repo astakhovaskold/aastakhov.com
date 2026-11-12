@@ -1,6 +1,7 @@
 import React from 'react'
 
 import { Link } from '@/i18n/navigation'
+import { collectHeadings, type LexicalNodeLike } from '@/lib/lexical-headings'
 import type { Media } from '@/payload-types'
 import { CodeBlockRenderer } from './code-block-renderer'
 import { CalloutRenderer } from './callout-renderer'
@@ -150,13 +151,30 @@ function renderBlock(node: RichTextNode, key: React.Key): React.ReactNode {
   }
 }
 
-function renderNode(node: RichTextNode, key: React.Key): React.ReactNode {
+type HeadingIds = Map<LexicalNodeLike, string>
+
+const NO_HEADING_IDS: HeadingIds = new Map()
+
+function renderNode(node: RichTextNode, key: React.Key, ids: HeadingIds): React.ReactNode {
   switch (node.type) {
     case 'block':
       return renderBlock(node, key)
     case 'heading': {
       const Tag = node.tag ?? 'h2'
-      return <Tag key={key}>{renderChildren(node.children)}</Tag>
+      const id = ids.get(node)
+
+      if (!id) {
+        return <Tag key={key}>{renderChildren(node.children, ids)}</Tag>
+      }
+
+      return (
+        <Tag className="heading-anchored" id={id} key={key}>
+          {renderChildren(node.children, ids)}
+          <a aria-label={extractText(node).trim()} className="heading-anchor" href={`#${id}`}>
+            #
+          </a>
+        </Tag>
+      )
     }
     case 'paragraph': {
       const text = extractText(node).trim()
@@ -171,7 +189,7 @@ function renderNode(node: RichTextNode, key: React.Key): React.ReactNode {
         return null
       }
 
-      return <p key={key}>{renderChildren(node.children)}</p>
+      return <p key={key}>{renderChildren(node.children, ids)}</p>
     }
     case 'quote':
       return <blockquote key={key}>{renderChildren(node.children)}</blockquote>
@@ -223,17 +241,19 @@ function renderNode(node: RichTextNode, key: React.Key): React.ReactNode {
     case 'text':
       return <React.Fragment key={key}>{formatText(node, node.text ?? '')}</React.Fragment>
     default:
-      return <React.Fragment key={key}>{renderChildren(node.children)}</React.Fragment>
+      return <React.Fragment key={key}>{renderChildren(node.children, ids)}</React.Fragment>
   }
 }
 
-function renderChildren(nodes?: RichTextNode[]): React.ReactNode {
-  return nodes?.map((child, index) => renderNode(child, `${child.type}-${index}`)) ?? null
+function renderChildren(nodes?: RichTextNode[], ids: HeadingIds = NO_HEADING_IDS): React.ReactNode {
+  return nodes?.map((child, index) => renderNode(child, `${child.type}-${index}`, ids)) ?? null
 }
 
 export function ContentRenderer(props: { content?: RichTextDocument | null }) {
   const nodes = props.content?.root?.children
   if (!nodes?.length) return null
 
-  return <div className="content-renderer">{renderChildren(nodes)}</div>
+  const ids: HeadingIds = new Map(collectHeadings(props.content).map((entry) => [entry.node, entry.id]))
+
+  return <div className="content-renderer">{renderChildren(nodes, ids)}</div>
 }
