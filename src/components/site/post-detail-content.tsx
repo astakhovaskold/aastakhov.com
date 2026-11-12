@@ -1,6 +1,7 @@
 import { getLocale, getTranslations } from 'next-intl/server'
 import React from 'react'
 
+import { MarkdownExport } from '@/components/site/markdown-export'
 import { ContentRenderer } from '@/components/site/content-renderer'
 import { PostDates } from '@/components/site/post-dates'
 import { Link } from '@/i18n/navigation'
@@ -35,6 +36,7 @@ export async function PostDetailHeader(props: { post: Post }) {
         publishedText={(date) => t('publishedOn', { date })}
         updatedText={(date) => t('updatedOn', { date })}
       />
+      <MarkdownExport kind="posts" slug={post.slug} />
     </header>
   )
 }

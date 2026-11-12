@@ -54,6 +54,21 @@ const nextConfig: NextConfig = {
   turbopack: {
     root: path.resolve(dirname),
   },
+  async rewrites() {
+    return {
+      // Before pages: `/ru/posts/x.md` would otherwise match the `[slug]` page.
+      beforeFiles: [
+        {
+          source: '/:locale(ru|en)/posts/:slug.md',
+          destination: '/api/raw-markdown?kind=post&locale=:locale&slug=:slug',
+        },
+        {
+          source: '/:locale(ru|en)/projects/:slug.md',
+          destination: '/api/raw-markdown?kind=project&locale=:locale&slug=:slug',
+        },
+      ],
+    }
+  },
   async headers() {
     return [
       { source: '/:path*', headers: buildBaselineHeaders(securityOptions) },

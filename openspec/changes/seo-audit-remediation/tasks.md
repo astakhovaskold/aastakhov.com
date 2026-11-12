@@ -53,10 +53,10 @@ Finding IDs (F-xx) are in `audit-findings.md`. Decision IDs (D-x) are in `design
 
 ## 6. Agent and crawler files (spec `agent-discovery`)
 
-- [ ] 6.1 Create the AI access policy module and `src/app/robots.txt/route.ts` replacing `src/app/robots.ts`; repeat `Content-Signal` in every named group, one `User-agent: *` group, sitemap line on the canonical host. Verify with an int test that parses the output and with `curl -s /robots.txt` on the dev server.
-- [ ] 6.2 Add `src/app/llms.txt/route.ts` with owner summary and links to the CV, projects, posts and agent endpoints, from the same publication rule. Verify with an int test that every link in the output is a 200 route and `curl -sI /llms.txt` shows `text/plain`.
-- [ ] 6.3 Add `/.well-known/ai-catalog.json` listing the MCP and WebMCP endpoints as absolute URLs. Verify with `curl -s` that the JSON parses and both URLs respond (the MCP endpoint answers `tools/list` as before).
-- [ ] 6.4 Point `resource_documentation` in `src/app/.well-known/oauth-protected-resource/route.ts` at a 200 page (`/llms.txt`). Verify with `curl -sI` on the returned URL and that `tests/int` for the MCP routes still pass.
+- [x] 6.1 Create the AI access policy module and `src/app/robots.txt/route.ts` replacing `src/app/robots.ts`; repeat `Content-Signal` in every named group, one `User-agent: *` group, sitemap line on the canonical host. Verify with an int test that parses the output and with `curl -s /robots.txt` on the dev server.
+- [x] 6.2 Add `src/app/llms.txt/route.ts` with owner summary and links to the CV, projects, posts and agent endpoints, from the same publication rule. Verify with an int test that every link in the output is a 200 route and `curl -sI /llms.txt` shows `text/plain`.
+- [x] 6.3 Add `/.well-known/ai-catalog.json` listing the MCP and WebMCP endpoints as absolute URLs. Verify with `curl -s` that the JSON parses and both URLs respond (the MCP endpoint answers `tools/list` as before).
+- [x] 6.4 Point `resource_documentation` in `src/app/.well-known/oauth-protected-resource/route.ts` at a 200 page (`/llms.txt`). Verify with `curl -sI` on the returned URL and that `tests/int` for the MCP routes still pass.
 
 ## 7. Topic taxonomy (spec `blog-topic-taxonomy`)
 

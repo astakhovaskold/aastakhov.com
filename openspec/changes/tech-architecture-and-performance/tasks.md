@@ -14,9 +14,9 @@
 
 ## 3. AI Agent Standards (llms.txt & llms-full.txt)
 
-- [ ] 3.1 Implement route handler `src/app/llms.txt/route.ts` generating curated Markdown index of author expertise, core philosophies, and articles
-- [ ] 3.2 Implement route handler `src/app/llms-full.txt/route.ts` compiling complete Markdown documents of all published articles using `lexical-markdown.ts`
-- [ ] 3.3 Add automated integration tests in `tests/int/llms.int.spec.ts` verifying markdown structure and HTTP caching headers
+- [x] 3.1 Implement route handler `src/app/llms.txt/route.ts` generating curated Markdown index of author expertise, core philosophies, and articles (done in ai-agentic-web)
+- [x] 3.2 Implement route handler `src/app/llms-full.txt/route.ts` compiling complete Markdown documents of all published articles using `lexical-markdown.ts` (done in ai-agentic-web)
+- [x] 3.3 Add automated integration tests in `tests/int/llms.int.spec.ts` verifying markdown structure and HTTP caching headers (done in ai-agentic-web)
 
 ## 4. Integration Verification
 

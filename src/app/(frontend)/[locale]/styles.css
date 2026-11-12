@@ -1435,3 +1435,17 @@ p {
 .command-palette-status:empty {
   display: none;
 }
+
+.copy-markdown-btn {
+  align-self: flex-start;
+  min-height: 44px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--text);
+  font: inherit;
+  font-size: 14px;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}

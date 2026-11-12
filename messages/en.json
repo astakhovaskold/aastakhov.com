@@ -137,5 +137,10 @@
     "openSource": "Open source",
     "skills": "Skills & CV",
     "results": "Results"
+  },
+  "markdownExport": {
+    "copyMarkdown": "Copy Markdown for LLM",
+    "copied": "Copied for LLM",
+    "copyError": "Could not copy"
   }
 }

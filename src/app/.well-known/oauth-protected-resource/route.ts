@@ -16,7 +16,7 @@ export function GET(request: Request) {
       resource: audience,
       authorization_servers: [origin],
       scopes_supported: oauthScopes.split(' '),
-      resource_documentation: `${origin}/docs/payload-mcp`,
+      resource_documentation: `${origin}/llms.txt`,
     }),
     request,
   )

@@ -63,6 +63,29 @@ export function WebMcpProvider({ locale = 'ru' }: WebMcpProviderProps) {
         },
       },
       {
+        name: 'get_post_markdown',
+        description:
+          'Retrieve the full article as Markdown with YAML frontmatter, ready to use as model context.',
+        parameters: {
+          type: 'object',
+          properties: {
+            slug: { type: 'string', description: 'The unique slug of the article' },
+            locale: { type: 'string', enum: ['ru', 'en'], description: 'Language locale (default current)' },
+          },
+          required: ['slug'],
+        },
+        handler: async (args: { slug: string; locale?: string }) => {
+          try {
+            const l = args.locale || locale
+            const res = await fetch(`/${l}/posts/${encodeURIComponent(args.slug)}.md`)
+            if (!res.ok) return { error: `Markdown retrieval failed: HTTP ${res.status}` }
+            return await res.text()
+          } catch (err: any) {
+            return { error: err?.message || 'Network error retrieving markdown' }
+          }
+        },
+      },
+      {
         name: 'get_cv_summary',
         description: "Retrieve Askold Astakhov's professional background, role, summary, and tech stack.",
         parameters: {

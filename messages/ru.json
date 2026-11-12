@@ -137,5 +137,10 @@
     "openSource": "Open source",
     "skills": "Навыки и резюме",
     "results": "Результаты"
+  },
+  "markdownExport": {
+    "copyMarkdown": "Копировать Markdown для LLM",
+    "copied": "Скопировано",
+    "copyError": "Не удалось скопировать"
   }
 }

@@ -10,6 +10,7 @@ import {
   ProjectDetailMeta,
   ProjectDetailRelatedPosts,
 } from '@/components/site/project-detail-content'
+import { MarkdownExport } from '@/components/site/markdown-export'
 import { StructuredData } from '@/components/site/structured-data'
 import { routing } from '@/i18n/routing'
 import { getProjectDetailBySlug } from '@/lib/project-detail'
@@ -107,6 +108,7 @@ export default async function ProjectDetailPage({ params }: ProjectDetailPagePro
           <h1 className="project-detail-title">{project.title}</h1>
           <p className="project-detail-subtitle">{project.description}</p>
           <ProjectDetailMeta project={project} />
+          {hasProjectBody ? <MarkdownExport kind="projects" slug={project.slug} /> : null}
         </header>
 
         {hasProjectBody ? (
