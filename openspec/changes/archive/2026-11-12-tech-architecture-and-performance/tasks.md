@@ -8,9 +8,9 @@
 
 ## 2. Command Palette Search (Cmd+K)
 
-- [ ] 2.1 Implement accessible `<CommandPalette />` modal in `src/components/site/command-palette.tsx` with hotkey listener (`Cmd+K`, `Ctrl+K`, `/`), focus trap, and ARIA combobox pattern (dropped by owner: search not wanted; palette removed, nav shows \"Обсудить проект\" instead)
-- [ ] 2.2 Connect search input to `/api/webmcp/search` with debounce, result category groupings (Articles, Projects, Skills), and keyboard navigation (dropped by owner: search not wanted; palette removed, nav shows \"Обсудить проект\" instead)
-- [ ] 2.3 Add search trigger button with hotkey indicator into navigation header in `src/app/(frontend)/[locale]/layout.tsx` (dropped by owner: search not wanted; palette removed, nav shows \"Обсудить проект\" instead)
+- [x] 2.1 Implement accessible `<CommandPalette />` modal in `src/components/site/command-palette.tsx` with hotkey listener (`Cmd+K`, `Ctrl+K`, `/`), focus trap, and ARIA combobox pattern (dropped by owner: search not wanted; palette removed, nav shows \"Обсудить проект\" instead)
+- [x] 2.2 Connect search input to `/api/webmcp/search` with debounce, result category groupings (Articles, Projects, Skills), and keyboard navigation (dropped by owner: search not wanted; palette removed, nav shows \"Обсудить проект\" instead)
+- [x] 2.3 Add search trigger button with hotkey indicator into navigation header in `src/app/(frontend)/[locale]/layout.tsx` (dropped by owner: search not wanted; palette removed, nav shows \"Обсудить проект\" instead)
 
 ## 3. AI Agent Standards (llms.txt & llms-full.txt)
 
