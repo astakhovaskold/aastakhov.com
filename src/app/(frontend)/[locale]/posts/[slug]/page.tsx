@@ -121,28 +121,33 @@ export default async function PostDetailPage({ params }: PostDetailPageProps) {
           ]),
         ]}
       />
-      <section className="hero">
-        <div className="post-detail-shell">
-          {post.eyebrow ? <p className="eyebrow">{post.eyebrow}</p> : null}
-          <PostDetailHeader post={post} />
-        </div>
-      </section>
+      <div className="post-layout">
+        {post.coverImage || post.content?.root?.children?.length ? (
+          <aside className="post-aside">
+            <div className="post-aside-inner">
+              <MarkdownExport kind="posts" slug={post.slug} />
+              <TableOfContents headings={extractHeadingsFromLexical(post.content)} title={tocT('title')} />
+            </div>
+          </aside>
+        ) : null}
 
-      {post.coverImage || post.content?.root?.children?.length ? (
-        <section className="section">
+        <section className="hero">
           <div className="post-detail-shell">
-            <PostDetailCover post={post} />
-            <aside className="post-aside">
-              <div className="post-aside-inner">
-                <MarkdownExport kind="posts" slug={post.slug} />
-                <TableOfContents headings={extractHeadingsFromLexical(post.content)} title={tocT('title')} />
-              </div>
-            </aside>
-            <PostDetailContent post={post} />
-            <PostConsultationCta settings={settings} text={ctaT('text')} title={ctaT('title')} />
+            {post.eyebrow ? <p className="eyebrow">{post.eyebrow}</p> : null}
+            <PostDetailHeader post={post} />
           </div>
         </section>
-      ) : null}
+
+        {post.coverImage || post.content?.root?.children?.length ? (
+          <section className="section">
+            <div className="post-detail-shell">
+              <PostDetailCover post={post} />
+              <PostDetailContent post={post} />
+              <PostConsultationCta settings={settings} text={ctaT('text')} title={ctaT('title')} />
+            </div>
+          </section>
+        ) : null}
+      </div>
 
       <section className="section" id="post-more">
         <div className="post-detail-shell">

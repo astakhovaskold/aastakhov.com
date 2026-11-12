@@ -1223,7 +1223,22 @@ p {
   opacity: 0.5;
 }
 
+.post-layout {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.post-layout > .hero {
+  order: 1;
+}
+
+.post-layout > .section {
+  order: 3;
+}
+
 .post-aside {
+  order: 2;
   margin-bottom: 32px;
   border-bottom: 1px solid var(--text);
   font-size: 14px;
@@ -1265,13 +1280,13 @@ p {
   text-decoration: underline;
 }
 
-/* Wide screens: copy action and contents in the free space right of the article. */
+/* Wide screens: copy action and contents sit right of the article, level with the title and down. */
 @media (min-width: 1240px) {
   .post-aside {
     position: absolute;
-    top: 0;
+    top: 84px;
     bottom: 0;
-    left: calc(100% + 48px);
+    left: calc(680px + 48px);
     width: 240px;
     margin-bottom: 0;
     border-bottom: 0;
@@ -1282,12 +1297,16 @@ p {
     top: 24px;
     max-height: calc(100vh - 48px);
     overflow-y: auto;
-    padding-left: 16px;
-    border-left: 1px solid var(--text);
   }
 
+  /* The copy action stays outside the contents rule. */
   .post-aside .markdown-export {
-    margin-bottom: 20px;
+    margin-bottom: 24px;
+  }
+
+  .toc {
+    padding-left: 16px;
+    border-left: 1px solid var(--text);
   }
 
   .toc summary {
