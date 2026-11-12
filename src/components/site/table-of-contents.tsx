@@ -1,14 +1,28 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 import type { ExtractedHeading } from '@/lib/lexical-headings'
 
 const MIN_HEADINGS = 2
+/** Matches the CSS breakpoint where the TOC becomes a sticky side tree. */
+const WIDE_QUERY = '(min-width: 1240px)'
 
 export function TableOfContents(props: { headings: ExtractedHeading[]; title: string }) {
   const { headings, title } = props
   const [activeId, setActiveId] = useState<null | string>(null)
+  const detailsRef = useRef<HTMLDetailsElement>(null)
+
+  // Wide screens show the tree expanded; narrow screens keep a collapsed list.
+  useEffect(() => {
+    const query = window.matchMedia(WIDE_QUERY)
+    const sync = () => {
+      if (detailsRef.current) detailsRef.current.open = query.matches
+    }
+    sync()
+    query.addEventListener('change', sync)
+    return () => query.removeEventListener('change', sync)
+  }, [])
 
   useEffect(() => {
     if (headings.length < MIN_HEADINGS || typeof IntersectionObserver === 'undefined') return
@@ -39,9 +53,10 @@ export function TableOfContents(props: { headings: ExtractedHeading[]; title: st
 
   return (
     <nav aria-label={title} className="toc">
-      <details>
-        <summary>{title}</summary>
-        <ol>
+      <div className="toc-inner">
+        <details ref={detailsRef}>
+          <summary>{title}</summary>
+          <ol>
           {headings.map((heading) => (
             <li className={heading.level === 3 ? 'toc-sub' : undefined} key={heading.id}>
               <a aria-current={activeId === heading.id ? 'location' : undefined} href={`#${heading.id}`}>
@@ -49,8 +64,9 @@ export function TableOfContents(props: { headings: ExtractedHeading[]; title: st
               </a>
             </li>
           ))}
-        </ol>
-      </details>
+          </ol>
+        </details>
+      </div>
     </nav>
   )
 }

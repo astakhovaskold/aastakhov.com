@@ -1,9 +1,8 @@
 import { getLocale, getTranslations } from 'next-intl/server'
 
+import { PostList } from '@/components/site/post-list'
 import { SectionHeader } from '@/components/site/section-header'
 import { ContentRenderer } from '@/components/site/content-renderer'
-import { Link } from '@/i18n/navigation'
-import { getPostCategoryLabel } from '@/lib/posts-index'
 import type { Media, Post, Project } from '@/payload-types'
 
 function isMedia(value: number | Media | null | undefined): value is Media {
@@ -16,22 +15,6 @@ function formatProjectDate(project: Project, locale: string): string | null {
   const date = new Date(project.startedAt)
   if (Number.isNaN(date.valueOf())) return null
   return new Intl.DateTimeFormat(locale, { month: 'short', year: 'numeric' }).format(date)
-}
-
-function formatPostMeta(
-  post: Post,
-  locale: string,
-  readingTimeLabel: (minutes: number) => string,
-): string {
-  const parts: string[] = [getPostCategoryLabel(post.postCategory)].filter(Boolean)
-  if (post.publishedAt) {
-    const date = new Date(post.publishedAt)
-    if (!Number.isNaN(date.valueOf())) {
-      parts.push(new Intl.DateTimeFormat(locale, { month: 'short', year: 'numeric' }).format(date))
-    }
-  }
-  if (post.readingTime) parts.push(readingTimeLabel(post.readingTime))
-  return parts.join(' / ')
 }
 
 export async function ProjectDetailMeta(props: { project: Project }) {
@@ -94,28 +77,13 @@ export function ProjectDetailContent(props: { project: Project }) {
 export async function ProjectDetailRelatedPosts(props: { posts: Post[]; title: string }) {
   const { posts, title } = props
   if (posts.length === 0) return null
-  const [common, postT, locale] = await Promise.all([
-    getTranslations('common'),
-    getTranslations('post'),
-    getLocale(),
-  ])
-  const readingTimeLabel = (minutes: number) => postT('readingTime', { minutes })
+  const common = await getTranslations('common')
 
   return (
     <section className="section">
       <div className="post-detail-shell">
         <SectionHeader action={{ href: '/posts', label: common('allPosts') }} title={title} />
-        <div className="rows">
-          {posts.map((post) => (
-            <Link className="row row-link" href={`/posts/${post.slug}`} key={post.id}>
-              <span>
-                <span className="row-title">{post.title}</span>
-                <span className="row-desc">{post.description}</span>
-              </span>
-              <span className="row-meta">{formatPostMeta(post, locale, readingTimeLabel)}</span>
-            </Link>
-          ))}
-        </div>
+        <PostList items={posts} />
       </div>
     </section>
   )
