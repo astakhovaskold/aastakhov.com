@@ -2,9 +2,9 @@
 
 ## 1. RSS Feed Syndication
 
-- [ ] 1.1 Implement `src/lib/rss.ts` feed builder helper with XML entity escaping and verify unit tests in `tests/int/rss.int.spec.ts` pass
-- [ ] 1.2 Implement route handlers for `/feed.xml`, `/rss.xml`, and localized variants `/[locale]/feed.xml` returning valid RSS 2.0 XML with appropriate caching headers
-- [ ] 1.3 Add RSS autodiscovery `<link rel="alternate" type="application/rss+xml">` tags in `src/app/(frontend)/[locale]/layout.tsx` and verify in rendered metadata
+- [x] 1.1 Implement `src/lib/rss.ts` feed builder helper with XML entity escaping and verify unit tests in `tests/int/rss.int.spec.ts` pass
+- [x] 1.2 Implement route handlers for `/feed.xml`, `/rss.xml`, and localized variants `/[locale]/feed.xml` returning valid RSS 2.0 XML with appropriate caching headers
+- [x] 1.3 Add RSS autodiscovery `<link rel="alternate" type="application/rss+xml">` tags in `src/app/(frontend)/[locale]/layout.tsx` and verify in rendered metadata
 
 ## 2. Table of Contents & Heading Anchors
 

@@ -11,7 +11,7 @@ import { WebMcpProvider } from '@/components/webmcp/WebMcpProvider'
 import { Link } from '@/i18n/navigation'
 import { routing } from '@/i18n/routing'
 import { getUmamiConfig } from '@/lib/analytics'
-import { getSiteUrl } from '@/lib/seo'
+import { getSiteUrl, pageUrl } from '@/lib/seo'
 import { buildNavItems, getNavigationCounts } from '@/lib/navigation'
 import { getSiteSettings } from '@/lib/siteSettings'
 import { createSiteGraph } from '@/lib/structured-data'
@@ -106,6 +106,12 @@ export default async function RootLayout(props: LocaleLayoutProps) {
       <head>
         <link rel="model-context" href="/api/mcp" />
         <link rel="webmcp" href="/api/webmcp/search" />
+        <link
+          href={pageUrl(locale, '/feed.xml')}
+          rel="alternate"
+          title={`${settings.name} — RSS`}
+          type="application/rss+xml"
+        />
       </head>
       <body>
         <WebMcpProvider locale={locale} />
