@@ -186,7 +186,9 @@ export default async function HomePage({
           <Image
             alt="Askold Astakhov"
             className="hero-avatar"
+            fetchPriority="high"
             height="210"
+            loading="eager"
             src="/askold-avatar.jpeg"
             width="160"
           />

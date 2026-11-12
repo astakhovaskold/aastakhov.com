@@ -15,6 +15,7 @@ import { getSiteUrl, pageUrl } from '@/lib/seo'
 import { buildNavItems, getNavigationCounts } from '@/lib/navigation'
 import { getSiteSettings } from '@/lib/siteSettings'
 import { createSiteGraph } from '@/lib/structured-data'
+import { CommandPalette, CommandPaletteTrigger } from '@/components/site/command-palette'
 import './styles.css'
 
 export const dynamic = 'force-dynamic'
@@ -117,6 +118,7 @@ export default async function RootLayout(props: LocaleLayoutProps) {
         <WebMcpProvider locale={locale} />
         <StructuredData data={createSiteGraph(settings, locale as 'en' | 'ru')} />
         <NextIntlClientProvider>
+          <CommandPalette />
           {umamiConfig ? (
             <Script
               data-auto-track="false"
@@ -144,6 +146,7 @@ export default async function RootLayout(props: LocaleLayoutProps) {
                     {t(item.key)}
                   </Link>
                 ))}
+                <CommandPaletteTrigger />
               </nav>
             </header>
 

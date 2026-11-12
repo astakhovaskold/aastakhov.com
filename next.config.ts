@@ -3,13 +3,26 @@ import createNextIntlPlugin from 'next-intl/plugin'
 import type { NextConfig } from 'next'
 import path from 'path'
 import { fileURLToPath } from 'url'
+import {
+  buildBaselineHeaders,
+  buildCspHeader,
+  cspSourcePattern,
+  toOrigin,
+} from './src/lib/security-headers'
 
 const __filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(__filename)
 const blobStoreID = process.env.BLOB_READ_WRITE_TOKEN?.match(/^vercel_blob_rw_([a-z\d]+)_/i)?.[1]
 
+const securityOptions = {
+  analyticsOrigin: toOrigin(process.env.NEXT_PUBLIC_UMAMI_URL) ?? 'https://umami.aastakhov.com',
+  isDev: process.env.NODE_ENV !== 'production',
+}
+
 const nextConfig: NextConfig = {
+  poweredByHeader: false,
   images: {
+    minimumCacheTTL: 31536000,
     localPatterns: [
       {
         pathname: '/api/media/file/**',
@@ -43,6 +56,8 @@ const nextConfig: NextConfig = {
   },
   async headers() {
     return [
+      { source: '/:path*', headers: buildBaselineHeaders(securityOptions) },
+      { source: cspSourcePattern(), headers: [buildCspHeader(securityOptions)] },
       {
         source: '/api/mcp/:path*',
         headers: [
