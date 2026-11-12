@@ -63,3 +63,17 @@ Recorded 2026-11-12. Approved by the site owner in chat.
 Open: the education entries differ between the locales (EN: Tula College of Arts 2015–2019, SUAI studied 2023–2024; RU: SUAI 2015–2019). The RU CV was not changed for education; the owner decides which is right.
 
 Applied by the data migration `20261112_120000_owner_decisions_content`.
+
+### External validation, schema.org validator (2026-11-12)
+
+Run against production (deploy `aastakhov-yc2aikged`, commit `d62c974`) at `https://validator.schema.org/`:
+
+| URL | Items found | Errors | Warnings |
+|---|---|---|---|
+| `/ru` | WebSite (Person nested as publisher) | 0 | 0 |
+| `/en/cv` | BreadcrumbList, ProfilePage, WebSite | 0 | 0 |
+| `/ru/posts/frontend-that-does-not-collapse` | BreadcrumbList, BlogPosting, WebSite | 0 | 0 |
+
+The Google Rich Results Test was not run: it needs an interactive Google session. None of these types is eligible for a rich result, so the schema.org validator is the relevant check.
+
+Seen while validating: `WebSite.description` is the site `seo.defaultDescription`, which is still «Личный сайт» in RU. Update that field in the admin to a descriptive text.
