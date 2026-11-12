@@ -9,7 +9,9 @@ export async function GET() {
 
   return new Response(buildLlmsFullTxt({ documents, name: settings.name }), {
     headers: {
-      'Cache-Control': 'public, max-age=3600, stale-while-revalidate=86400',
+      // s-maxage lets the Vercel edge serve a cached copy; without it every request rebuilds the file from the DB
+      // and cold hits take seconds (PageSpeed timed out fetching llms.txt).
+      'Cache-Control': 'public, max-age=300, s-maxage=600, stale-while-revalidate=86400',
       'Content-Type': 'text/plain; charset=utf-8',
     },
   })

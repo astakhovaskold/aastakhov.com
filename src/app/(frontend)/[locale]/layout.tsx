@@ -113,6 +113,7 @@ export default async function RootLayout(props: LocaleLayoutProps) {
         <link rel="model-context" href="/api/mcp" />
         <link rel="webmcp" href="/api/webmcp/search" />
         <link rel="alternate" type="text/markdown" href="/llms.txt" title="llms.txt" />
+        <link rel="ard" href="/.well-known/ard.json" />
         <link
           href={pageUrl(locale, '/feed.xml')}
           rel="alternate"
