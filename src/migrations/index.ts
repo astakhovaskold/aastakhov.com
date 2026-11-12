@@ -11,6 +11,7 @@ import * as migration_20261111_190336_add_posts_last_modified from './20261111_1
 import * as migration_20261111_215928_seo_person_fields from './20261111_215928_seo_person_fields';
 import * as migration_20261111_221001_topics_taxonomy from './20261111_221001_topics_taxonomy';
 import * as migration_20261111_234011_proof_points from './20261111_234011_proof_points';
+import * as migration_20261112_120000_owner_decisions_content from './20261112_120000_owner_decisions_content';
 import * as migration_20261112_100000_seo_default_metadata from './20261112_100000_seo_default_metadata';
 
 export const migrations = [
@@ -78,6 +79,11 @@ export const migrations = [
     up: migration_20261111_234011_proof_points.up,
     down: migration_20261111_234011_proof_points.down,
     name: '20261111_234011_proof_points',
+  },
+  {
+    up: migration_20261112_120000_owner_decisions_content.up,
+    down: migration_20261112_120000_owner_decisions_content.down,
+    name: '20261112_120000_owner_decisions_content',
   },
   {
     up: migration_20261112_100000_seo_default_metadata.up,

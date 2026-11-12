@@ -44,3 +44,22 @@ Checks applied to every page: exactly one Person, `@id` references to the Person
 Topic behaviour seen on the same server: hub lists the pillar first; the spoke post links to the topic hub and to the pillar, and its "More" list starts with the explicit related post; the pillar post links to every other post in the topic; the home page and the sitemap list the non-empty topic and not the empty one.
 
 Still to do after deploy: run `/ru`, `/en/cv` and one post through the Rich Results Test and the schema.org validator, then record zero errors here.
+
+## 3. Owner decisions (task 4.1)
+
+Recorded 2026-11-12. Approved by the site owner in chat.
+
+| Fact | Decision |
+|---|---|
+| Location | Remote, no city, in both locales (RU: «Удалённо») |
+| Canonical role title | Frontend Architect & Tech Lead, in both locales |
+| Availability | Available for external projects (RU: «Доступен для внешних проектов»). The owner works at a company and stays open to external work as an independent expert |
+| Employment framing | Current position at Philosophy.IT stays on the CV; the independent offer stays on the home page |
+| Team size | 6–8 engineers in direct management (as in the EN CV); Philosophy.IT is a 47-engineer consultancy |
+| Services | Already on the home page (Audit, Consulting, Development, Support and retainer) |
+| Proof points | The four metrics of the EN CV (-60% project setup, PR merge 1.5 to 0.4 days, -78% contract-mismatch rejections, 2.8 s to 300 ms) |
+| RU CV | Synced with the EN CV, including metrics |
+
+Open: the education entries differ between the locales (EN: Tula College of Arts 2015–2019, SUAI studied 2023–2024; RU: SUAI 2015–2019). The RU CV was not changed for education; the owner decides which is right.
+
+Applied by the data migration `20261112_120000_owner_decisions_content`.
