@@ -77,3 +77,14 @@ Run against production (deploy `aastakhov-yc2aikged`, commit `d62c974`) at `http
 The Google Rich Results Test was not run: it needs an interactive Google session. None of these types is eligible for a rich result, so the schema.org validator is the relevant check.
 
 Seen while validating: `WebSite.description` is the site `seo.defaultDescription`, which is still «Личный сайт» in RU. Update that field in the admin to a descriptive text.
+
+## 5. Caching, headers and images (group 5, checked 2026-11-12 on production)
+
+- Pages are cached at the edge: `/ru` returned `x-vercel-cache: HIT`, `/ru/posts` returned `STALE` (revalidating). `Cache-Control` is `public, max-age=0, must-revalidate`, which is Vercel's browser-facing value for ISR; the edge cache is what `x-vercel-cache` shows. Two consecutive `/ru` requests: TTFB 0.18 s and 0.25 s.
+- Code: `revalidate = 300` in `src/app/(frontend)/[locale]/layout.tsx`, on-demand invalidation from `src/hooks/revalidate.ts` and `src/lib/revalidate.ts`. `force-dynamic` remains only on route handlers (feeds, `llms*.txt`, OAuth, `ai-catalog.json`).
+- Security headers on `/ru` and `/ru/posts`: `X-Content-Type-Options`, `Referrer-Policy`, `Permissions-Policy`, `Strict-Transport-Security: max-age=63072000` (no `includeSubDomains`), `X-Frame-Options: SAMEORIGIN`, `Content-Security-Policy-Report-Only`. No `X-Powered-By`. The enforcing switch (5.4) waits for one clean week after the 2026-11-12 deploy.
+- Hero image: home HTML has `fetchPriority="high"` and `loading="eager"` on the portrait, plus a matching `<link rel="preload" as="image">`.
+- Image response: `/_next/image?...` returns `Cache-Control: public, max-age=0, must-revalidate` with `x-vercel-cache: HIT`, although `images.minimumCacheTTL` is 31536000. Vercel rewrites the browser-facing value; the long TTL applies at its edge cache. Cloudflare reports `cf-cache-status: DYNAMIC`, so it does not cache these.
+- Umami: `<link rel="preload" href="https://umami.aastakhov.com/script.js" as="script">` is still in the home HTML. Not changed: `strategy="lazyOnload"` would drop the first page view, because `createUmamiAdapter` ignores events until `window.umami` exists.
+- Decision (2026-11-12): keep the Umami script as `afterInteractive` with its preload.
+- `browserslist` (5.6): not added. Next 16.3.0 defaults to chrome 111, edge 111, firefox 111, safari 16.4. `polyfills-*.js` (112 KB) is `noModule`, so modern browsers skip it. The polyfill checks (`Array.prototype.at`, `Object.fromEntries`, `Object.hasOwn`, `flatMap`) sit in the shared chunk `5297-*.js`, likely Next internals. No build comparison was run.

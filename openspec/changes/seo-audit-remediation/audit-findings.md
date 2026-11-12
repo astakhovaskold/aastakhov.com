@@ -12,6 +12,15 @@ Live `/ru|en/posts`, `/ru|en/projects` and all four category pages are empty, al
 
 Code lead (read-only check): the sitemap filters with `isProjectPublic` (`src/lib/projects.ts`) and the detail route additionally requires `isPubliclyIndexableEntity` (`src/lib/seo.ts`). The two disagree when `_status` is `published` but `publishedAt` is null or in the future. `isProjectPublic` ignores `publishedAt` once `_status` is set, while `isPubliclyIndexableEntity` rejects it. This is a hypothesis; verify against the production record before changing code.
 
+### Production diagnosis (group 1, checked 2026-11-12)
+
+Method: public Payload REST (`/api/posts|projects?locale=all&fallback-locale=none`), live URLs and `sitemap.xml` via `curl`. No DB access.
+
+- **1.1 `automatica`: D4 hypothesis rejected for now.** `published: true`, `status: active`, `ru` and `en` title and description present. The record has no `_status` and no `publishedAt` field in the API output, so `isProjectPublic` falls through to the `published` flag. `/ru/projects/automatica` and `/en/projects/automatica` return 200, and both are in the sitemap. The 404 and the empty lists from the audit no longer reproduce; production was fixed after 2026-11-11 (the posts and projects were published or seeded). Whether `isProjectPublic` and `isPubliclyIndexableEntity` can still disagree is a code-level risk, not a live bug. Keep the shared rule `isProjectPubliclyVisible` (already in `src/lib/projects.ts`).
+- **1.2 Counts.** Posts: 7 published, each with `ru` and `en` titles; sitemap lists 7 per locale. `src/seed-content.ts` is outdated (owner), so it is not the baseline; the production data and current schema are. Projects: 2 (`automatica`, `personal-website`), both locales, both in the sitemap. Categories: `articles`, `cases`, `notes`, `guides` return 200 in both locales; `essays` (only in the outdated seed) returns 404 in both, which is expected. Sitemap lists `articles`, `cases`, `notes` but not `guides`. Topics collection: 0 docs. Conclusion: production content is published; the only open gap is `guides` missing from the sitemap. Task 8.1 should not use the seed as the target list.
+- **1.3 F-18 does not reproduce.** `/ru/projects` and `/en/projects` return 200 and list both projects. The old mismatch (index empty while the detail page is 200) matches the stale state from before the fix. Differing condition at audit time: not provable now; the code already uses one rule in list, detail, nav and WebMCP. Open item: `guides` in the sitemap and in the "Темы" block.
+- **1.4 Subdomains.** `www` answers 307 over valid HTTPS; `umami.aastakhov.com` answers 200 over valid TLS (`ssl_verify_result` 0); apex answers 308 to `https://www.aastakhov.com/`. Only the subdomains named in the task were checked; the full DNS list needs the owner (Cloudflare DNS). HSTS `includeSubDomains` in 5.4 is not blocked by these hosts.
+
 ## Critical
 
 - **F-01 No indexable content.** Posts, projects, categories empty in both locales; home has about 46 words. Failure check: `/ru/posts` still shows the empty message after publishing. (content, sxo, geo, cluster)
