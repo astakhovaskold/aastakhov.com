@@ -10,12 +10,13 @@ import { StructuredData } from '@/components/site/structured-data'
 import { WebMcpProvider } from '@/components/webmcp/WebMcpProvider'
 import { Link } from '@/i18n/navigation'
 import { routing } from '@/i18n/routing'
-import { getUmamiConfig } from '@/lib/analytics'
+import { AnalyticsLink } from '@/components/site/analytics-link'
+import { getContactLinkEvent, getUmamiConfig } from '@/lib/analytics'
+import { getPrimaryContact } from '@/lib/contact'
 import { getSiteUrl, pageUrl } from '@/lib/seo'
 import { buildNavItems, getNavigationCounts } from '@/lib/navigation'
 import { getSiteSettings } from '@/lib/siteSettings'
 import { createSiteGraph } from '@/lib/structured-data'
-import { CommandPalette, CommandPaletteTrigger } from '@/components/site/command-palette'
 import './styles.css'
 
 export const dynamic = 'force-dynamic'
@@ -99,6 +100,7 @@ export default async function RootLayout(props: LocaleLayoutProps) {
     getNavigationCounts(locale),
   ])
   const navItems = buildNavItems(navCounts)
+  const primaryContact = getPrimaryContact(settings)
   const footerT = await getTranslations('footer')
   const umamiConfig = getUmamiConfig()
 
@@ -119,7 +121,6 @@ export default async function RootLayout(props: LocaleLayoutProps) {
         <WebMcpProvider locale={locale} />
         <StructuredData data={createSiteGraph(settings, locale as 'en' | 'ru')} />
         <NextIntlClientProvider>
-          <CommandPalette />
           {umamiConfig ? (
             <Script
               data-auto-track="false"
@@ -147,7 +148,17 @@ export default async function RootLayout(props: LocaleLayoutProps) {
                     {t(item.key)}
                   </Link>
                 ))}
-                <CommandPaletteTrigger />
+                {primaryContact ? (
+                  <AnalyticsLink
+                    href={primaryContact.href}
+                    trackingEvent={getContactLinkEvent(
+                      primaryContact.kind === 'booking' ? 'Book a call' : 'Telegram',
+                      primaryContact.href,
+                    )}
+                  >
+                    {t('discussProject')}
+                  </AnalyticsLink>
+                ) : null}
               </nav>
             </header>
 

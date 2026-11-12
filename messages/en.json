@@ -4,7 +4,8 @@
     "mainNavigation": "Main navigation",
     "projects": "Projects",
     "posts": "Blog",
-    "cv": "CV"
+    "cv": "CV",
+    "discussProject": "Discuss a project"
   },
   "footer": {
     "copyright": "(c) 2026 {name}",
@@ -122,21 +123,6 @@
   "postCta": {
     "title": "Working on something similar?",
     "text": "If you have a similar problem in your product, tell me what it is. I will reply with how I would approach it."
-  },
-  "search": {
-    "trigger": "Search",
-    "triggerLabel": "Open search",
-    "title": "Search the site",
-    "placeholder": "Search articles, projects, skills…",
-    "close": "Close",
-    "noResults": "Nothing found",
-    "hint": "Type to search",
-    "loading": "Searching…",
-    "articles": "Articles",
-    "projects": "Projects",
-    "openSource": "Open source",
-    "skills": "Skills & CV",
-    "results": "Results"
   },
   "markdownExport": {
     "copyMarkdown": "Copy Markdown for LLM",
