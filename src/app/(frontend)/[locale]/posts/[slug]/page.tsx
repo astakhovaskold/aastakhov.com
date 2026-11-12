@@ -80,13 +80,14 @@ export default async function PostDetailPage({ params }: PostDetailPageProps) {
 
   setRequestLocale(locale)
 
-  const [{ post }, settings, common, topicT, tocT, ctaT] = await Promise.all([
+  const [{ post }, settings, common, topicT, tocT, ctaT, navT] = await Promise.all([
     getPostDetailBySlug(slug, locale),
     getSiteSettings(locale),
     getTranslations('common'),
     getTranslations('topic'),
     getTranslations('toc'),
     getTranslations('postCta'),
+    getTranslations('nav'),
   ])
 
   if (!post || !isPubliclyIndexableEntity(post)) {
@@ -98,11 +99,13 @@ export default async function PostDetailPage({ params }: PostDetailPageProps) {
   const contactLinks = [
     settings.telegram ? { href: settings.telegram, label: 'Telegram' } : null,
     { href: `mailto:${settings.email}`, label: 'Email' },
-    settings.bookingUrl ? { href: settings.bookingUrl, label: 'Book a call' } : null,
+    settings.bookingUrl
+      ? { href: settings.bookingUrl, kind: 'booking' as const, label: navT('discussProject') }
+      : null,
     settings.linkedin ? { href: settings.linkedin, label: 'LinkedIn' } : null,
     settings.github ? { href: settings.github, label: 'GitHub' } : null,
     { href: '/cv', label: 'CV' },
-  ].filter((link): link is { href: string; label: string } => Boolean(link))
+  ].filter((link): link is { href: string; kind?: 'booking'; label: string } => Boolean(link))
 
   const lastModified = getPostLastModifiedDate(post).toISOString()
 
@@ -148,7 +151,7 @@ export default async function PostDetailPage({ params }: PostDetailPageProps) {
             <div className="post-detail-shell">
               <PostDetailCover post={post} />
               <PostDetailContent post={post} />
-              <PostConsultationCta settings={settings} text={ctaT('text')} title={ctaT('title')} />
+              <PostConsultationCta bookingLabel={navT('discussProject')} settings={settings} text={ctaT('text')} title={ctaT('title')} />
             </div>
           </section>
         ) : null}

@@ -13,6 +13,7 @@ describe('PostConsultationCta', () => {
   it('renders booking, Telegram and email links from site settings', () => {
     const html = renderToString(
       <PostConsultationCta
+        bookingLabel="Discuss a project"
         settings={{ bookingUrl: 'https://cal.example/a', email: 'a@example.com', telegram: 'https://t.me/a' }}
         text="Tell me what it is."
         title="Working on something similar?"
@@ -21,11 +22,12 @@ describe('PostConsultationCta', () => {
 
     expect(html).toContain('Working on something similar?')
     expect(html).toContain('https://cal.example/a')
+    expect(html).toContain('Discuss a project')
     expect(html).toContain('https://t.me/a')
     expect(html).toContain('mailto:a@example.com')
   })
 
   it('renders nothing when no contact is configured', () => {
-    expect(renderToString(<PostConsultationCta settings={{ email: '' }} text="x" title="y" />)).toBe('')
+    expect(renderToString(<PostConsultationCta bookingLabel="x" settings={{ email: '' }} text="x" title="y" />)).toBe('')
   })
 })

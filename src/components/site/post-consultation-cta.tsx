@@ -3,16 +3,20 @@ import { buildContactLinks } from '@/lib/contact'
 import type { PublicSiteSettings } from '@/lib/siteSettings'
 
 export function PostConsultationCta(props: {
+  bookingLabel: string
   settings: Pick<PublicSiteSettings, 'bookingUrl' | 'email' | 'telegram'>
   text: string
   title: string
 }) {
-  const { settings, text, title } = props
-  const links = buildContactLinks({
-    bookingUrl: settings.bookingUrl,
-    email: settings.email,
-    telegram: settings.telegram,
-  })
+  const { bookingLabel, settings, text, title } = props
+  const links = buildContactLinks(
+    {
+      bookingUrl: settings.bookingUrl,
+      email: settings.email,
+      telegram: settings.telegram,
+    },
+    { bookingLabel },
+  )
 
   if (links.length === 0) return null
 

@@ -51,21 +51,24 @@ export default async function PostsPage({ params }: PostsPageProps) {
 
   setRequestLocale(locale)
 
-  const [{ categoryLinks, featuredPost, posts }, settings, common, postT] = await Promise.all([
+  const [{ categoryLinks, featuredPost, posts }, settings, common, postT, navT] = await Promise.all([
     getPostsIndexPageData(locale),
     getSiteSettings(locale),
     getTranslations('common'),
     getTranslations('post'),
+    getTranslations('nav'),
   ])
 
   const contactLinks = [
     settings.telegram ? { href: settings.telegram, label: 'Telegram' } : null,
     { href: `mailto:${settings.email}`, label: 'Email' },
-    settings.bookingUrl ? { href: settings.bookingUrl, label: 'Book a call' } : null,
+    settings.bookingUrl
+      ? { href: settings.bookingUrl, kind: 'booking' as const, label: navT('discussProject') }
+      : null,
     settings.linkedin ? { href: settings.linkedin, label: 'LinkedIn' } : null,
     settings.github ? { href: settings.github, label: 'GitHub' } : null,
     { href: '/cv', label: 'CV' },
-  ].filter((link): link is { href: string; label: string } => Boolean(link))
+  ].filter((link): link is { href: string; kind?: 'booking'; label: string } => Boolean(link))
 
   return (
     <>

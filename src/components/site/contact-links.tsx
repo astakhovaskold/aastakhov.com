@@ -1,8 +1,9 @@
 import { ArrowLink } from '@/components/site/arrow-link'
-import { getContactLinkEvent } from '@/lib/analytics'
+import { analyticsEventNames, getContactLinkEvent } from '@/lib/analytics'
 
 export type ContactLinkItem = {
   href: string
+  kind?: 'booking'
   label: string
 }
 
@@ -19,7 +20,11 @@ export function ContactLinks(props: { links: ContactLinkItem[] }) {
         <ArrowLink
           href={link.href}
           key={link.label}
-          trackingEvent={getContactLinkEvent(link.label, link.href)}
+          trackingEvent={
+            link.kind === 'booking'
+              ? analyticsEventNames.bookingClick
+              : getContactLinkEvent(link.label, link.href)
+          }
         >
           {link.label}
         </ArrowLink>
