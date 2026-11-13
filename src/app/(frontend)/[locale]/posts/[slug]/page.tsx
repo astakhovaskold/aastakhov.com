@@ -161,17 +161,20 @@ export default async function PostDetailPage({ params }: PostDetailPageProps) {
         <div className="post-detail-shell">
           <SectionHeader action={{ href: '/posts', label: common('allPosts') }} title={common('more')} />
           {moreData.topic ? (
-            <p className="post-topic-link">
-              {topicT('partOf')}:{' '}
-              <Link href={`/topics/${moreData.topic.slug}`}>{moreData.topic.title}</Link>
+            <dl className="post-topic-link">
+              <dt>{topicT('partOf')}</dt>
+              <dd>
+                <Link href={`/topics/${moreData.topic.slug}`}>{moreData.topic.title}</Link>
+              </dd>
               {moreData.pillar ? (
                 <>
-                  {' · '}
-                  {topicT('startHere')}:{' '}
-                  <Link href={`/posts/${moreData.pillar.slug}`}>{moreData.pillar.title}</Link>
+                  <dt>{topicT('startHere')}</dt>
+                  <dd>
+                    <Link href={`/posts/${moreData.pillar.slug}`}>{moreData.pillar.title}</Link>
+                  </dd>
                 </>
               ) : null}
-            </p>
+            </dl>
           ) : null}
           {moreData.more.length > 0 ? <PostList items={moreData.more} /> : null}
         </div>

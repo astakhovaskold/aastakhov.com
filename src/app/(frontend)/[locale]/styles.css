@@ -1114,15 +1114,24 @@ p {
     gap: 16px;
   }
 
+  .post-topic-link {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2px;
+  }
+
+  .post-topic-link dd + dt {
+    margin-top: 10px;
+  }
+
   .post-item--compact {
-    grid-template-columns: minmax(0, 1fr) auto;
-    gap: 16px;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2px;
   }
 
   .post-item--compact .post-meta--compact {
     grid-column: auto;
-    justify-self: end;
-    text-align: right;
+    justify-self: start;
+    text-align: left;
   }
 
   .post-preview {
@@ -1330,8 +1339,23 @@ p {
 }
 
 .post-topic-link {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 6px 16px;
   margin: 0 0 32px;
-  line-height: 1.6;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.post-topic-link dt {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.post-topic-link dd {
+  margin: 0;
 }
 
 .post-cta {
