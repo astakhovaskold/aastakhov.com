@@ -136,7 +136,7 @@ export function buildLocalizedSitemapEntries(input: MultiLocaleSitemapInput): Me
     for (const loc of existingLocales) {
       languages[loc] = pageUrl(loc, path)
     }
-    const defaultLocale = existingLocales.includes('ru') ? 'ru' : existingLocales[0]
+    const defaultLocale = existingLocales.includes('en') ? 'en' : existingLocales[0]
     languages['x-default'] = pageUrl(defaultLocale, path)
 
     for (const loc of existingLocales) {

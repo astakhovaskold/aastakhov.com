@@ -9,7 +9,7 @@ function extractLocale(pathname: string): 'ru' | 'en' {
   if (pathname.startsWith('/en')) {
     return 'en'
   }
-  return 'ru'
+  return routing.defaultLocale
 }
 
 function isNotModified(ifModifiedSinceHeader: string | null, lastModified: Date): boolean {

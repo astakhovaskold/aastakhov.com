@@ -124,7 +124,7 @@ export function createSeoMetadata(options: CreateSeoMetadataOptions): Metadata {
       languages: {
         ru: pageUrl('ru', options.canonicalPath),
         en: pageUrl('en', options.canonicalPath),
-        'x-default': pageUrl('ru', options.canonicalPath),
+        'x-default': pageUrl('en', options.canonicalPath),
       },
     },
     description,

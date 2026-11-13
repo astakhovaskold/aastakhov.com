@@ -136,7 +136,7 @@ describe('buildLocalizedSitemapEntries', () => {
     const expectedAlternates = {
       ru: 'https://www.aastakhov.com/ru/posts/bilingual-post',
       en: 'https://www.aastakhov.com/en/posts/bilingual-post',
-      'x-default': 'https://www.aastakhov.com/ru/posts/bilingual-post',
+      'x-default': 'https://www.aastakhov.com/en/posts/bilingual-post',
     }
     expect(ruPostEntry?.alternates?.languages).toEqual(expectedAlternates)
     expect(enPostEntry?.alternates?.languages).toEqual(expectedAlternates)

@@ -40,7 +40,7 @@ describe('pageUrl helper', () => {
     expect(metadata.alternates?.languages).toEqual({
       ru: 'https://www.aastakhov.com/ru',
       en: 'https://www.aastakhov.com/en',
-      'x-default': 'https://www.aastakhov.com/ru',
+      'x-default': 'https://www.aastakhov.com/en',
     })
     expect(metadata.openGraph?.url).toBe('https://www.aastakhov.com/ru')
   })
