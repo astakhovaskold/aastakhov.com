@@ -1095,8 +1095,7 @@ p {
 
   .row,
   .post-item,
-  .blog-item,
-  .oss-item {
+  .blog-item {
     grid-template-columns: 1fr;
   }
 
@@ -1104,9 +1103,15 @@ p {
     gap: 6px;
   }
 
-  .blog-item,
-  .oss-item {
+  .blog-item {
     gap: 4px;
+  }
+
+  .oss-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 16px;
   }
 
   .post-item {
@@ -1150,10 +1155,13 @@ p {
     gap: 30px;
   }
 
-  .blog-meta,
-  .oss-meta {
+  .blog-meta {
     justify-self: start;
     white-space: normal;
+  }
+
+  .oss-meta {
+    flex-shrink: 0;
   }
 
   .cv-header {
