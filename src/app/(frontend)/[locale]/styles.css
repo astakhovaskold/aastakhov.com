@@ -1114,15 +1114,6 @@ p {
     gap: 16px;
   }
 
-  .post-topic-link {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 2px;
-  }
-
-  .post-topic-link dd + dt {
-    margin-top: 10px;
-  }
-
   .post-item--compact {
     grid-template-columns: minmax(0, 1fr);
     gap: 2px;
@@ -1192,10 +1183,6 @@ p {
 
   .section {
     margin-bottom: 64px;
-  }
-
-  .section-header {
-    display: block;
   }
 
   .section-note {
@@ -1339,23 +1326,8 @@ p {
 }
 
 .post-topic-link {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  gap: 6px 16px;
-  margin: 0 0 32px;
+  margin: 32px 0 0;
   font-size: 14px;
-  line-height: 1.5;
-}
-
-.post-topic-link dt {
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-.post-topic-link dd {
-  margin: 0;
 }
 
 .post-cta {

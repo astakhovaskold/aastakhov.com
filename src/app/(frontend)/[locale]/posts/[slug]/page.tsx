@@ -3,6 +3,7 @@ import { hasLocale } from 'next-intl'
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 import { notFound } from 'next/navigation'
 
+import { ArrowLink } from '@/components/site/arrow-link'
 import { ContactLinks } from '@/components/site/contact-links'
 import { StructuredData } from '@/components/site/structured-data'
 import {
@@ -160,23 +161,14 @@ export default async function PostDetailPage({ params }: PostDetailPageProps) {
       <section className="section" id="post-more">
         <div className="post-detail-shell">
           <SectionHeader action={{ href: '/posts', label: common('allPosts') }} title={common('more')} />
-          {moreData.topic ? (
-            <dl className="post-topic-link">
-              <dt>{topicT('partOf')}</dt>
-              <dd>
-                <Link href={`/topics/${moreData.topic.slug}`}>{moreData.topic.title}</Link>
-              </dd>
-              {moreData.pillar ? (
-                <>
-                  <dt>{topicT('startHere')}</dt>
-                  <dd>
-                    <Link href={`/posts/${moreData.pillar.slug}`}>{moreData.pillar.title}</Link>
-                  </dd>
-                </>
-              ) : null}
-            </dl>
-          ) : null}
           {moreData.more.length > 0 ? <PostList items={moreData.more} /> : null}
+          {moreData.topic ? (
+            <p className="post-topic-link">
+              <ArrowLink href={`/topics/${moreData.topic.slug}`}>
+                {topicT('morePosts')}: {moreData.topic.title}
+              </ArrowLink>
+            </p>
+          ) : null}
         </div>
       </section>
 
